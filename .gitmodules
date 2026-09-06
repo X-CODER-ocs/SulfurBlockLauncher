@@ -1,0 +1,16 @@
+[submodule "module/Iridium"]
+	path = module/Iridium
+	url = https://github.com/tiouoo/Iridium.git
+	branch = portal
+[submodule "module/Tio.Avalonia.Standard"]
+	path = module/Tio.Avalonia.Standard
+	url = https://github.com/tiouoo/Tio.Avalonia.Standard.git
+	branch = main
+[submodule "module/LiteSkinViewer"]
+	path = module/LiteSkinViewer
+	url = https://github.com/tiouoo/LiteSkinViewer.git
+	branch = main
+[submodule "module/MinecraftLaunch"]
+	path = module/MinecraftLaunch
+	url = https://github.com/tiouoo/MinecraftLaunch.git
+	branch = main

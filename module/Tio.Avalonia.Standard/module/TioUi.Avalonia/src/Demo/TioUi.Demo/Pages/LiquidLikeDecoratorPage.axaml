@@ -1,0 +1,183 @@
+<UserControl
+    d:DesignHeight="800"
+    d:DesignWidth="900"
+    mc:Ignorable="d"
+    x:Class="TioUi.Demo.Pages.LiquidLikeDecoratorPage"
+    x:DataType="pages:LiquidLikeDecoratorPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pages="clr-namespace:TioUi.Demo.Pages"
+    xmlns:tio="https://github.com/tiouoo/TioUi.Avalonia"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Border>
+        <ScrollViewer Margin="0,0,5,0">
+            <StackPanel Margin="15,15,10,15" Spacing="10">
+
+                <tio:GroupBorder Header="Basic Usage">
+                    <WrapPanel
+                        ItemSpacing="20"
+                        LineSpacing="20"
+                        Margin="15">
+                        <tio:LiquidLikeDecorator>
+                            <Button
+                                Content="Drag Me"
+                                Height="40"
+                                Width="120" />
+                        </tio:LiquidLikeDecorator>
+
+                        <tio:LiquidLikeDecorator>
+                            <Button
+                                Classes="Danger"
+                                Content="Danger"
+                                Height="40"
+                                Width="120" />
+                        </tio:LiquidLikeDecorator>
+
+                        <tio:LiquidLikeDecorator>
+                            <Button
+                                Classes="Primary"
+                                Content="Primary"
+                                Height="40"
+                                Width="120" />
+                        </tio:LiquidLikeDecorator>
+                    </WrapPanel>
+                </tio:GroupBorder>
+
+                <tio:GroupBorder Header="Circular Buttons">
+                    <WrapPanel
+                        ItemSpacing="20"
+                        LineSpacing="20"
+                        Margin="15">
+                        <tio:LiquidLikeDecorator>
+                            <Button
+                                Content="+"
+                                CornerRadius="25"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Height="50"
+                                Width="50" />
+                        </tio:LiquidLikeDecorator>
+
+                        <tio:LiquidLikeDecorator>
+                            <Button
+                                Content="−"
+                                CornerRadius="25"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Height="50"
+                                Width="50" />
+                        </tio:LiquidLikeDecorator>
+
+                        <tio:LiquidLikeDecorator>
+                            <Button
+                                Content="×"
+                                CornerRadius="25"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Height="50"
+                                Width="50" />
+                        </tio:LiquidLikeDecorator>
+                    </WrapPanel>
+                </tio:GroupBorder>
+
+                <tio:GroupBorder Header="TextBox">
+                    <StackPanel Margin="15" Spacing="15">
+                        <tio:LiquidLikeDecorator HorizontalAlignment="Left">
+                            <TextBox
+                                CornerRadius="18"
+                                Height="36"
+                                PlaceholderText="Drag to stretch"
+                                Width="240" />
+                        </tio:LiquidLikeDecorator>
+
+                        <tio:LiquidLikeDecorator HorizontalAlignment="Left">
+                            <TextBox
+                                CornerRadius="18"
+                                Height="36"
+                                PlaceholderText="Type something..."
+                                Width="300" />
+                        </tio:LiquidLikeDecorator>
+                    </StackPanel>
+                </tio:GroupBorder>
+
+                <tio:GroupBorder Header="Different Sizes">
+                    <WrapPanel
+                        ItemSpacing="20"
+                        LineSpacing="20"
+                        Margin="15">
+                        <tio:LiquidLikeDecorator>
+                            <Button
+                                Content="Small"
+                                FontSize="12"
+                                Height="30"
+                                Width="80" />
+                        </tio:LiquidLikeDecorator>
+
+                        <tio:LiquidLikeDecorator>
+                            <Button
+                                Content="Medium"
+                                Height="40"
+                                Width="120" />
+                        </tio:LiquidLikeDecorator>
+
+                        <tio:LiquidLikeDecorator>
+                            <Button
+                                Content="Large"
+                                FontSize="16"
+                                Height="50"
+                                Width="160" />
+                        </tio:LiquidLikeDecorator>
+                    </WrapPanel>
+                </tio:GroupBorder>
+
+                <tio:GroupBorder Header="Custom Content">
+                    <WrapPanel
+                        ItemSpacing="20"
+                        LineSpacing="20"
+                        Margin="15">
+                        <tio:LiquidLikeDecorator>
+                            <Border
+                                Background="{DynamicResource SystemAccentColor}"
+                                CornerRadius="8"
+                                Height="80"
+                                Width="150">
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    Spacing="5"
+                                    VerticalAlignment="Center">
+                                    <TextBlock
+                                        FontWeight="Bold"
+                                        Foreground="White"
+                                        HorizontalAlignment="Center"
+                                        Text="Custom Card" />
+                                    <TextBlock
+                                        FontSize="12"
+                                        Foreground="White"
+                                        HorizontalAlignment="Center"
+                                        Opacity="0.8"
+                                        Text="Drag me" />
+                                </StackPanel>
+                            </Border>
+                        </tio:LiquidLikeDecorator>
+
+                        <tio:LiquidLikeDecorator>
+                            <Border
+                                Background="#FF6B6B"
+                                CornerRadius="50"
+                                Height="100"
+                                Width="100">
+                                <TextBlock
+                                    FontSize="40"
+                                    HorizontalAlignment="Center"
+                                    Text="🎨"
+                                    VerticalAlignment="Center" />
+                            </Border>
+                        </tio:LiquidLikeDecorator>
+                    </WrapPanel>
+                </tio:GroupBorder>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

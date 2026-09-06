@@ -1,0 +1,124 @@
+{
+  "widgets": {
+    "clock": {
+      "currentTime": "当前时间"
+    }
+  },
+  "addwidgetdialog": {
+    "title": "添加小组件",
+    "searchPlaceholder": "搜索组件",
+    "categoryGame": "游戏",
+    "categoryResource": "系统资源",
+    "categoryUtility": "实用工具",
+    "add": "添加"
+  },
+  "instancecard": {
+    "play": "游玩",
+    "createShortcut": "快捷方式",
+    "launchInstance": "启动实例",
+    "favorited": "已收藏",
+    "blocked": "已屏蔽"
+  },
+  "instancelisttoolbar": {
+    "instances": "实例",
+    "add": "添加",
+    "importModpack": "导入整合包",
+    "addFolder": "添加文件夹",
+    "createNewInstance": "创建新实例",
+    "search": "搜索"
+  },
+  "instancepickerdialog": {
+    "title": "选择实例",
+    "searchPlaceholder": "搜索实例",
+    "cancel": "取消"
+  },
+  "instancewidget1x1": {
+    "launchInstance": "启动实例"
+  },
+  "instancewidget2x1": {
+    "launchInstance": "启动实例"
+  },
+  "launchbuttonwidget": {
+    "launch": "启动游戏",
+    "selectInstance": "选择实例",
+    "notPinned": "未固定实例",
+    "unpin": "取消固定",
+    "noInstances": "没有可用的实例",
+    "fromFolder": "来自文件夹：{0}"
+  },
+  "quickserverwidget1x1": {
+    "quickJoinServer": "快速进入服务器"
+  },
+  "quickserverwidget2x1": {
+    "quickJoinServer": "快速进入服务器"
+  },
+  "quickworldwidget1x1": {
+    "quickJoinWorld": "快速进入世界"
+  },
+  "quickworldwidget2x1": {
+    "quickJoinWorld": "快速进入世界"
+  },
+  "recentplaycard": {
+    "play": "游玩",
+    "createShortcut": "快捷方式",
+    "quickPlay": "快速进入",
+    "favorited": "已收藏",
+    "blocked": "已屏蔽"
+  },
+  "recentplayssection": {
+    "recentPlays": "最近游玩"
+  },
+  "serverconnectdialog": {
+    "title": "输入服务器地址",
+    "addressLabel": "服务器地址",
+    "addressPlaceholder": "例如 127.0.0.1 或 play.example.net",
+    "portLabel": "端口",
+    "portPlaceholder": "默认 25565",
+    "description": "连接后会通过所选实例启动游戏，并自动加入该服务器。",
+    "cancel": "取消",
+    "confirm": "确定"
+  },
+  "worldpickerdialog": {
+    "title": "选择存档",
+    "searchPlaceholder": "搜索存档",
+    "emptyText": "此实例没有可识别的存档",
+    "cancel": "取消"
+  },
+  "fixedlistrenamedialog": {
+    "title": "重命名固定列表",
+    "nameLabel": "新名称",
+    "cancel": "取消",
+    "confirm": "确定"
+  },
+  "contextmenu": {
+    "clickAction": "点击操作",
+    "viewDetails": "查看详情",
+    "play": "游玩",
+    "noAction": "无操作",
+    "showInstanceDetails": "打开实例详情",
+    "showWorldDetails": "打开世界详情",
+    "launchInstance": "直接启动实例",
+    "quickEnterWorld": "快速进入世界",
+    "quickEnterServer": "快速进入服务器",
+    "addItem": "添加项目",
+    "rename": "重命名",
+    "enterServer": "进入服务器",
+    "enterWorld": "进入世界",
+    "startGame": "开始游戏",
+    "delete": "删除",
+    "removeFromList": "从列表中移除",
+    "moveUp": "向上移动",
+    "moveDown": "向下移动",
+    "displayLimit": "显示数量",
+    "deleteConfirm": "确定要永久删除“{0}”吗？此操作无法撤销。",
+    "emptyList": "右键点击组件以添加项目",
+    "noRecentItems": "没有最近游玩的项目",
+    "noInstances": "没有可用的实例"
+  },
+  "clock1x1": {},
+  "clock2x1": {},
+  "resourcewidgetview1x1": {},
+  "resourcewidgetview2x1": {},
+  "resourcewidgetview2x2": {},
+  "widgethost": {}
+}

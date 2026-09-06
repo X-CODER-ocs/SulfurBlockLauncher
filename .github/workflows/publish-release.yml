@@ -1,0 +1,417 @@
+name: publish/release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "版本号"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version_json: ${{ steps.meta.outputs.json }}
+      app_version: ${{ steps.meta.outputs.app_version }}
+      commit: ${{ steps.meta.outputs.commit_hash }}
+      version: ${{ steps.meta.outputs.version }}
+      tag: ${{ steps.meta.outputs.tag }}
+      base_commit: ${{ steps.meta.outputs.base_commit }}
+      prev_tag: ${{ steps.meta.outputs.prev_tag }}
+      release_date: ${{ steps.meta.outputs.release_date }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 计算版本号：支持手动指定，或从上一个 v* 标签自动递增
+      - name: Generate Meta and JSON
+        id: meta
+        run: |
+          set -euo pipefail
+
+          BASE_COMMIT=$(git rev-parse --short=7 HEAD)
+          PREV_TAG=$(git tag -l --sort=-v:refname 'v*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n1 || true)
+          INPUT_VERSION="${{ github.event.inputs.version }}"
+
+          if [ -n "$INPUT_VERSION" ]; then
+            VERSION="$INPUT_VERSION"
+          elif [ -n "$PREV_TAG" ]; then
+            BASE="${PREV_TAG#v}"
+            MAJOR=$(echo "$BASE" | cut -d. -f1)
+            MINOR=$(echo "$BASE" | cut -d. -f2)
+            PATCH=$(echo "$BASE" | cut -d. -f3)
+            PATCH=$((PATCH + 1))
+            if [ "$PATCH" -gt 9 ]; then
+              PATCH=0
+              MINOR=$((MINOR + 1))
+            fi
+            if [ "$MINOR" -gt 9 ]; then
+              MINOR=0
+              MAJOR=$((MAJOR + 1))
+            fi
+            VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          else
+            VERSION="1.0.0"
+          fi
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=v${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "base_commit=${BASE_COMMIT}" >> "$GITHUB_OUTPUT"
+          echo "prev_tag=${PREV_TAG}" >> "$GITHUB_OUTPUT"
+          echo "release_date=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
+
+          APP_VERSION="${VERSION}"
+          COMMIT_HASH="${BASE_COMMIT}"
+          BUILD_TIME=$(TZ='Asia/Shanghai' date -Iseconds)
+          JSON_STRING="{\"type\":\"release\",\"build-time\":\"${BUILD_TIME}\",\"action\":\"${{ github.run_id }}\",\"commit\":\"${COMMIT_HASH}\",\"version\":\"${VERSION}\",\"version_title\":\"Portal v${VERSION}\"}"
+          echo "json=${JSON_STRING}" >> "$GITHUB_OUTPUT"
+          echo "app_version=${APP_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "commit_hash=${COMMIT_HASH}" >> "$GITHUB_OUTPUT"
+
+      - name: Create and Push Version Tag
+        run: |
+          set -euo pipefail
+          if git rev-parse -q --verify "refs/tags/v${{ steps.meta.outputs.version }}" >/dev/null; then
+            echo "版本标签 v${{ steps.meta.outputs.version }} 已存在，跳过创建。"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag "v${{ steps.meta.outputs.version }}"
+            git push origin "v${{ steps.meta.outputs.version }}"
+          fi
+
+  linux-package:
+    runs-on: ubuntu-22.04
+    needs: prepare
+    env:
+      CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+      MICROSOFT_CLIENT_ID: ${{ secrets.MICROSOFT_CLIENT_ID }}
+      GRAVITYCONE_UPTIME_API_KEY: ${{ secrets.GRAVITYCONE_UPTIME_API_KEY }}
+      CNB_UPDATE_TOKEN: ${{ secrets.CNB_UPDATE_TOKEN }}
+      PRE_MC_KEY: ${{ secrets.PRE_MC_KEY }}
+      REL_MC_KEY: ${{ secrets.REL_MC_KEY }}
+      PORTAL_TELEMETRY_API_KEY: ${{ secrets.PORTAL_TELEMETRY_API_KEY }}
+      PORTAL_TELEMETRY_URL: ${{ secrets.PORTAL_TELEMETRY_URL }}
+    strategy:
+      matrix:
+        include:
+          - kind: appimage
+            package_type: appimage
+            output: Portal.linux.x64.AppImage
+          - kind: deb
+            package_type: deb
+            output: Portal.linux.x64.deb
+          - kind: rpm
+            package_type: rpm
+            output: Portal.linux.x64.rpm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: "recursive"
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --recursive
+          git submodule foreach --recursive 'branch=$(git config -f "$toplevel/.gitmodules" --get "submodule.$name.branch" || echo main); git fetch origin "$branch" && git checkout -B "$branch" "origin/$branch"'
+
+      - name: Write CI Config
+        run: |
+          echo '${{ needs.prepare.outputs.version_json }}' > ./assets/conf/version-ci.txt
+          echo '${{ matrix.package_type }}' > ./assets/conf/package-type.txt
+
+      - name: Dependency
+        run: |
+          dotnet tool install -g KuiperZone.PupNet --version 1.8.0
+          sudo apt-get update && sudo apt-get install -y fuse rpm
+
+      - name: Build ${{ matrix.kind }} Package
+        run: |
+          cd ./assets/conf
+          pupnet --runtime linux-x64 --kind ${{ matrix.kind }} -o ${{ matrix.output }} -y --app-version ${{ needs.prepare.outputs.app_version }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-${{ matrix.kind }}-artifacts
+          path: assets/conf/Deploy/OUT/${{ matrix.output }}
+
+  win-exe:
+    runs-on: windows-latest
+    needs: prepare
+    env:
+      CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+      MICROSOFT_CLIENT_ID: ${{ secrets.MICROSOFT_CLIENT_ID }}
+      GRAVITYCONE_UPTIME_API_KEY: ${{ secrets.GRAVITYCONE_UPTIME_API_KEY }}
+      CNB_UPDATE_TOKEN: ${{ secrets.CNB_UPDATE_TOKEN }}
+      PRE_MC_KEY: ${{ secrets.PRE_MC_KEY }}
+      REL_MC_KEY: ${{ secrets.REL_MC_KEY }}
+      PORTAL_TELEMETRY_API_KEY: ${{ secrets.PORTAL_TELEMETRY_API_KEY }}
+      PORTAL_TELEMETRY_URL: ${{ secrets.PORTAL_TELEMETRY_URL }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          submodules: "recursive"
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --recursive
+          git submodule foreach --recursive 'branch=$(git config -f "$toplevel/.gitmodules" --get "submodule.$name.branch" || echo main); git fetch origin "$branch" && git checkout -B "$branch" "origin/$branch"'
+        shell: bash
+
+      - name: Write CI Config
+        run: |
+          echo '${{ needs.prepare.outputs.version_json }}' > ./assets/conf/version-ci.txt
+          echo 'portable' > ./assets/conf/package-type.txt
+        shell: bash
+
+      - name: Build & Package
+        shell: pwsh
+        run: |
+          cd ./src/Portal.Desktop
+          New-Item -ItemType Directory -Force -Path "../../dist"
+          dotnet restore -r win-x64
+          dotnet publish -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:SelfContained=false /p:Version=${{ needs.prepare.outputs.app_version }} -o "../../dist" -p:DebugType=none -p:DebugSymbols=false
+          cd "../../dist"
+          Rename-Item -Path "Portal.Desktop.exe" -NewName "Portal.win.x64.portable.exe" -Force
+          Compress-Archive -Path "Portal.win.x64.portable.exe" -DestinationPath "../Portal.win.x64.portable.zip" -Force
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: win-exe-win.x64-artifacts
+          path: ./Portal.*.zip
+
+  win-installer:
+    runs-on: windows-latest
+    needs: prepare
+    env:
+      CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+      MICROSOFT_CLIENT_ID: ${{ secrets.MICROSOFT_CLIENT_ID }}
+      GRAVITYCONE_UPTIME_API_KEY: ${{ secrets.GRAVITYCONE_UPTIME_API_KEY }}
+      CNB_UPDATE_TOKEN: ${{ secrets.CNB_UPDATE_TOKEN }}
+      PRE_MC_KEY: ${{ secrets.PRE_MC_KEY }}
+      REL_MC_KEY: ${{ secrets.REL_MC_KEY }}
+      PORTAL_TELEMETRY_API_KEY: ${{ secrets.PORTAL_TELEMETRY_API_KEY }}
+      PORTAL_TELEMETRY_URL: ${{ secrets.PORTAL_TELEMETRY_URL }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          submodules: "recursive"
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --recursive
+          git submodule foreach --recursive 'branch=$(git config -f "$toplevel/.gitmodules" --get "submodule.$name.branch" || echo main); git fetch origin "$branch" && git checkout -B "$branch" "origin/$branch"'
+        shell: bash
+
+      - name: Dependencies
+        run: |
+          choco install innosetup -y
+          dotnet tool install -g KuiperZone.PupNet --version 1.8.0
+
+      - name: Chinesize-InnoSetup
+        run: Copy-Item "./assets/conf/ChineseSimplified.isl" "C:\Program Files (x86)\Inno Setup 6\Default.isl" -Force
+
+      - name: Write CI Config
+        run: |
+          echo '${{ needs.prepare.outputs.version_json }}' > ./assets/conf/version-ci.txt
+          echo 'installer' > ./assets/conf/package-type.txt
+        shell: bash
+
+      - name: Build & Package
+        shell: pwsh
+        run: |
+          cd ./assets/conf
+          pupnet -r win-x64 -k setup -y -o Portal.win.x64.installer.exe --app-version ${{ needs.prepare.outputs.app_version }}
+          ../../scripts/configure-windows-installer.ps1
+          Compress-Archive -Path "Deploy/OUT/Portal.win.x64.installer.exe" -DestinationPath "Deploy/OUT/Portal.win.x64.installer.zip" -Force
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: win-installer-win.x64-artifacts
+          path: assets/conf/Deploy/OUT/Portal.win.*.installer.zip
+
+  mac-dmg:
+    runs-on: macos-latest
+    needs: prepare
+    env:
+      CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+      MICROSOFT_CLIENT_ID: ${{ secrets.MICROSOFT_CLIENT_ID }}
+      GRAVITYCONE_UPTIME_API_KEY: ${{ secrets.GRAVITYCONE_UPTIME_API_KEY }}
+      CNB_UPDATE_TOKEN: ${{ secrets.CNB_UPDATE_TOKEN }}
+      PRE_MC_KEY: ${{ secrets.PRE_MC_KEY }}
+      REL_MC_KEY: ${{ secrets.REL_MC_KEY }}
+      PORTAL_TELEMETRY_API_KEY: ${{ secrets.PORTAL_TELEMETRY_API_KEY }}
+      PORTAL_TELEMETRY_URL: ${{ secrets.PORTAL_TELEMETRY_URL }}
+    strategy:
+      matrix:
+        rid: [osx-x64, osx-arm64]
+        include:
+          - rid: osx-x64
+            dmg_arch: x64
+          - rid: osx-arm64
+            dmg_arch: arm64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: "recursive"
+
+      - name: Update Submodules
+        run: |
+          git submodule update --init --recursive
+          git submodule foreach --recursive 'branch=$(git config -f "$toplevel/.gitmodules" --get "submodule.$name.branch" || echo main); git fetch origin "$branch" && git checkout -B "$branch" "origin/$branch"'
+
+      - name: Write CI Config
+        run: |
+          echo '${{ needs.prepare.outputs.version_json }}' > ./assets/conf/version-ci.txt
+          echo 'app' > ./assets/conf/package-type.txt
+
+      - name: Build macOS App
+        run: |
+          cd ./src/Portal.Desktop
+          dotnet restore -r ${{ matrix.rid }}
+          dotnet msbuild -t:BundleApp -p:RuntimeIdentifier=${{ matrix.rid }} -property:Configuration=Release -p:SelfContained=true
+          cp "../../assets/Icon-Pattern-Shadow-Border.icns" "./bin/Release/net10.0/${{ matrix.rid }}/publish/Portal.app/Contents/Resources/"
+
+      # DotNet.Bundle 不支持 CFBundleURLTypes，portal:// 协议声明在打包后写入 Info.plist
+      - name: Declare portal URL Scheme
+        run: |
+          PLIST="./src/Portal.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/Portal.app/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes array" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0 dict" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLName string cc.tiouoo.portal" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLRole string Viewer" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLSchemes array" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string portal" "$PLIST"
+
+      - name: Package APP to ZIP
+        run: |
+          cd ./src/Portal.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/
+          /usr/bin/ditto -c -k --keepParent Portal.app ../../../../../../../Portal.osx.mac.${{ matrix.dmg_arch }}.app.zip
+
+      # macOS Runner 预装的 aws/tap 未受信任，会导致 brew 输出警告，构建 DMG 前先移除
+      - name: Untap Untrusted Homebrew Taps
+        run: brew untap aws/tap || true
+
+      - name: Build DMG
+        uses: L-Super/create-dmg-actions@v1.1.0
+        with:
+          dmg_name: "Portal.osx.mac.${{ matrix.dmg_arch }}"
+          src_dir: "./src/Portal.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/Portal.app"
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: osx-${{ matrix.dmg_arch }}-artifacts
+          path: |
+            ./Portal.osx.mac.${{ matrix.dmg_arch }}.dmg
+            ./Portal.osx.mac.${{ matrix.dmg_arch }}.app.zip
+
+  publish:
+    needs: [prepare, linux-package, win-exe, win-installer, mac-dmg]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: ./Portal.Release/
+          merge-multiple: true
+
+      - name: List Files
+        run: ls -la ./Portal.Release/
+
+      - name: Generate Release Body
+        run: |
+          REPO_URL="${{ github.server_url }}/${{ github.repository }}"
+          VERSION="${{ needs.prepare.outputs.version }}"
+          TAG="${{ needs.prepare.outputs.tag }}"
+          PREV_TAG="${{ needs.prepare.outputs.prev_tag }}"
+          BASE_COMMIT="${{ needs.prepare.outputs.base_commit }}"
+          RELEASE_DATE="${{ needs.prepare.outputs.release_date }}"
+
+          {
+            echo "Portal v${VERSION}"
+            echo "发布日期：${RELEASE_DATE}"
+            echo "基准提交：\`${BASE_COMMIT}\`"
+            echo ""
+            if [ -n "${PREV_TAG}" ]; then
+              echo "更新日志（自 ${PREV_TAG}）："
+              echo ""
+              git log --no-merges --pretty=tformat:"- %s ([%h](${REPO_URL}/commit/%H))" "${PREV_TAG}..HEAD"
+              echo ""
+              echo "**完整对比**: ${REPO_URL}/compare/${PREV_TAG}...${TAG}"
+            else
+              ROOT_COMMIT=$(git rev-list --max-parents=0 HEAD | head -n1)
+              echo "更新日志（首个正式版本）："
+              echo ""
+              git log --no-merges --pretty=tformat:"- %s ([%h](${REPO_URL}/commit/%H))" "${ROOT_COMMIT}..HEAD"
+            fi
+          } > RELEASE_BODY.md
+          cat RELEASE_BODY.md
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ needs.prepare.outputs.tag }}
+          name: "Portal v${{ needs.prepare.outputs.version }}"
+          body_path: RELEASE_BODY.md
+          files: |
+            ./Portal.Release/*.dmg
+            ./Portal.Release/*.zip
+            ./Portal.Release/*.AppImage
+            ./Portal.Release/*.deb
+            ./Portal.Release/*.rpm
+
+      - name: Package All Builds
+        run: |
+          cd ./Portal.Release
+          zip -qr ../Portal.v${{ needs.prepare.outputs.version }}.all-builds.zip .
+          ls -lh ../Portal.v${{ needs.prepare.outputs.version }}.all-builds.zip
+
+      - name: Upload All Builds Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Portal.v${{ needs.prepare.outputs.version }}.all-builds
+          path: ./Portal.v${{ needs.prepare.outputs.version }}.all-builds.zip
+
+      - name: Sync to CNB (Release/Tag Only)
+        env:
+          CNB_TOKEN: ${{ secrets.CNB_TOKEN }}
+          CNB_REPO: tiouo/portal
+          CNB_TAG: ${{ needs.prepare.outputs.tag }}
+          CNB_COMMIT: ${{ needs.prepare.outputs.commit }}
+          CNB_NAME: "Portal v${{ needs.prepare.outputs.version }}"
+          CNB_PRERELEASE: "false"
+          CNB_MAKE_LATEST: "true"
+          CNB_BODY_FILE: RELEASE_BODY.md
+        run: bash .github/scripts/publish-cnb.sh
+
+  aur:
+    needs: [prepare, publish]
+    uses: ./.github/workflows/publish-aur.yml
+    with:
+      pkgname: portal-mc-bin
+      tag: ${{ needs.prepare.outputs.tag }}
+      app_version: ${{ needs.prepare.outputs.version }}
+    secrets:
+      AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+      AUR_USERNAME: ${{ secrets.AUR_USERNAME }}

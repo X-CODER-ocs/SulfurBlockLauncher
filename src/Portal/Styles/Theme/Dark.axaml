@@ -1,0 +1,19 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush
+                Color="White"
+                Opacity="0.12"
+                x:Key="TabBackground" />
+            <SolidColorBrush
+                Color="{DynamicResource SystemAccentColorLight3}"
+                Opacity="0.15"
+                x:Key="TabHover" />
+            <SolidColorBrush
+                Color="{DynamicResource SystemAccentColorLight3}"
+                Opacity="0.3"
+                x:Key="TabSelected" />
+            <BoxShadows x:Key="PopupBoxShadow">0 0 8 1 #35000000</BoxShadows>
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

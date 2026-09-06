@@ -1,0 +1,52 @@
+using Iridium.Models.Minecraft;
+using Iridium.Utilities;
+using Iridium.Interfaces;
+
+namespace Iridium.Minecraft.Layout;
+
+public sealed class StandardLayout : IMinecraftLayout {
+    public string Format => "Standard";
+
+    public string GetInstanceDirectory(string id) => Path.Combine("versions", id);
+
+    public string GetInstanceRoot(MinecraftEntry entry) => GetRoot(entry);
+
+    public string GetGameDirectory(MinecraftEntry entry) {
+        var versionDir = GetVersionDirectory(entry);
+
+        // Version-isolated instances (HMCL etc.) keep game files inside the version directory.
+        if (File.Exists(Path.Combine(versionDir, "options.txt"))
+            || Directory.Exists(Path.Combine(versionDir, "mods"))
+            || Directory.Exists(Path.Combine(versionDir, "saves")))
+            return versionDir;
+
+        return GetRoot(entry);
+    }
+
+    public string GetLibrariesRoot(MinecraftEntry entry) => Path.Combine(GetRoot(entry), "libraries");
+
+    public string GetAssetsRoot(MinecraftEntry entry) => Path.Combine(GetRoot(entry), "assets");
+
+    public string GetNativesDirectory(MinecraftEntry entry) => Path.Combine(GetVersionDirectory(entry), $"natives-{PlatformHelper.GetPlatformInfo()}");
+
+    public string GetVersionJarPath(MinecraftEntry entry) {
+        var jarName = string.IsNullOrEmpty(entry.Jar) ? entry.Id : entry.Jar;
+        return Path.Combine(GetVersionDirectory(entry), $"{jarName}.jar");
+    }
+
+    public string GetVersionJsonPath(MinecraftEntry entry) => Path.Combine(GetRoot(entry), "versions", entry.Id, $"{entry.Id}.json");
+
+    private static string GetVersionDirectory(MinecraftEntry entry) {
+        return string.IsNullOrEmpty(entry.InstancePath)
+            ? entry.InstancePath
+            : Path.GetFullPath(entry.InstancePath);
+    }
+
+    private static string GetRoot(MinecraftEntry entry) {
+        var versionDir = GetVersionDirectory(entry);
+        if (versionDir.Length == 0)
+            return versionDir;
+
+        return Path.GetDirectoryName(Path.GetDirectoryName(versionDir)) ?? versionDir;
+    }
+}

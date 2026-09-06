@@ -1,0 +1,11 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:tio="https://github.com/tiouoo/TioUi.Avalonia"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <FontFamily x:Key="TioFontFamily">avares://TioUi/Assets#AlimamaFangYuanTi</FontFamily>
+    <FontWeight x:Key="TioFontWeight">DemiBold</FontWeight>
+    <system:Double x:Key="TioFontSize">14</system:Double>
+    <CornerRadius x:Key="TioCornerRadius">10</CornerRadius>
+    <tio:SukiEaseOutBack BounceIntensity="Soft" x:Key="MenuEasing" />
+</ResourceDictionary>

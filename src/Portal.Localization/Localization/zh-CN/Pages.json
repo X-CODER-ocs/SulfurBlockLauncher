@@ -1,0 +1,135 @@
+{
+  "debugpage": {
+    "Operations": "操作",
+    "TriggerCrashDivideByZero": "触发崩溃 (除以0)",
+    "TaskManagementTest": "任务管理测试",
+    "TaskManagementTestHint": "创建任务后可通过标题栏圆点打开抽屉，或从抽屉打开任务标签页。",
+    "StartFullDownloadFlow": "开始完整下载流程",
+    "StartNestedSubTaskFlow": "开始嵌套子任务流程",
+    "CreateWaitingTask": "创建等待中的任务",
+    "CreateFailedTask": "创建失败任务",
+    "CreateCancellableTask": "创建可取消任务",
+    "CreateActionButtonTask": "创建带操作按钮的任务",
+    "VersionInfo": "版本信息",
+    "BuildType": "构建类型",
+    "BuildTime": "构建时间",
+    "BuildVersion": "构建版本",
+    "BuildAction": "构建Action",
+    "BuildCommit": "构建提交"
+  },
+  "downloadpage": {
+    "Favorites": "收藏夹",
+    "JavaEdition": "Java 版",
+    "GameClient": "游戏本体",
+    "Mods": "模组",
+    "Modpacks": "整合包",
+    "ResourcePacks": "材质包",
+    "ShaderPacks": "光影包",
+    "DataPacks": "数据包",
+    "Saves": "存档",
+    "BedrockEdition": "基岩版",
+    "BedrockResourcePacks": "资源包",
+    "Others": "其他",
+    "CustomDownload": "自定义"
+  },
+  "instancedetailpage": {
+    "Dashboard": "仪表盘",
+    "Storage": "存储",
+    "Mods": "模组",
+    "ResourcePacks": "资源包",
+    "ShaderPacks": "光影包",
+    "Saves": "存档",
+    "Servers": "服务器",
+    "Screenshots": "截图",
+    "Logs": "日志",
+    "CrashReports": "崩溃报告",
+    "BehaviorPacks": "行为包",
+    "WorldTemplates": "世界模板",
+    "SkinPacks": "皮肤包",
+    "ConfigFiles": "配置文件",
+    "Properties": "配置管理"
+  },
+  "litematicapage": {
+    "LitematicaProjectionAnalysis": "Litematica 投影分析",
+    "ProjectionFile": "投影文件",
+    "Analyze": "分析",
+    "SelectLitematicaProjectionFile": "选择 Litematica 投影文件",
+    "TotalBlocks": "方块总数：",
+    "BlockTypes": "方块种类：",
+    "BlockName": "方块名称",
+    "Count": "数量",
+    "Category": "类别",
+    "Percentage": "百分比",
+    "Units": "换算",
+    "ExportTxt": "导出 TXT",
+    "ExportCsv": "导出 CSV"
+  },
+  "minecraftlogpage": {
+    "MinecraftLog": "Minecraft 日志",
+    "AutoScrollToBottom": "自动滚动到底部",
+    "ShowLevels": "显示级别",
+    "Information": "信息",
+    "Warning": "警告",
+    "Error": "错误",
+    "Debug": "调试",
+    "Trace": "跟踪",
+    "Other": "其他",
+    "Export": "导出",
+    "SelectAll": "全选",
+    "Copy": "复制"
+  },
+  "newtabpage": {
+    "NoRecentGames": "暂无最近游戏",
+    "ContinueGame": "继续游戏",
+    "NoRecentSaveOrServer": "暂无最近存档或服务器",
+    "GamePlayTime": "游戏时长",
+    "Sessions": "次会话",
+    "NoInstancesGoTo": "暂无实例，请前往",
+    "AddFolder": "添加文件夹",
+    "Or": "或",
+    "CreateNewInstance": "创建新实例",
+    "NoMatchingInstancesGoTo": "暂无匹配实例，请修改筛选条件，前往",
+    "SwitchLayout": "切换布局",
+    "VisibleInstanceRows": "实例显示行数"
+  },
+  "newsdetailspage": {
+    "LoadingNewsContent": "正在加载新闻正文…",
+    "Retry": "重试"
+  },
+  "newspage": {
+    "MinecraftNews": "Minecraft新闻"
+  },
+  "settingpage": {
+    "General": "通用",
+    "Appearance": "界面外观",
+    "Shortcuts": "按键绑定",
+    "Notification": "通知选项",
+    "Storage": "存储空间",
+    "OtherSettings": "其他设置",
+    "About": "关于应用",
+    "Game": "游戏",
+    "Account": "账户档案",
+    "JavaRuntime": "运行环境",
+    "GameFolder": "游戏目录",
+    "Advanced": "高级选项",
+    "Network": "网络",
+    "Download": "下载设置",
+    "Proxy": "网络代理"
+  },
+  "startpage": {
+    "NoInstancesGoTo": "暂无实例，请前往",
+    "AddFolder": "添加文件夹",
+    "Or": "或",
+    "CreateNewInstance": "创建新实例",
+    "NoMatchingInstancesGoTo": "暂无匹配实例，请修改筛选条件，前往"
+  },
+  "taskpage": {
+    "Tasks": "任务"
+  },
+  "toolspage": {
+    "BedrockEdition": "基岩版"
+  },
+  "instancespage": {},
+  "multiplayerpage": {},
+  "widgetspage": {}
+}

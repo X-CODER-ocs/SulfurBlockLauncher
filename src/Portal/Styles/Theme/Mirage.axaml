@@ -1,0 +1,22 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:shared="clr-namespace:TioUi.Shared;assembly=TioUi"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="{x:Static shared:Themes.Mirage}">
+            <SolidColorBrush
+                Color="White"
+                Opacity="0.12"
+                x:Key="TabBackground" />
+            <SolidColorBrush
+                Color="{DynamicResource SystemAccentColorLight3}"
+                Opacity="0.15"
+                x:Key="TabHover" />
+            <SolidColorBrush
+                Color="{DynamicResource SystemAccentColorLight3}"
+                Opacity="0.3"
+                x:Key="TabSelected" />
+            <BoxShadows x:Key="PopupBoxShadow">0 0 8 1 #28000000</BoxShadows>
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

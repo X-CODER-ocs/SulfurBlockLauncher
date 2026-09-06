@@ -1,0 +1,86 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <CurseForgeApiKey>$([System.Environment]::GetEnvironmentVariable('CURSEFORGE_API_KEY'))</CurseForgeApiKey>
+        <MicrosoftClientId>$([System.Environment]::GetEnvironmentVariable('MICROSOFT_CLIENT_ID'))</MicrosoftClientId>
+        <GravityConeUptimeApiKey>$([System.Environment]::GetEnvironmentVariable('GRAVITYCONE_UPTIME_API_KEY'))</GravityConeUptimeApiKey>
+        <CnbUpdateToken>$([System.Environment]::GetEnvironmentVariable('CNB_UPDATE_TOKEN'))</CnbUpdateToken>
+        <TelemetryApiKey>$([System.Environment]::GetEnvironmentVariable('PORTAL_TELEMETRY_API_KEY'))</TelemetryApiKey>
+        <TelemetryUrl>$([System.Environment]::GetEnvironmentVariable('PORTAL_TELEMETRY_URL'))</TelemetryUrl>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(CurseForgeApiKey)' != ''">
+        <AssemblyMetadata Include="Portal.CurseForgeApiKey" Value="$(CurseForgeApiKey)"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(MicrosoftClientId)' != ''">
+        <AssemblyMetadata Include="Portal.MicrosoftClientId" Value="$(MicrosoftClientId)"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(GravityConeUptimeApiKey)' != ''">
+        <AssemblyMetadata Include="Portal.GravityConeUptimeApiKey" Value="$(GravityConeUptimeApiKey)"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(CnbUpdateToken)' != ''">
+        <AssemblyMetadata Include="Portal.CnbUpdateToken" Value="$(CnbUpdateToken)"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TelemetryApiKey)' != ''">
+        <AssemblyMetadata Include="Portal.TelemetryApiKey" Value="$(TelemetryApiKey)"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TelemetryUrl)' != ''">
+        <AssemblyMetadata Include="Portal.TelemetryUrl" Value="$(TelemetryUrl)"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Hardware.Info"/>
+        <PackageReference Include="HtmlAgilityPack"/>
+        <PackageReference Include="Microsoft.Data.Sqlite.Core"/>
+        <PackageReference Include="CommunityToolkit.Mvvm"/>
+        <PackageReference Include="fNbt"/>
+        <PackageReference Include="PinYinConverterCore"/>
+        <PackageReference Include="SkiaSharp"/>
+        <PackageReference Include="SharpCompress"/>
+        <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3"/>
+        <PackageReference Include="Tmds.DBus"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="..\..\assets\conf\package-type.txt">
+            <Link>Assets\package-type.txt</Link>
+        </EmbeddedResource>
+        <EmbeddedResource Include="..\..\assets\conf\version-ci.txt">
+            <Link>Assets\version-ci.txt</Link>
+        </EmbeddedResource>
+        <EmbeddedResource Include="..\..\assets\conf\unlisted-versions.json">
+            <Link>Assets\unlisted-versions.json</Link>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\module\Iridium\src\Iridium\Iridium.csproj"/>
+        <ProjectReference Include="..\..\module\Iridium\src\Iridium.Extension\Iridium.Extension.csproj"/>
+        <ProjectReference Include="..\..\module\LiteSkinViewer\LiteSkinViewer.2D\LiteSkinViewer.2D.csproj"/>
+        <ProjectReference Include="..\..\module\LiteSkinViewer\LiteSkinViewer.3D\LiteSkinViewer.3D.csproj"/>
+        <ProjectReference Include="..\..\module\LiteSkinViewer\LiteSkinViewer.Shared\LiteSkinViewer.Shared.csproj"/>
+        <ProjectReference Include="..\..\module\MinecraftLaunch\src\MinecraftLaunch\MinecraftLaunch.csproj"/>
+        <ProjectReference Include="..\..\module\Tio.Avalonia.Standard\module\TioUi.Avalonia\src\TioUi\TioUi.csproj"/>
+        <ProjectReference Include="..\..\module\Tio.Avalonia.Standard\src\Tio.Avalonia.Standard.Tab\Tio.Avalonia.Standard.Tab.csproj"/>
+        <ProjectReference Include="..\Portal.LitematicaViewer\LitematicaViewer.csproj"/>
+        <ProjectReference Include="..\Portal.Localization\Portal.Localization.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Portal.Bedrock.Standard\Portal.Bedrock.Standard.csproj"/>
+    </ItemGroup>    <ItemGroup>
+
+        <None Remove="Assets\McIcons\**\*"/>
+        <EmbeddedResource Include="Assets\McIcons\**\*"/>
+    </ItemGroup>
+
+</Project>

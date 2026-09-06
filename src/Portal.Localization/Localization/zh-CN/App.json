@@ -1,0 +1,86 @@
+{
+  "app": {
+    "title": "Portal",
+    "menu": {
+      "settings": "设置",
+      "theme": "主题",
+      "themeSystem": "跟随系统",
+      "themeLight": "浅色",
+      "themeDark": "深色",
+      "themeMirage": "幻影"
+    },
+    "tab": {
+      "tabs": "标签页",
+      "newTab": "新建标签页",
+      "closeTab": "关闭当前标签页",
+      "closeOtherTabs": "关闭其他标签页",
+      "openInNewWindow": "在新窗口打开"
+    },
+    "tooltips": {
+      "closeTab": "关闭标签页 (Ctrl + W)",
+      "closeTabMac": "关闭标签页 (⌃ + W)",
+      "newTab": "新建标签页 (Ctrl + T)",
+      "newTabMac": "新建标签页 (⌃ + T)"
+    },
+    "settings": "设置",
+    "theme": "主题",
+    "themeSystem": "跟随系统",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "themeMirage": "幻影"
+  },
+  "bedrockpackageimportwindow": {
+    "importLocation": "导入到哪里",
+    "noAvailableInstances": "没有可用的基岩版实例",
+    "importWorldUser": "导入到哪个存档用户",
+    "cancel": "取消"
+  },
+  "crashwindow": {
+    "windowTitle": "崩溃窗口",
+    "crashTitle": "崩溃啦！ヾ(•ω•`)o",
+    "unhandledExceptionDescription": "Portal 遇到了没有处理的异常，可能无法继续运行，下方为异常的详细信息",
+    "copyToClipboard": "复制到剪贴板",
+    "continueRunning": "忽略错误，继续运行",
+    "exit": "退出",
+    "reopen": "重新打开"
+  },
+  "oobewindow": {
+    "windowTitle": "欢迎使用 Portal",
+    "back": "上一步",
+    "next": "下一步",
+    "enterPortal": "进入 Portal",
+    "welcome": "欢迎使用",
+    "welcomeDescription": "先从挑一个喜欢的外观开始吧",
+    "themeStyle": "主题样式",
+    "themeSystem": "系统",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "themeMirage": "幻影",
+    "themeColor": "主题色",
+    "addMinecraftFolder": "添加 Minecraft 文件夹",
+    "addMinecraftFolderDescription": "支持Modrinth/CurseForge/MultiMC等多种格式哦",
+    "folderList": "文件夹列表",
+    "addFolder": "添加文件夹",
+    "addAccount": "添加账户",
+    "addAccountDescription": "登录微软账户、使用外置登录，或创建一个离线账户 ovo",
+    "accountList": "账户列表",
+    "noAccounts": "还没有账户，点击「添加账户」开始",
+    "addJava": "添加 Java",
+    "addJavaDescription": "运行 Minecraft 当然是需要 Java 滴",
+    "javaList": "Java 列表",
+    "autoScan": "自动扫描",
+    "manualAdd": "手动添加",
+    "noJava": "还没有 Java，点击「自动扫描」试试"
+  },
+  "overlaywindow": {
+    "instanceDetails": "实例详情",
+    "multiplayerLobby": "联机大厅"
+  },
+  "tabwindow": {
+    "tabs": "标签页",
+    "newTab": "新建标签页",
+    "closeTab": "关闭当前标签页",
+    "closeOtherTabs": "关闭其他标签页",
+    "openInNewWindow": "在新窗口打开"
+  }
+}

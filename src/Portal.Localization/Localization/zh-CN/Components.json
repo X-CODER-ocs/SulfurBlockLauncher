@@ -1,0 +1,185 @@
+{
+  "aggregatedsearchdialog": {
+    "searchBoxPlaceholder": "输入搜索内容"
+  },
+  "multiplayercontentpage": {
+    "identityAndNetworkSectionTitle": "身份与网络",
+    "playerNameLabel": "联机用户名",
+    "playerNamePlaceholder": "默认使用当前 Minecraft 账户名",
+    "natTypeLabel": "NAT 类型",
+    "createRoomSectionTitle": "创建房间",
+    "manualPortButton": "手动输入端口",
+    "cancelButton": "取消",
+    "lanServerComboBoxPlaceholder": "尚未检测到已开放的世界",
+    "bedrockCreateRoomTip": "请先在 Minecraft 中开启局域网游戏，然后创建房间。",
+    "joinRoomSectionTitle": "加入房间",
+    "joinRoomTip": "先进入房间，再打开游戏；如已打开游戏，请先关闭。",
+    "clearJoinCodeButton": "清除",
+    "pasteJoinCodeButton": "粘贴",
+    "currentRoomSectionTitle": "当前房间",
+    "currentRoomCodeLabel": "当前房间码",
+    "copyRoomCodeButton": "复制房间码",
+    "leaveRoomButton": "关闭或离开",
+    "confirmMinecraftEndedButton": "已关闭游戏，继续连接",
+    "roomMembersSectionTitle": "房间成员"
+  },
+  "multiplayerportdialog": {
+    "title": "输入对外开放端口",
+    "portPlaceholder": "例如 25565",
+    "cancelButton": "取消",
+    "confirmButton": "确定"
+  },
+  "randomminecraft": {
+    "title": "开奖啦！",
+    "wonPrefix": "这次抽中了",
+    "wonSuffix": "，快开始游戏吧！",
+    "closeButton": "不玩了",
+    "againButton": "再来一次",
+    "completeButton": "就它了"
+  },
+  "scaleinputdialog": {
+    "title": "自定义缩放",
+    "hint": "请输入 50% ~ 500% 之间的整数百分比",
+    "cancelButton": "取消",
+    "confirmButton": "确定"
+  },
+  "tasklistview": {
+    "removeTerminalTask": "移除"
+  },
+  "titlebarcomponent": {
+    "newVersionTip": "发现新版本",
+    "downloadingUpdate": "当前正在下载",
+    "updateProgress": "更新中 {0}%",
+    "restartUpdate": "重启更新",
+    "tasksToolTip": "任务",
+    "searchToolTip": "搜索",
+    "multiplayerToolTip": "联机",
+    "javaEditionMenuItem": "Java版",
+    "bedrockEditionMenuItem": "基岩版",
+    "moreToolTip": "更多",
+    "createNewInstanceMenuItem": "创建新实例",
+    "utilitiesMenuItem": "实用工具",
+    "downloadToolTip": "下载",
+    "settingsToolTip": "设置",
+    "switchAccountText": "切换账户"
+  },
+  "authserver": {
+    "titleAndNextButton": "添加验证服务器",
+    "serverNamePlaceholder": "输入服务器名称",
+    "serverUrlPlaceholder": "输入服务器api地址",
+    "cancelButton": "取消",
+    "serverNameLabel": "服务器名称",
+    "serverUrlLabel": "服务器地址"
+  },
+  "authserverdetected": {
+    "title": "识别到验证服务器地址",
+    "cancelButton": "取消",
+    "addServerButton": "添加为验证服务器",
+    "loginButton": "登录账号"
+  },
+  "bedrockmicrosoft": {
+    "title": "关联基岩版 Xbox 账户",
+    "cancelButton": "取消",
+    "copyCodeButton": "复制验证码",
+    "openBrowserButton": "打开浏览器"
+  },
+  "changeskin": {
+    "selectSkinFileLabel": "选择皮肤文件（PNG）",
+    "pathPickerTitle": "选择皮肤图片",
+    "lockViewCheckBox": "锁定视角",
+    "cancelButton": "取消",
+    "confirmButton": "确定",
+    "closeButton": "关闭",
+    "fileFilter": "[皮肤图片, *.png]"
+  },
+  "editaccountnote": {
+    "title": "编辑账户备注",
+    "notePlaceholder": "输入备注",
+    "cancelButton": "取消",
+    "confirmButton": "确定修改",
+    "noteLabel": "备注"
+  },
+  "editauthserver": {
+    "title": "编辑验证服务器",
+    "serverNamePlaceholder": "输入服务器名称",
+    "serverUrlPlaceholder": "输入服务器api地址",
+    "deleteButton": "删除",
+    "cancelButton": "取消",
+    "confirmButton": "确定修改",
+    "serverNameLabel": "服务器名称",
+    "serverUrlLabel": "服务器地址"
+  },
+  "microsoft": {
+    "title": "验证微软账户",
+    "errorMessage": "出现错误! 请检查网络连接。",
+    "errorInfoPrefix": "错误信息: ",
+    "cancelButton": "取消",
+    "retryButton": "重试",
+    "copyUrlButton": "复制网址",
+    "copyCodeButton": "复制验证码",
+    "openBrowserButton": "打开浏览器"
+  },
+  "offline": {
+    "title": "创建离线账户",
+    "roleNamePlaceholder": "输入角色名称",
+    "ignoreStandardCheckBox": "忽略标准验证",
+    "advancedSettingsExpander": "高级设置",
+    "uuidWarning": "修改 Uuid 可用于同步其他启动器的角色身份，以保留原有的背包和游戏进度。但如果修改不当，会导致游戏无法识别角色，从而丢失背包物品。除非明确知晓后果，否则请保持默认。",
+    "warningHeader": "警告",
+    "cancelButton": "取消",
+    "addAccountButton": "添加账户",
+    "roleNameLabel": "角色名称"
+  },
+  "renameofflineaccount": {
+    "title": "修改离线账户信息",
+    "roleNamePlaceholder": "输入角色名称",
+    "syncUuidCheckBox": "修改名称时自动更新uuid",
+    "uuidWarning": "uuid 可用于同步其他启动器的角色身份，以保留原有的背包和游戏进度。但如果修改不当，会导致游戏无法识别角色，从而丢失背包物品。除非明确知晓后果，否则请保持默认。",
+    "warningHeader": "警告",
+    "cancelButton": "取消",
+    "completeButton": "完成",
+    "roleNameLabel": "角色名称"
+  },
+  "selectaccounttype": {
+    "title": "添加新账户",
+    "cancelButton": "取消",
+    "nextButton": "下一步"
+  },
+  "viewresult": {
+    "title": "添加完成",
+    "subtitle": "以下账户已成功添加",
+    "addTimeLabel": "添加时间",
+    "completeButton": "完成"
+  },
+  "yggdrasil": {
+    "title": "外置登录账户",
+    "verifyFailedMessage": "验证失败",
+    "serverUrlPlaceholder": "输入外置验证服务器 API 地址",
+    "usernamePlaceholder": "输入账户名或邮箱",
+    "passwordPlaceholder": "输入密码",
+    "cancelButton": "取消",
+    "retryButton": "重试",
+    "authServerButton": "添加验证服务器",
+    "addAccountButton": "添加账户",
+    "builtInServerLabel": "内置服务器",
+    "apiUrlLabel": "API 地址",
+    "usernameLabel": "账户",
+    "passwordLabel": "密码"
+  },
+  "newminecraftfolder": {
+    "title": "添加 Minecraft 文件夹",
+    "folderNamePlaceholder": "输入名称 (例如: 整合包)",
+    "folderPathPlaceholder": "输入文件夹路径",
+    "folderPathPickerTitle": "选择Minecraft文件夹",
+    "browseButton": "浏览",
+    "missingVersionsWarning": "*未发现 versions 或 .minecraft 子目录，可能选择了错误的文件夹，或该文件夹结构存在问题",
+    "folderNotExistWarning": "*不存在此文件夹",
+    "folderAlreadyAddedWarning": "*已包含此文件夹",
+    "cancelButton": "取消",
+    "addButton": "添加",
+    "importButton": "导入",
+    "folderNameLabel": "文件夹名称",
+    "folderPathLabel": "文件夹路径"
+  },
+  "taskdrawerview": {}
+}

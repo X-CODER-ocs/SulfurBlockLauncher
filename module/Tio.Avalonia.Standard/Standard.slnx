@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/Tio.Avalonia.Standard.Tab/Tio.Avalonia.Standard.Tab.csproj" />
+  <Project Path="src/Tio.Avalonia.Standard/Tio.Avalonia.Standard.csproj" />
+</Solution>

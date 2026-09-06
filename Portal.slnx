@@ -1,0 +1,50 @@
+<Solution>
+  <Folder Name="/Module/">
+    <Project Path="module/Tio.Avalonia.Standard/src/Tio.Avalonia.Standard.Tab/Tio.Avalonia.Standard.Tab.csproj" />
+    <Project Path="module/Tio.Avalonia.Standard/src/Tio.Avalonia.Standard/Tio.Avalonia.Standard.csproj" />
+    <Project Path="src/Portal.LitematicaViewer/LitematicaViewer.csproj" />
+  </Folder>
+  <Folder Name="/Module/Bedrock/">
+    <Project Path="src/Portal.Bedrock.Bootstrap/Portal.Bedrock.Bootstrap.vcxproj" />
+    <Project Path="src/Portal.Bedrock.Core/Portal.Bedrock.Core.csproj" />
+    <Project Path="src/Portal.Bedrock.Core.Windows/Portal.Bedrock.Core.Windows.csproj" />
+    <Project Path="src/Portal.Bedrock.Hook/Portal.Bedrock.Hook.csproj" />
+    <Project Path="src/Portal.Bedrock.Injector/Portal.Bedrock.Injector.vcxproj" />
+    <Project Path="src/Portal.Bedrock.Linux/Portal.Bedrock.Linux.csproj" />
+    <Project Path="src/Portal.Bedrock.PeNet/src/PeNet/Portal.Bedrock.PeNet.csproj" />
+    <Project Path="src/Portal.Bedrock.Preload/Portal.Bedrock.Preload.csproj" />
+    <Project Path="src/Portal.Bedrock.Standard/Portal.Bedrock.Standard.csproj" />
+    <Project Path="src/Portal.Bedrock.Windows/Portal.Bedrock.Windows.csproj" />
+    <Project Path="src/Portal.Bedrock.Xbox/Portal.Bedrock.Xbox.csproj" />
+  </Folder>
+  <Folder Name="/Module/Iridium/">
+    <Project Path="module/Iridium/src/Iridium.Extension/Iridium.Extension.csproj" />
+    <Project Path="module/Iridium/src/Iridium.Sample/Iridium.Sample.csproj" />
+    <Project Path="module/Iridium/src/Iridium.SourceGenerators/Iridium.SourceGenerators.csproj" />
+    <Project Path="module/Iridium/src/Iridium/Iridium.csproj" />
+  </Folder>
+  <Folder Name="/Module/LiteSkinViewer/">
+    <Project Path="module/LiteSkinViewer/LiteSkinViewer.2D/LiteSkinViewer.2D.csproj" />
+    <Project Path="module/LiteSkinViewer/LiteSkinViewer.3D/LiteSkinViewer.3D.csproj" />
+    <Project Path="module/LiteSkinViewer/LiteSkinViewer.Shared/LiteSkinViewer.Shared.csproj" />
+  </Folder>
+  <Folder Name="/Module/MinecraftLaunch/">
+    <Project Path="module/MinecraftLaunch/src/MinecraftLaunch.Base/MinecraftLaunch.Base.csproj" />
+    <Project Path="module/MinecraftLaunch/src/MinecraftLaunch/MinecraftLaunch.csproj" />
+  </Folder>
+  <Folder Name="/Module/TioUi/">
+    <Project Path="module/Tio.Avalonia.Standard/module/TioUi.Avalonia/src/Demo/TioUi.Demo.Desktop/TioUi.Demo.Desktop.csproj" />
+    <Project Path="module/Tio.Avalonia.Standard/module/TioUi.Avalonia/src/Demo/TioUi.Demo/TioUi.Demo.csproj" />
+    <Project Path="module/Tio.Avalonia.Standard/module/TioUi.Avalonia/src/TioUi.SmoothScroll/TioUi.SmoothScroll.csproj" />
+    <Project Path="module/Tio.Avalonia.Standard/module/TioUi.Avalonia/src/TioUi/TioUi.csproj" />
+  </Folder>
+  <Folder Name="/Solution Item/">
+    <File Path="src/Directory.Build.props" />
+    <File Path="src/Directory.Packages.props" />
+  </Folder>
+  <Project Path="src/Portal.Console/Portal.Console.csproj" />
+  <Project Path="src/Portal.Core/Portal.Core.csproj" />
+  <Project Path="src/Portal.Desktop/Portal.Desktop.csproj" />
+  <Project Path="src/Portal.Localization/Portal.Localization.csproj" />
+  <Project Path="src/Portal/Portal.csproj" />
+</Solution>

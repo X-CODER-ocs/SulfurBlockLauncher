@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Portal.Bedrock.Linux</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Portal.Bedrock.PeNet\src\PeNet\Portal.Bedrock.PeNet.csproj" />
+    <ProjectReference Include="..\Portal.Bedrock.Core\Portal.Bedrock.Core.csproj" />
+    <ProjectReference Include="..\Portal.Bedrock.Standard\Portal.Bedrock.Standard.csproj" />
+    <ProjectReference Include="..\Portal.Localization\Portal.Localization.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\Portal.Bedrock.Preload\Portal.Preload.dll" LogicalName="Portal.Preload.dll" />
+    <EmbeddedResource Include="..\Portal.Bedrock.Bootstrap\Portal.Bootstrap.dll" LogicalName="Portal.Bootstrap.dll" />
+  </ItemGroup>
+
+</Project>
