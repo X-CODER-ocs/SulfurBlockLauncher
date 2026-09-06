@@ -248,8 +248,8 @@ jobs:
           dotnet msbuild -t:BundleApp -p:RuntimeIdentifier=${{ matrix.rid }} -property:Configuration=Release -p:SelfContained=true
           cp "../../assets/Icon-Pattern-Shadow-Border.icns" "./bin/Release/net10.0/${{ matrix.rid }}/publish/SulfurLauncher.app/Contents/Resources/"
 
-      # DotNet.Bundle 不支持 CFBundleURLTypes，portal:// 协议声明在打包后写入 Info.plist
-      - name: Declare portal URL Scheme
+      # DotNet.Bundle 不支持 CFBundleURLTypes，sl:// 协议声明在打包后写入 Info.plist
+      - name: Declare sl URL Scheme
         run: |
           PLIST="./src/SulfurLauncher.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/SulfurLauncher.app/Contents/Info.plist"
           /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes array" "$PLIST"
@@ -257,7 +257,7 @@ jobs:
           /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLName string cc.cangcang.sulfurlauncher" "$PLIST"
           /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLRole string Viewer" "$PLIST"
           /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLSchemes array" "$PLIST"
-          /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string portal" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string sl" "$PLIST"
 
       - name: Package APP to ZIP
         run: |

@@ -12,7 +12,7 @@ public enum SulfurLauncherCliParseStatus
 
 public static class SulfurLauncherCommandParser
 {
-    public const string UriScheme = "portal";
+    public const string UriScheme = "sl";
 
     public static SulfurLauncherCliParseStatus Parse(string[] args, out SulfurLauncherCommand? command, out string? error)
     {

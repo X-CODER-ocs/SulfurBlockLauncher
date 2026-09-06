@@ -17,7 +17,7 @@ public static class DesktopShortcutService
         var id = instance.MinecraftEntry?.Id
                  ?? Path.GetFileName(instance.InstanceFolderPath.TrimEnd(Path.DirectorySeparatorChar,
                      Path.AltDirectorySeparatorChar));
-        return $"portal://launch?id={Uri.EscapeDataString(id)}&folder={Uri.EscapeDataString(instance.FolderPath)}";
+        return $"sl://launch?id={Uri.EscapeDataString(id)}&folder={Uri.EscapeDataString(instance.FolderPath)}";
     }
 
     public static string BuildWorldLaunchUrl(MinecraftInstance instance, string worldFolder)

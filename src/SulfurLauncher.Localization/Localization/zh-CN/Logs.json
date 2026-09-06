@@ -332,7 +332,7 @@
     "queueInitializeStart": "正在初始化外部命令队列。",
     "queueUiReadyDrain": "主界面已就绪，开始执行等待中的外部命令。",
     "queueCommandEnqueued": "外部命令已入队，等待执行数量：{0}。",
-    "linuxAutoRegisterFailed": "Linux portal:// 协议自动注册失败，可在设置中重试。{0}{1}",
+    "linuxAutoRegisterFailed": "Linux sl:// 协议自动注册失败，可在设置中重试。{0}{1}",
     "scriptWritten": "已写出协议注册脚本：{0}",
     "desktopHandlerWritten": "已写出协议处理器：{0}",
     "commandExecuting": "执行外部命令：{0}",

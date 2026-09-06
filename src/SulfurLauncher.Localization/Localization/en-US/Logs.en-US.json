@@ -332,7 +332,7 @@
     "queueInitializeStart": "Initializing the external command queue.",
     "queueUiReadyDrain": "Main UI ready; executing queued external commands.",
     "queueCommandEnqueued": "External command queued; number waiting to execute: {0}.",
-    "linuxAutoRegisterFailed": "Linux portal:// protocol auto-registration failed; you can retry in Settings. {0}{1}",
+    "linuxAutoRegisterFailed": "Linux sl:// protocol auto-registration failed; you can retry in Settings. {0}{1}",
     "scriptWritten": "Protocol registration script written: {0}",
     "desktopHandlerWritten": "Protocol handler written: {0}",
     "commandExecuting": "Executing external command: {0}",

@@ -364,7 +364,7 @@
     "sourceText": "{0}·{1}"
   },
   "ipc": {
-    "usageText": "SulfurLauncher 命令行用法：\n  portal --version                        查看版本\n  portal -l                               列出所有实例（按文件夹类型分组）\n  portal search <关键字> [--type <类型>] [--limit <数量>]    在 Modrinth 搜索模组、整合包、资源包等\n  portal install vanilla <版本> [--folder <文件夹>] [--id <实例ID>]\n  portal install loader <版本> --loader <加载器[@版本]> [--loader ...] [--folder <文件夹>] [--id <实例ID>]\n  portal install modpack <路径|链接|项目名或ID> [--from modrinth|curseforge] [--version <版本或fileId>] [--folder <文件夹>] [--id <实例ID>]\n  portal launch <实例ID> [--folder <文件夹>] [--world <世界文件夹>]\n  portal launch <实例ID> [--folder <文件夹>] [--server <服务器地址>] [--port <端口>]\n  portal help\n\n不带参数时直接打开 SulfurLauncher 窗口。\n--version 和 -l（列出实例）会直接输出结果后退出，不会打开窗口；install / launch 需要打开窗口执行。\n注意：install loader 里 -l 是 --loader 的缩写；单独使用 portal -l 表示列出实例。\n\n加载器：fabric / forge / neoforge / quilt / optifine（可用 @ 指定版本，如 fabric@0.16.9）\n整合包：可传本地文件、直链，或 Modrinth / CurseForge 的项目名称、slug、项目 ID；\n       不指定 --version 时安装最新版本（--version 为 Modrinth 版本 ID/版本号或 CurseForge fileId，--file 等价）。\n文件夹：启动器内已添加的 Minecraft 文件夹名称或路径；不传时使用默认（第一个）文件夹。\n启动时未指定文件夹则启动第一个匹配该实例 ID 的实例。\n世界：--world 传世界在 saves 目录下的文件夹名，启动后直接进入该世界（同名世界以文件夹名区分）。\n服务器：--server 传服务器地址，--port 传端口（缺省 25565），启动后直接进入该服务器。\n--world 与 --server 互斥。\n\n等价的 portal:// 协议形式（注册协议后浏览器可直接调用）：\n  portal://install/vanilla?version=1.21.8&folder=B&id=my-1.21.8\n  portal://install/loader?version=1.21.8&loader=fabric&loader=optifine\n  portal://install/modpack?source=fabulously-optimized&from=modrinth&version=cZY3Bvs9\n  portal://install/modpack?source=https%3A%2F%2Fexample.com%2Fpack.mrpack&folder=B\n  portal://launch?id=26.2&folder=B\n  portal://launch?id=26.2&folder=B&world=New%20World\n  portal://launch?id=26.2&folder=B&server=play.example.com&port=25565\n",
+    "usageText": "SulfurLauncher 命令行用法：\n  portal --version                        查看版本\n  portal -l                               列出所有实例（按文件夹类型分组）\n  portal search <关键字> [--type <类型>] [--limit <数量>]    在 Modrinth 搜索模组、整合包、资源包等\n  portal install vanilla <版本> [--folder <文件夹>] [--id <实例ID>]\n  portal install loader <版本> --loader <加载器[@版本]> [--loader ...] [--folder <文件夹>] [--id <实例ID>]\n  portal install modpack <路径|链接|项目名或ID> [--from modrinth|curseforge] [--version <版本或fileId>] [--folder <文件夹>] [--id <实例ID>]\n  portal launch <实例ID> [--folder <文件夹>] [--world <世界文件夹>]\n  portal launch <实例ID> [--folder <文件夹>] [--server <服务器地址>] [--port <端口>]\n  portal help\n\n不带参数时直接打开 SulfurLauncher 窗口。\n--version 和 -l（列出实例）会直接输出结果后退出，不会打开窗口；install / launch 需要打开窗口执行。\n注意：install loader 里 -l 是 --loader 的缩写；单独使用 portal -l 表示列出实例。\n\n加载器：fabric / forge / neoforge / quilt / optifine（可用 @ 指定版本，如 fabric@0.16.9）\n整合包：可传本地文件、直链，或 Modrinth / CurseForge 的项目名称、slug、项目 ID；\n       不指定 --version 时安装最新版本（--version 为 Modrinth 版本 ID/版本号或 CurseForge fileId，--file 等价）。\n文件夹：启动器内已添加的 Minecraft 文件夹名称或路径；不传时使用默认（第一个）文件夹。\n启动时未指定文件夹则启动第一个匹配该实例 ID 的实例。\n世界：--world 传世界在 saves 目录下的文件夹名，启动后直接进入该世界（同名世界以文件夹名区分）。\n服务器：--server 传服务器地址，--port 传端口（缺省 25565），启动后直接进入该服务器。\n--world 与 --server 互斥。\n\n等价的 sl:// 协议形式（注册协议后浏览器可直接调用）：\n  sl://install/vanilla?version=1.21.8&folder=B&id=my-1.21.8\n  sl://install/loader?version=1.21.8&loader=fabric&loader=optifine\n  sl://install/modpack?source=fabulously-optimized&from=modrinth&version=cZY3Bvs9\n  sl://install/modpack?source=https%3A%2F%2Fexample.com%2Fpack.mrpack&folder=B\n  sl://launch?id=26.2&folder=B\n  sl://launch?id=26.2&folder=B&world=New%20World\n  sl://launch?id=26.2&folder=B&server=play.example.com&port=25565\n",
     "installNeedsSubcommand": "install 需要子命令：vanilla / loader / modpack。",
     "unknownInstallSubcommand": "未知的 install 子命令“{0}”，支持：vanilla / loader / modpack。",
     "installModpackNeedsOneArg": "install modpack 需要且仅需要一个参数：整合包路径、链接或项目名称/ID。",
@@ -379,18 +379,18 @@
     "invalidPortRange": "参数 {0} 需要 1-65535 之间的端口号。",
     "unknownArgument": "未知参数“{0}”。",
     "missingArgumentValue": "参数 {0} 缺少值。",
-    "uriMissingCommand": "portal:// 链接缺少命令，例如 portal://launch?id=xxx。",
-    "uriLaunchMissingId": "portal://launch 缺少实例 ID，例如 portal://launch?id=xxx。",
+    "uriMissingCommand": "sl:// 链接缺少命令，例如 sl://launch?id=xxx。",
+    "uriLaunchMissingId": "sl://launch 缺少实例 ID，例如 sl://launch?id=xxx。",
     "worldServerMutuallyExclusiveUri": "world 与 server 不能同时指定。",
     "portNeedsServerUri": "port 需要配合 server 使用。",
-    "uriInstallMissingVersion": "portal://install/{0} 缺少 version 参数。",
-    "uriInstallLoaderNeedsLoader": "portal://install/loader 至少需要一个 loader 参数。",
-    "uriInstallModpackMissingSource": "portal://install/modpack 缺少 source（整合包路径、链接或项目名称/ID）参数。",
-    "uriInstallNeedsSubcommand": "portal://install 需要子命令 vanilla / loader / modpack。",
-    "uriUnknownCommand": "未知的 portal:// 命令“{0}”，支持 install / launch。",
+    "uriInstallMissingVersion": "sl://install/{0} 缺少 version 参数。",
+    "uriInstallLoaderNeedsLoader": "sl://install/loader 至少需要一个 loader 参数。",
+    "uriInstallModpackMissingSource": "sl://install/modpack 缺少 source（整合包路径、链接或项目名称/ID）参数。",
+    "uriInstallNeedsSubcommand": "sl://install 需要子命令 vanilla / loader / modpack。",
+    "uriUnknownCommand": "未知的 sl:// 命令“{0}”，支持 install / launch。",
     "invalidPortRangeReceived": "port 需要 1-65535 之间的端口号，收到“{0}”。",
     "executeExternalCommand": "执行外部命令",
-    "unsupportedProtocolRegistration": "当前系统暂不支持注册 portal:// 协议。",
+    "unsupportedProtocolRegistration": "当前系统暂不支持注册 sl:// 协议。",
     "cannotStartRegistrationScript": "无法启动协议注册脚本。",
     "adminPrivilegeNotObtained": "未获得管理员权限。",
     "scriptExecutionFailed": "注册脚本执行失败（退出码 {0}）。",
@@ -1434,9 +1434,9 @@
   "appDebug": {
     "writeRegistry": "写入注册表",
     "registerProtocol": "注册协议",
-    "registerSuccess": "portal:// 协议注册成功",
+    "registerSuccess": "sl:// 协议注册成功",
     "registerCancelled": "已取消：写入注册表需要管理员权限",
-    "registerFailed": "portal:// 协议注册失败：{0}"
+    "registerFailed": "sl:// 协议注册失败：{0}"
   },
   "bedrockMods": {
     "readFailed": "读取模组失败：{0}",
