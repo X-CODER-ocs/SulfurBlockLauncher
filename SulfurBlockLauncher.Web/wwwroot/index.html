@@ -3,213 +3,47 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>首页 - SulfurBlockLauncher 硫磺方块启动器</title>
+    <title>SulfurBlockLauncher 硫磺方块启动器</title>
+    <base href="/" />
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css" />
     <link rel="stylesheet" href="css/site.css" />
+    <link href="SulfurBlockLauncher.Web.styles.css" rel="stylesheet" />
+    <style>
+        html, body { margin: 0; height: 100%; }
+        .sl-splash {
+            position: fixed; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 1.1rem;
+            background: linear-gradient(160deg, #211e14 0%, #14130d 100%);
+        }
+        .sl-splash-logo { font-size: 2rem; font-weight: 800; letter-spacing: 1px; color: #ffe79a; }
+        .sl-splash-spinner {
+            width: 42px; height: 42px; border-radius: 50%;
+            border: 4px solid rgba(232,185,35,.25); border-top-color: #e8b923;
+            animation: sl-spin .8s linear infinite;
+        }
+        .sl-splash-text { color: #b9b29a; font-size: .9rem; }
+        @@keyframes sl-spin { to { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-sulfur fixed-top">
-            <div class="container">
-                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
-                    <span class="brand-cube"></span> SulfurBlockLauncher
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-                        aria-controls="mainNav" aria-expanded="false" aria-label="切换导航">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link" href="#features">功能</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#download">下载</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#feedback">反馈与联系</a></li>
-                    </ul>
-                    <ul class="navbar-nav align-items-lg-center">
-                        <li class="nav-item">
-                            <a class="nav-link px-lg-3" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/issues" target="_blank" rel="noopener">反馈</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-light btn-sm me-lg-2 mb-2 mb-lg-0" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher" target="_blank" rel="noopener">GitHub</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-download btn-sm" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases" target="_blank" rel="noopener">下载</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <!-- Hero -->
-        <section class="hero">
-            <div class="container text-center py-5">
-                <span class="hero-badge">跨平台 · 开源 · .NET 10</span>
-                <h1 class="hero-title">SulfurBlockLauncher</h1>
-                <p class="hero-sub">硫磺方块启动器 —— 一款开源、跨平台的 Minecraft 启动器与实例管理器</p>
-                <p class="hero-sub2">同时支持 Java 版与基岩版，覆盖 Windows / Linux / macOS</p>
-                <div class="hero-actions">
-                    <a class="btn btn-download btn-lg" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases" target="_blank" rel="noopener">⬇ 下载最新版</a>
-                    <a class="btn btn-outline-light btn-lg" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher" target="_blank" rel="noopener">在 GitHub 查看源码</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features -->
-        <section id="features" class="section">
-            <div class="container">
-                <h2 class="section-title">核心功能</h2>
-                <p class="section-lead">少一点配置，多一点游戏。从安装、登录到资源管理与联机，一站式搞定。</p>
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">🗂️</div>
-                            <h5>标签页式导航</h5>
-                            <p>清晰的多标签页界面，游戏、下载、账户、存档分区管理，操作一气呵成。</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">🟩</div>
-                            <h5>Java 版 / 基岩版</h5>
-                            <p>同时支持 Java 版与基岩版启动管理，原版、加载器与游戏本体一键安装。</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">📦</div>
-                            <h5>下载管理</h5>
-                            <p>Java、MCJE、模组等资源统一下载与管理，文件自动归入对应目录。</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">👤</div>
-                            <h5>账户管理</h5>
-                            <p>支持正版、离线、外置登录等多种账户类型，切换账户轻松自如。</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">💾</div>
-                            <h5>存档管理</h5>
-                            <p>存档备份、编辑与管理，珍贵世界不再因误操作而丢失。</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="feature-card">
-                            <div class="feature-icon">🔗</div>
-                            <h5>联机功能</h5>
-                            <p>内置陶瓦联机、硫磺联机，和朋友一起开黑就是这么简单。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Download -->
-        <section id="download" class="section section-alt">
-            <div class="container">
-                <h2 class="section-title">下载</h2>
-                <p class="section-lead">前往 GitHub Releases 获取对应平台的最新版本。</p>
-                <div class="row g-3 justify-content-center">
-                    <div class="col-6 col-md-3">
-                        <a class="download-card" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases" target="_blank" rel="noopener">
-                            <div class="download-os">Windows</div>
-                            <div class="download-meta">10 / 11 · x64</div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <a class="download-card" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases" target="_blank" rel="noopener">
-                            <div class="download-os">macOS</div>
-                            <div class="download-meta">Apple Silicon / Intel</div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <a class="download-card" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases" target="_blank" rel="noopener">
-                            <div class="download-os">Linux</div>
-                            <div class="download-meta">x64 · AppImage / deb / rpm</div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <a class="download-card" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases" target="_blank" rel="noopener">
-                            <div class="download-os">Arch Linux</div>
-                            <div class="download-meta">AUR 包</div>
-                        </a>
-                    </div>
-                </div>
-                <div class="text-center mt-4">
-                    <a class="btn btn-download btn-lg" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases" target="_blank" rel="noopener">前往 Releases 下载</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Feedback & Contact -->
-        <section id="feedback" class="section">
-            <div class="container">
-                <h2 class="section-title">反馈与联系</h2>
-                <p class="section-lead">遇到问题或有好点子？随时告诉我们。</p>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card feedback-card h-100">
-                            <div class="feature-icon mb-2">💬</div>
-                            <h5>提交反馈 / Bug 报告</h5>
-                            <p class="text-secondary">本项目使用 GitHub Issues 收集反馈与问题。遇到 Bug 或想要新功能，欢迎直接到 Issues 提出。</p>
-                            <div class="mt-auto">
-                                <a class="btn btn-download" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/issues" target="_blank" rel="noopener">前往 GitHub Issues</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card feedback-card h-100">
-                            <div class="feature-icon mb-2">🐧</div>
-                            <h5>QQ 联系</h5>
-                            <p class="text-secondary">也可以通过 QQ 直接联系开发者：</p>
-                            <p class="qq-number">QQ：2280009304</p>
-                            <div class="mt-auto">
-                                <button class="btn btn-outline-secondary btn-sm" type="button" onclick="copyQQ()">复制 QQ 号</button>
-                                <span id="qqTip" class="qq-tip">已复制！</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-4">
-                    <a class="btn btn-outline-light" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher" target="_blank" rel="noopener">在 GitHub 上关注项目</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row gy-3">
-                <div class="col-md-6">
-                    <p class="mb-1 fw-bold text-light">SulfurBlockLauncher 硫磺方块启动器</p>
-                    <p class="text-secondary small mb-0">开源、跨平台的 Minecraft 启动器与实例管理器</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a class="footer-link" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher" target="_blank" rel="noopener">GitHub 源码</a>
-                    <a class="footer-link" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/issues" target="_blank" rel="noopener">问题反馈</a>
-                    <a class="footer-link" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases" target="_blank" rel="noopener">下载</a>
-                </div>
-            </div>
-            <hr class="footer-divider" />
-            <p class="text-secondary small mb-0">&copy; 2026 X-CODER-ocs · 基于 GPL-3.0-or-later 开源许可 · 使用 .NET 10 + FluentAvalonia 构建</p>
+    <div id="app">
+        <div class="sl-splash">
+            <div class="sl-splash-logo">SulfurBlockLauncher</div>
+            <div class="sl-splash-spinner" aria-hidden="true"></div>
+            <div class="sl-splash-text">正在加载…</div>
         </div>
-    </footer>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <div id="blazor-error-ui">
+        页面出现了一点小问题。
+        <a href="" class="reload">重新加载</a>
+        <a class="dismiss">✕</a>
+    </div>
+
+    <script src="_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/site.js"></script>
-    <script>
-        function copyQQ() {
-            navigator.clipboard.writeText("2280009304").then(function () {
-                var tip = document.getElementById("qqTip");
-                tip.classList.add("show");
-                setTimeout(function () { tip.classList.remove("show"); }, 1500);
-            });
-        }
-    </script>
+    <script src="_framework/blazor.webassembly.js"></script>
 </body>
 </html>
