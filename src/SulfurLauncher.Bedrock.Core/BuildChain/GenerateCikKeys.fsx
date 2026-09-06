@@ -24,7 +24,7 @@ let generateCSharpCode (preBytes: byte[]) (relBytes: byte[]) =
     let preCode = generateByteArrayCode preBytes
     let relCode = generateByteArrayCode relBytes
 
-    sprintf """namespace Portal.Bedrock.Core
+    sprintf """namespace SulfurLauncher.Bedrock.Core
 {
     internal static class CikKeys
     {
