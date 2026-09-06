@@ -58,7 +58,6 @@ public static class UpdateChecker
         return source switch
         {
             UpdateSource.Github => GetGithubRelease(channel),
-            UpdateSource.Cnb => GetCnbRelease(),
             _ => throw new NotSupportedException(string.Format(CommonLanguageManager.Instance.update_unsupportedSource.CurrentValue(), source))
         };
     }
