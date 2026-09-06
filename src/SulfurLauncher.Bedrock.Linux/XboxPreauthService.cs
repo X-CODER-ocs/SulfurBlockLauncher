@@ -3,15 +3,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using SulfurLauncher.Bedrock.Standard.Interface;
-using SulfurLauncher.Core.Services;
 using SulfurLauncher.Localization;
 
 namespace SulfurLauncher.Bedrock.Linux;
 
 internal sealed class XboxPreauthService
 {
-    private const string DefaultXboxAppId = "0000000048183522";
-    private static string XboxAppId => CredentialsService.MicrosoftClientId ?? DefaultXboxAppId;
+    // WineGDK requires this exact Xbox Live App ID; cannot be replaced.
+    private const string XboxAppId = "0000000048183522";
     private readonly HttpClient _httpClient = new();
     private readonly string _directory;
     private readonly string _devicePath;

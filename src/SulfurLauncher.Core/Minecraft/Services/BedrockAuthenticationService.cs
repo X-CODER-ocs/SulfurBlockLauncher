@@ -2,15 +2,14 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using SulfurLauncher.Core.Minecraft.Classes;
-using SulfurLauncher.Core.Services;
 using SulfurLauncher.Localization;
 
 namespace SulfurLauncher.Core.Minecraft.Services;
 
 public sealed class BedrockAuthenticationService
 {
-    private const string DefaultClientId = "0000000048183522";
-    private static string ClientId => CredentialsService.MicrosoftClientId ?? DefaultClientId;
+    // WineGDK requires this exact MSA application ID; cannot be replaced.
+    private const string ClientId = "0000000048183522";
     private const string Scope = "service::user.auth.xboxlive.com::MBI_SSL";
     private const string ConnectEndpoint = "https://login.live.com/oauth20_connect.srf";
     private const string TokenEndpoint = "https://login.live.com/oauth20_token.srf";
