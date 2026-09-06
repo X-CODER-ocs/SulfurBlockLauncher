@@ -12,7 +12,7 @@ public static class MesaLoaderService
     private static readonly SemaphoreSlim DownloadLock = new(1, 1);
 
     private static string CacheRoot => Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "cc.cangcang.sulfurlauncher", "Cache",
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "studio.lively.sulfurlauncher", "Cache",
         "mesa-loader");
 
     public static string? GetCachedPath()

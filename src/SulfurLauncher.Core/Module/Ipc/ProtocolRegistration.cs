@@ -102,7 +102,7 @@ public static class ProtocolRegistration
         var applicationsFolder = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "applications");
         Directory.CreateDirectory(applicationsFolder);
-        const string desktopFileName = "cc.cangcang.sulfurlauncher.url-handler.desktop";
+        const string desktopFileName = "studio.lively.sulfurlauncher.url-handler.desktop";
         var desktopFilePath = Path.Combine(applicationsFolder, desktopFileName);
         await File.WriteAllTextAsync(desktopFilePath,
             LinuxDesktopTemplate.Replace("__PORTAL_EXE__", EscapeDesktopExecArgument(executablePath)) + "\n");

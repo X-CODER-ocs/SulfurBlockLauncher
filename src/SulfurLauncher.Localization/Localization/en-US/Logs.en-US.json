@@ -6,7 +6,7 @@
     "parseFailed": "Failed to read or parse the configuration file: {0}",
     "backupFailed": "Configuration file parse failed, backed up to: {0}",
     "backupFailedError": "Failed to back up the corrupted configuration file: {0}",
-    "updateSourceInvalid": "Update source {0} in the old configuration is no longer valid; falling back to CNB.",
+    "updateSourceInvalid": "Update source {0} in the old configuration is no longer valid; falling back to default update source.",
     "versionLoaded": "Version info loaded: {0} ({1})",
     "packageTypeDetected": "Package type detected: {0}",
     "tempCleared": "Temp directory cleaned",

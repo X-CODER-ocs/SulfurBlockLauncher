@@ -18,8 +18,8 @@ namespace SulfurLauncher.Desktop;
 
 internal static partial class WindowsJumpListService
 {
-    private const string AppUserModelId = "cc.cangcang.sulfurlauncher";
-    private const string PipeName = "cc.cangcang.sulfurlauncher.JumpList";
+    private const string AppUserModelId = "studio.lively.sulfurlauncher";
+    private const string PipeName = "studio.lively.sulfurlauncher.JumpList";
     private const string CommandArgument = "--jump-list-command";
     private static readonly RecentPlayService RecentPlayService = new();
     private static readonly Queue<JumpListCommand> PendingCommands = [];

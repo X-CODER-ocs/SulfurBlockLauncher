@@ -41,7 +41,7 @@ public class ConfigIdentifyExtension
     private static MinecraftFolderEntry CreateDefaultMinecraftFolder()
     {
         var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "cc.cangcang.sulfurlauncher.minecraft");
+            "studio.lively.sulfurlauncher.minecraft");
 
         foreach (var directory in new[]
                  {

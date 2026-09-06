@@ -5,7 +5,7 @@ public static class ConfigPath
     private static readonly string SessionTimestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 
     public static string UserDataRootPath => Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "cc.cangcang.sulfurlauncher");
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "studio.lively.sulfurlauncher");
 
     public static string TempFolderPath => Path.Combine(UserDataRootPath, "Temp");
     public static string LogFolderPath => Path.Combine(UserDataRootPath, "Log");

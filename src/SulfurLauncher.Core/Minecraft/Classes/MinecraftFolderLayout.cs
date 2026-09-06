@@ -56,7 +56,7 @@ public sealed record MinecraftFolderLayout(
             Directory.Exists(Path.Combine(path, "instances")))
             return true;
         return Path.GetFileName(Path.GetFullPath(path))
-            .Equals("cc.cangcang.sulfurlauncher.minecraft", StringComparison.OrdinalIgnoreCase);
+            .Equals("studio.lively.sulfurlauncher.minecraft", StringComparison.OrdinalIgnoreCase);
     }
 
     public static bool TryFindSulfurLauncherMcRoot(string path, out string root)

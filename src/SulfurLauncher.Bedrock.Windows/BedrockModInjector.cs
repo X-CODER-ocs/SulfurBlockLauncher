@@ -132,7 +132,7 @@ internal static class BedrockModInjector
                 return _inject;
 
             var nativeFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "cc.cangcang.sulfurlauncher", "Native");
+                "studio.lively.sulfurlauncher", "Native");
             Directory.CreateDirectory(nativeFolder);
             var assembly = Assembly.GetExecutingAssembly();
             byte[] bytes;

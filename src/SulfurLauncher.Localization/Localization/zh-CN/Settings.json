@@ -59,7 +59,7 @@
     "channelRelease": "正式版",
     "channelDailyBuild": "每日构建版本",
     "channelCommitBuild": "commit 版本",
-    "cnbChannelHint": " * Cnb 通道仅提供正式版",
+    "channelHint": " * 该通道仅提供正式版",
     "thirdPartyComponentLibraries": "第三方组件库",
     "projectWebsite": "项目网站",
     "githubSourceCode": "GitHub 源代码",

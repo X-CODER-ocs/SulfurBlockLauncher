@@ -23,7 +23,6 @@ public sealed record UpdateRelease(string Title, long Sequence, IReadOnlyList<Up
 public static class UpdateChecker
 {
     private const string GithubReleasesUrl = "https://api.github.com/repos/cangcang/sulfurlauncher/releases?per_page=100";
-    private const string CnbReleasesUrl = "https://api.cnb.cool/cangcang/sulfurlauncher/-/releases?page=1&page_size=100";
     private static readonly Regex StableTagPattern = new(@"^v?(\d+)\.(\d+)\.(\d+)$", RegexOptions.Compiled);
 
     public static async Task<string?> Check(TopLevel? sender, bool noreply = false)
@@ -111,28 +110,6 @@ public static class UpdateChecker
                 GetString(asset, "browser_download_url") ?? string.Empty,
                 GetInt64(asset, "size") ?? 0,
                 ParseSha256(GetString(asset, "digest"))));
-    }
-
-    private static async Task<UpdateRelease> GetCnbRelease()
-    {
-        var token = CredentialsService.CnbUpdateToken;
-        if (string.IsNullOrWhiteSpace(token))
-            throw new InvalidOperationException(
-                string.Format(CommonLanguageManager.Instance.update_cnbSourceNotConfigured.CurrentValue(), CredentialsService.CnbUpdateTokenEnvironmentVariable));
-
-        Logger.Info($"Checking update from CNB: {CnbReleasesUrl}");
-        var text = await HttpUtil.Request(CnbReleasesUrl)
-            .WithHeader("Authorization", $"Bearer {token}")
-            .WithHeader("Accept", "application/vnd.cnb.api+json")
-            .GetStringAsync();
-        using var document = JsonDocument.Parse(text);
-        var release = LatestStableRelease(document.RootElement);
-        return CreateRelease(release, "release", asset => IsHttpsUrl(GetString(asset, "browser_download_url")),
-            asset => new UpdateAsset(
-                GetString(asset, "name") ?? string.Empty,
-                GetString(asset, "browser_download_url") ?? string.Empty,
-                GetInt64(asset, "size") ?? 0,
-                ParseSha256(GetString(asset, "hash_algo"), GetString(asset, "hash_value"))));
     }
 
     private static UpdateRelease CreateRelease(JsonElement release, string channel, Func<JsonElement, bool> assetFilter,

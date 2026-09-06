@@ -11,7 +11,7 @@ namespace SulfurLauncher.Desktop;
 
 internal static partial class SulfurLauncherCommandService
 {
-    private const string PipeName = "cc.cangcang.sulfurlauncher.Command";
+    private const string PipeName = "studio.lively.sulfurlauncher.Command";
 
     private const int AttachParentProcess = -1;
 

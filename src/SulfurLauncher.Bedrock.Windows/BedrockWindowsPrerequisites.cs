@@ -23,7 +23,7 @@ internal static class BedrockWindowsPrerequisites
 
     private static string StateFilePath => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "cc.cangcang.sulfurlauncher", "Bedrock", "prerequisites.json");
+        "studio.lively.sulfurlauncher", "Bedrock", "prerequisites.json");
 
     public static void Validate(BedrockInstanceConfig config)
     {

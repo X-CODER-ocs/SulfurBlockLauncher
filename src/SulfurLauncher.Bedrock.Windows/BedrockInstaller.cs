@@ -103,7 +103,7 @@ public sealed class BedrockInstaller : IBedrockInstaller
         var build = await FindBuildAsync(request.Version, request.CancellationToken);
         var packageUrl = await core.GetPackageUri(build, Architecture.X64);
         var packagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "cc.cangcang.sulfurlauncher", "Cache", "Bedrock", $"{request.Version.Id}-{request.Version.BuildLabel}.insPack");
+            "studio.lively.sulfurlauncher", "Cache", "Bedrock", $"{request.Version.Id}-{request.Version.BuildLabel}.insPack");
 
         MarkPackageActive(packagePath);
         var packageLock = PackageLocks.GetOrAdd(packagePath, static _ => new SemaphoreSlim(1, 1));

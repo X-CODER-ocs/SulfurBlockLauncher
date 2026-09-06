@@ -83,7 +83,7 @@ public class Config
         if (!Enum.IsDefined(typeof(UpdateSource), Data.ConfigEntry.UpdateSource))
         {
             Logger.Info(string.Format(LogLanguageManager.Instance.config_updateSourceInvalid.CurrentValue(), Data.ConfigEntry.UpdateSource));
-            Data.ConfigEntry.UpdateSource = UpdateSource.Cnb;
+            Data.ConfigEntry.UpdateSource = UpdateSource.Github;
         }
 
         if (Data.ConfigEntry.UsingBedrockAccount is { } selectedBedrockAccount)

@@ -6,7 +6,7 @@
     "parseFailed": "读取或解析配置文件失败：{0}",
     "backupFailed": "配置文件解析失败，已备份到：{0}",
     "backupFailedError": "备份损坏配置文件失败：{0}",
-    "updateSourceInvalid": "旧配置中的更新源 {0} 已失效，回退为 CNB。",
+    "updateSourceInvalid": "旧配置中的更新源 {0} 已失效，回退为默认更新源。",
     "versionLoaded": "已加载版本信息：{0} ({1})",
     "packageTypeDetected": "已识别安装包类型：{0}",
     "tempCleared": "已清理临时目录",

@@ -140,22 +140,18 @@ public sealed class UpdateSettingsViewModel : ObservableObject
         var githubRelease = new UpdateSourceOption(release, $"GitHub → {release}", UpdateSource.Github, "release");
         var githubNightly = new UpdateSourceOption(nightly, $"GitHub → {nightly}", UpdateSource.Github, "nightly");
         var githubCommit = new UpdateSourceOption(commit, $"GitHub → {commit}", UpdateSource.Github, "commit");
-        var cnbRelease = new UpdateSourceOption(release, $"Cnb → {release}", UpdateSource.Cnb, "release");
 
         UpdateSources =
         [
-            new UpdateSourceOption("Cnb", children: [cnbRelease]),
             new UpdateSourceOption("GitHub", children: [githubRelease, githubNightly, githubCommit])
         ];
 
-        _selectedUpdateSource = Data.ConfigEntry.UpdateSource == UpdateSource.Cnb
-            ? cnbRelease
-            : Data.UiProperty.OverrideUpdateChannel switch
-            {
-                "nightly" => githubNightly,
-                "commit" => githubCommit,
-                _ => githubRelease
-            };
+        _selectedUpdateSource = Data.UiProperty.OverrideUpdateChannel switch
+        {
+            "nightly" => githubNightly,
+            "commit" => githubCommit,
+            _ => githubRelease
+        };
         ApplyUpdateSource(_selectedUpdateSource);
     }
 

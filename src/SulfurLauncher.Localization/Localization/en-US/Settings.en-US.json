@@ -59,7 +59,7 @@
     "channelRelease": "Release",
     "channelDailyBuild": "Daily Build",
     "channelCommitBuild": "Commit Build",
-    "cnbChannelHint": " *The CNB channel only provides release builds",
+    "channelHint": " *The channel only provides release builds",
     "thirdPartyComponentLibraries": "Third-Party Libraries",
     "projectWebsite": "Project Website",
     "githubSourceCode": "GitHub Source Code",

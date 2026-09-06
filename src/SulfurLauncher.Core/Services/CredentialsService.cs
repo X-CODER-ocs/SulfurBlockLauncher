@@ -13,9 +13,6 @@ public static class CredentialsService
     public const string GravityConeUptimeApiKeyEnvironmentVariable = "GRAVITYCONE_UPTIME_API_KEY";
     private const string GravityConeUptimeApiKeyMetadataKey = "SulfurLauncher.GravityConeUptimeApiKey";
 
-    public const string CnbUpdateTokenEnvironmentVariable = "CNB_UPDATE_TOKEN";
-    private const string CnbUpdateTokenMetadataKey = "SulfurLauncher.CnbUpdateToken";
-
     public const string TelemetryApiKeyEnvironmentVariable = "PORTAL_TELEMETRY_API_KEY";
     private const string TelemetryApiKeyMetadataKey = "SulfurLauncher.TelemetryApiKey";
     public const string TelemetryUrlEnvironmentVariable = "PORTAL_TELEMETRY_URL";
@@ -29,8 +26,6 @@ public static class CredentialsService
 
     public static string MicrosoftClientId =>
         GetValue(MicrosoftClientIdMetadataKey, MicrosoftClientIdEnvironmentVariable);
-
-    public static string? CnbUpdateToken => GetValue(CnbUpdateTokenMetadataKey, CnbUpdateTokenEnvironmentVariable);
 
     public static string? TelemetryApiKey => GetValue(TelemetryApiKeyMetadataKey, TelemetryApiKeyEnvironmentVariable);
 

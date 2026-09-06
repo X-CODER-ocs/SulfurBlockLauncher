@@ -35,7 +35,7 @@
 
         <CFBundleName>SulfurLauncher</CFBundleName>
         <CFBundleDisplayName>SulfurLauncher</CFBundleDisplayName>
-        <CFBundleIdentifier>cc.cangcang.sulfurlauncher</CFBundleIdentifier>
+        <CFBundleIdentifier>studio.lively.sulfurlauncher</CFBundleIdentifier>
         <CFBundleVersion>1.0.0</CFBundleVersion>
         <CFBundlePackageType>AAPL</CFBundlePackageType>
         <CFBundleSignature>Sulf</CFBundleSignature>

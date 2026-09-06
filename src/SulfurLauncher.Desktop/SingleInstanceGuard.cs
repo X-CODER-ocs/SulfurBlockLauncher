@@ -6,7 +6,7 @@ namespace SulfurLauncher.Desktop;
 
 internal static class SingleInstanceGuard
 {
-    private const string MutexName = "cc.cangcang.sulfurlauncher.Singleton";
+    private const string MutexName = "studio.lively.sulfurlauncher.Singleton";
 
     private const int ForwardAttempts = 4;
     private static Mutex? _mutex;

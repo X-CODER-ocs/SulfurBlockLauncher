@@ -60,7 +60,7 @@ internal static class PrimaryInstanceStartup
 
         Logger.Info(string.Format(LogLanguageManager.Instance.desktop_primaryInstance_starting.CurrentValue(), args.Length));
         var versionInfo = AppVersionService.Instance.Version;
-        Initializer.Program("SulfurLauncher", "cc.cangcang.sulfurlauncher", versionInfo.VersionTitle);
+        Initializer.Program("SulfurLauncher", "studio.lively.sulfurlauncher", versionInfo.VersionTitle);
 
         Logger.Info(LogLanguageManager.Instance.desktop_primaryInstance_mainEntry.CurrentValue());
 

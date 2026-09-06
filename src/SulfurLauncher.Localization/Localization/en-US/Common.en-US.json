@@ -1254,7 +1254,7 @@
     "checkFailed": "Update check failed\n{0}",
     "unsupportedSource": "Unsupported update source \"{0}\".",
     "cannotGetAssetSize": "Unable to get the update package size: {0}",
-    "cnbSourceNotConfigured": "The CNB update source is not configured with {0}. Please use an official build that includes this variable.",
+    "sourceNotConfigured": "The update source is not configured with {0}. Please use an official build that includes this variable.",
     "releaseMissingTitle": "The update release is missing a version name.",
     "noStableRelease": "No release version found in the remote repository.",
     "unsupportedChannel": "Unsupported update channel \"{0}\".",

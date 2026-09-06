@@ -1254,7 +1254,7 @@
     "checkFailed": "检查更新失败\n{0}",
     "unsupportedSource": "不支持更新源“{0}”。",
     "cannotGetAssetSize": "无法获取更新包大小：{0}",
-    "cnbSourceNotConfigured": "CNB 更新源未配置 {0}。请使用包含该变量的正式构建。",
+    "sourceNotConfigured": "更新源未配置 {0}。请使用包含该变量的正式构建。",
     "releaseMissingTitle": "更新发布缺少版本名称。",
     "noStableRelease": "远程仓库中未找到正式版发布。",
     "unsupportedChannel": "不支持更新通道“{0}”。",

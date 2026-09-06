@@ -225,7 +225,7 @@ internal static class BedrockDataIsolation
     {
         var nativeFolder = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "cc.cangcang.sulfurlauncher", "Native");
+            "studio.lively.sulfurlauncher", "Native");
         var nativePath = Path.Combine(nativeFolder, PreloadDllName);
         Directory.CreateDirectory(nativeFolder);
 

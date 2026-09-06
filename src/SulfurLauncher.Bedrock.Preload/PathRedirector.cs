@@ -121,7 +121,7 @@ internal static class PathRedirector
         string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         return string.IsNullOrEmpty(appData)
             ? Path.Combine(exeDir, IsolationFolder)
-            : Path.Combine(appData, "cc.cangcang.sulfurlauncher", "Bedrock");
+            : Path.Combine(appData, "studio.lively.sulfurlauncher", "Bedrock");
     }
 
     private static void EnsureParentDirectory(string fullPath)

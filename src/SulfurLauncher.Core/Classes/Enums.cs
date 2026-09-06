@@ -30,8 +30,7 @@ public enum GithubMirrorMode
 
 public enum UpdateSource
 {
-    Github,
-    Cnb
+    Github
 }
 
 public enum NewTabContent

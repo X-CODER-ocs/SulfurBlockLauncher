@@ -29,7 +29,7 @@ internal static class CacheDatabase
     private static bool _initialized;
 
     private static string DatabasePath => Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "cc.cangcang.sulfurlauncher", "Cache", "cache.db");
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "studio.lively.sulfurlauncher", "Cache", "cache.db");
 
     public static ModCacheEntry? ReadMod(uint fingerprint)
     {

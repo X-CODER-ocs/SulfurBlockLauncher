@@ -111,7 +111,7 @@ public static class BedrockDataPathResolver
     private static string GetSulfurLauncherDataRoot()
     {
         return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "cc.cangcang.sulfurlauncher", "Bedrock");
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "studio.lively.sulfurlauncher", "Bedrock");
     }
 
     private static string GetUwpLocalStateRoot(BedrockInstanceConfig config)

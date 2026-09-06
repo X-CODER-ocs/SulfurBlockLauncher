@@ -16,7 +16,7 @@ public partial class ConfigEntry : ObservableObject
     [ObservableProperty] public partial string? TelemetryUserId { get; set; }
     [ObservableProperty] public partial bool EnableCustomForegroundColor { get; set; } = false;
     [ObservableProperty] public partial bool EnableCheckAutoUpdate { get; set; } = true;
-    [ObservableProperty] public partial UpdateSource UpdateSource { get; set; } = UpdateSource.Cnb;
+    [ObservableProperty] public partial UpdateSource UpdateSource { get; set; } = UpdateSource.Github;
     [ObservableProperty] public partial string? UpdateChannel { get; set; }
     [ObservableProperty] public partial DownloadSourceMode MinecraftMetadataSource { get; set; } = DownloadSourceMode.Auto;
     [ObservableProperty] public partial DownloadSourceMode MinecraftFileSource { get; set; } = DownloadSourceMode.Auto;
