@@ -90,9 +90,9 @@ namespace
 
         Log(L"hit");
 
-        HMODULE preload = GetModuleHandleW(L"Portal.Preload.dll");
+        HMODULE preload = GetModuleHandleW(L"SulfurLauncher.Preload.dll");
         if (preload == nullptr)
-            preload = LoadLibraryW(L"Portal.Preload.dll");
+            preload = LoadLibraryW(L"SulfurLauncher.Preload.dll");
         if (preload != nullptr)
         {
             const auto load = reinterpret_cast<void (*)()>(GetProcAddress(preload, "Load"));
