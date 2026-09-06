@@ -9,7 +9,7 @@ namespace SulfurLauncher.Core.Module.Multiplayer;
 
 public sealed class GravityConeRelayClient
 {
-    public const string DefaultRelaySourceUrl = "https://https://github.com/cangcang/sulfurlauncher/relays.json";
+    public const string DefaultRelaySourceUrl = "https://portal.tiouo.cc/relays.json";
 
     private const int MaxResponseSizeBytes = 1 * 1024 * 1024;
 
