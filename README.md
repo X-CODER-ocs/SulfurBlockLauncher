@@ -117,3 +117,5 @@ SulfurLauncher 建立在许多优秀的 [开源项目](src/SulfurLauncher/Classe
 - [Polymerium](https://github.com/d3ara1n/Polymerium)：部分外观设计和功能
 - [HMCL](https://github.com/HMCL-dev/HMCL)：部分功能
 - [BakaXL](https://bakaxl.com)：内置游戏图标
+- [Bedrock on linux](https://github.com/Wyze3306/BedrockOnLinux) : 适用于Linux的基岩版启动支持
+- [portal](https://portal.tiouo.cc/) : 大部分功能设计,外观
