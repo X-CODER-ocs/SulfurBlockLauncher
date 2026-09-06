@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SulfurBlockLauncher 硫磺方块启动器</title>
+    <link rel="icon" href="~/favicon.ico" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-sulfur fixed-top">
+            <div class="container">
+                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" asp-area="" asp-page="/Index">
+                    <span class="brand-cube"></span> SulfurBlockLauncher
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="切换导航">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" href="#features">功能</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#download">下载</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#feedback">反馈与联系</a></li>
+                    </ul>
+                    <ul class="navbar-nav align-items-lg-center">
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/issues" target="_blank" rel="noopener">反馈</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-light btn-sm me-lg-2 mb-2 mb-lg-0" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher" target="_blank" rel="noopener">GitHub</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-download btn-sm" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases" target="_blank" rel="noopener">下载</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row gy-3">
+                <div class="col-md-6">
+                    <p class="mb-1 fw-bold text-light">SulfurBlockLauncher 硫磺方块启动器</p>
+                    <p class="text-secondary small mb-0">开源、跨平台的 Minecraft 启动器与实例管理器</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a class="footer-link" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher" target="_blank" rel="noopener">GitHub 源码</a>
+                    <a class="footer-link" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/issues" target="_blank" rel="noopener">问题反馈</a>
+                    <a class="footer-link" href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases" target="_blank" rel="noopener">下载</a>
+                </div>
+            </div>
+            <hr class="footer-divider" />
+            <p class="text-secondary small mb-0">&copy; 2026 X-CODER-ocs · 基于 GPL-3.0-or-later 开源许可 · 使用 .NET 10 + FluentAvalonia 构建</p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

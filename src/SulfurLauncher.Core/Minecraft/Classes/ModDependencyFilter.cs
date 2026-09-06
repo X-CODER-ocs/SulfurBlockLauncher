@@ -1,0 +1,53 @@
+using SulfurLauncher.Core.Minecraft.Classes;
+using SulfurLauncher.Core.Minecraft.Models;
+using SulfurLauncher.Core.Minecraft.Services;
+using SulfurLauncher.Localization;
+using Tio.Avalonia.Standard.Modules.DiskIO;
+
+namespace SulfurLauncher.Core.Minecraft.Classes;
+
+public static class ModDependencyFilter
+{
+    public static async Task<IReadOnlyList<ResourceVersionFileItem>> FilterInstalledAsync(
+        MinecraftInstance instance, IReadOnlyList<ResourceVersionFileItem> dependencies)
+    {
+        if (dependencies.Count == 0) return dependencies;
+
+        IReadOnlyList<ModInfo> installed;
+        try
+        {
+            installed = await new ModService().ScanAsync(instance);
+        }
+        catch (Exception exception)
+        {
+            Logger.Warning(string.Format(LogLanguageManager.Instance.modScan_installedFailed.CurrentValue(), exception));
+            return dependencies;
+        }
+
+        var installedProjects = installed
+            .Where(mod => !string.IsNullOrWhiteSpace(mod.ProjectId))
+            .Select(mod => mod.ProjectId)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var installedNames = installed
+            .Select(mod => Path.GetFileNameWithoutExtension(mod.FilePath))
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var pending = new List<ResourceVersionFileItem>();
+        var queued = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var dependency in dependencies)
+        {
+            var key = string.IsNullOrWhiteSpace(dependency.ProjectId)
+                ? $"{dependency.Source}:{dependency.Id}"
+                : $"{dependency.Source}:{dependency.ProjectId}";
+            if (!queued.Add(key)) continue;
+
+            if (!string.IsNullOrWhiteSpace(dependency.ProjectId) &&
+                installedProjects.Contains(dependency.ProjectId)) continue;
+            if (installedNames.Contains(Path.GetFileNameWithoutExtension(dependency.FileName))) continue;
+
+            pending.Add(dependency);
+        }
+
+        return pending;
+    }
+}

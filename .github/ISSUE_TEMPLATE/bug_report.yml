@@ -1,0 +1,56 @@
+name: "🐛 Bug 反馈"
+description: 报告一个 bug、崩溃或异常行为
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈 awa ～ 能填多细填多细，我们才好复现和修 qwq
+  - type: input
+    id: version
+    attributes:
+      label: 版本号
+      description: 在「设置 → 关于」或启动器标题栏能看到，例如 v1.0.0
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 运行平台
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: 发生了什么
+      description: 用一两句话描述你遇到的情况
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+      description: 怎么操作能再次触发？一步一步写清楚
+      placeholder: |
+        1. 打开启动器
+        2. 点击 xxx
+        3. 程序崩溃 / 卡死
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 你期望的结果
+      description: 本来应该怎么样？
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志 / 截图
+      description: 把报错信息、日志或截图贴这里。日志一般在「设置 → 关于」里，或启动器目录的 logs 文件夹。
+      render: shell

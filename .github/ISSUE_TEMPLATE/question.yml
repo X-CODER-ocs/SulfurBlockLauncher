@@ -1,0 +1,21 @@
+name: "💬 疑问 / 交流"
+description: 使用上的疑问、想聊聊、或者别的任何事
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        随便聊 awa ～ 不是 bug 也不是建议也能开这个 qwq
+  - type: textarea
+    id: content
+    attributes:
+      label: 你想说点什么
+      placeholder: 比如：怎么导入某个版本的 Minecraft？/ 这个按钮是干嘛的？
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: 联系方式（可选）
+      description: 例如 QQ 545716736，方便我们找你

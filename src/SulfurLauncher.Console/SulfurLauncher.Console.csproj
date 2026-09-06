@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\SulfurLauncher.Core\SulfurLauncher.Core.csproj"/>
+        <ProjectReference Include="..\SulfurLauncher.Bedrock.Windows\SulfurLauncher.Bedrock.Windows.csproj"/>
+    </ItemGroup>
+
+</Project>

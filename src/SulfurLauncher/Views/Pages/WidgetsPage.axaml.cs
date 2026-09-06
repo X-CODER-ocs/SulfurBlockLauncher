@@ -1,0 +1,66 @@
+﻿using Avalonia.Controls;
+using Avalonia.Media;
+using SulfurLauncher.Core.Module.AggregatedSearch;
+using SulfurLauncher.Module.DefaultPage;
+using SulfurLauncher.Localization;
+using SulfurLauncher.Views.Widgets;
+using Tio.Avalonia.Standard.Tab.Entries;
+using Tio.Avalonia.Standard.Tab.Interface;
+using TioUi.Common;
+using TioUi.Common.Extensions;
+using TioUi.Controls;
+
+using SulfurLauncher.Module;
+namespace SulfurLauncher.Views.Pages;
+
+[DefaultPage("pages_widgets")]
+[AggregatedSearchPage("pages_widgets", "pages_widgetsPath", "Widgets")]
+public partial class WidgetsPage : UserControl, ITioTabPage
+{
+    private readonly WidgetWorkspace? _workspace;
+
+    public WidgetsPage()
+    {
+        InitializeComponent();
+        _workspace = new WidgetWorkspace();
+        _workspace.AddWidgetCallOn += OnAddWidgetCallOn;
+        if (this.FindControl<ContentControl>("WorkspaceHost") is { } host)
+            host.Content = _workspace;
+    }
+
+    public PageInfo PageInfo { get; init; } = new()
+    {
+        Title = CommonLanguageManager.Instance.widgetsPage_pageTitle.CurrentValue(),
+        IconGlyph = "\ue64f", IconFont = IconResources.FontFamilyName
+    };
+
+    public TabEntry HostTab { get; set; }
+
+    public void OnClose()
+    {
+        DataContext = null;
+    }
+
+    private void OnAddWidgetCallOn(object? sender, EventArgs e)
+    {
+        OpenAddWidgetDialog();
+    }
+
+    private void OpenAddWidgetDialog()
+    {
+        if (_workspace == null)
+            return;
+
+        var options = new OverlayDialogOptions
+        {
+            Buttons = DialogButton.None,
+            CanLightDismiss = false,
+            CanDragMove = false,
+            CanResize = false,
+            IsCloseButtonVisible = false,
+            StyleClass = "undrag"
+        };
+        _ = OverlayDialog.ShowCustomAsync<AddWidgetDialog, AddWidgetDialogViewModel, bool>(
+            new AddWidgetDialogViewModel(_workspace, this.TryGetHostId()), this.TryGetHostId(), options);
+    }
+}

@@ -1,0 +1,28 @@
+name: "✨ 功能建议"
+description: 提一个新功能点子或对现有功能的改进
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        好点子欢迎甩过来 awa ～
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你想解决什么问题
+      description: 现在用起来哪里不方便？
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: 你的想法 / 方案
+      description: 你希望怎么改进？或者有什么参考？
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: 补充（可选）
+      description: 截图、链接、相关 Issue 之类的都可以丢这里

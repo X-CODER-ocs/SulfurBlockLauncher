@@ -3,7 +3,7 @@ set -euo pipefail
 
 GITCODE_API="${GITCODE_API:-https://gitcode.com/api/v5}"
 GITCODE_WEB="${GITCODE_WEB:-https://gitcode.com}"
-GITCODE_REPO="${GITCODE_REPO:-tiouo/Portal}"
+GITCODE_REPO="${GITCODE_REPO:-tiouo/SulfurLauncher}"
 GITCODE_TAG="${GITCODE_TAG:?GITCODE_TAG is required}"
 GITCODE_GIT_URL="${GITCODE_GIT_URL:-${GITCODE_WEB}/${GITCODE_REPO}.git}"
 

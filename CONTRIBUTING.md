@@ -1,14 +1,14 @@
 # 贡献开发指南
 
-感谢你参与 Portal 开发。本指南说明如何获取完整源码、初始化子模块、配置构建环境并运行项目
+感谢你参与 SulfurLauncher 开发。本指南说明如何获取完整源码、初始化子模块、配置构建环境并运行项目
 
 ## 1. 克隆项目
 
-Portal 使用 git 子模块
+SulfurLauncher 使用 git 子模块
 
 ```bash
-git clone  https://github.com/tiouoo/Portal.git
-cd Portal/scripts
+git clone  https://github.com/tiouoo/SulfurLauncher.git
+cd SulfurLauncher/scripts
 
 # Linux / macOS
 ./update.sh
@@ -19,7 +19,7 @@ cd Portal/scripts
 
 ## 2. 准备开发环境
 
-构建 Portal 需要：
+构建 SulfurLauncher 需要：
 
 - .NET SDK `10.0`
 - 开发基岩版相关项目时，需要 C++ 工具链
@@ -53,17 +53,17 @@ $env:MICROSOFT_CLIENT_ID = "your-client-id"
 $env:CURSEFORGE_API_KEY = "your-key"
 ```
 
-没有这些可选密钥时，Portal 仍可编译；只有依赖对应服务或构建链的功能会不可用。
+没有这些可选密钥时，SulfurLauncher 仍可编译；只有依赖对应服务或构建链的功能会不可用。
 
 ## 4. 构建和运行
 
 在仓库根目录执行：
 
 ```bash
-dotnet build src/Portal.Desktop/Portal.Desktop.csproj
+dotnet build src/SulfurLauncher.Desktop/SulfurLauncher.Desktop.csproj
 ```
 
-如果只修改了某个子项目，也可以直接构建该项目；提交前建议至少构建对应平台的 `Portal.Desktop` 项目。
+如果只修改了某个子项目，也可以直接构建该项目；提交前建议至少构建对应平台的 `SulfurLauncher.Desktop` 项目。
 
 ## 5. 提交修改前检查
 

@@ -70,7 +70,7 @@ jobs:
           APP_VERSION="${VERSION}"
           COMMIT_HASH="${BASE_COMMIT}"
           BUILD_TIME=$(TZ='Asia/Shanghai' date -Iseconds)
-          JSON_STRING="{\"type\":\"release\",\"build-time\":\"${BUILD_TIME}\",\"action\":\"${{ github.run_id }}\",\"commit\":\"${COMMIT_HASH}\",\"version\":\"${VERSION}\",\"version_title\":\"Portal v${VERSION}\"}"
+          JSON_STRING="{\"type\":\"release\",\"build-time\":\"${BUILD_TIME}\",\"action\":\"${{ github.run_id }}\",\"commit\":\"${COMMIT_HASH}\",\"version\":\"${VERSION}\",\"version_title\":\"SulfurLauncher v${VERSION}\"}"
           echo "json=${JSON_STRING}" >> "$GITHUB_OUTPUT"
           echo "app_version=${APP_VERSION}" >> "$GITHUB_OUTPUT"
           echo "commit_hash=${COMMIT_HASH}" >> "$GITHUB_OUTPUT"
@@ -104,13 +104,13 @@ jobs:
         include:
           - kind: appimage
             package_type: appimage
-            output: Portal.linux.x64.AppImage
+            output: SulfurLauncher.linux.x64.AppImage
           - kind: deb
             package_type: deb
-            output: Portal.linux.x64.deb
+            output: SulfurLauncher.linux.x64.deb
           - kind: rpm
             package_type: rpm
-            output: Portal.linux.x64.rpm
+            output: SulfurLauncher.linux.x64.rpm
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -176,19 +176,19 @@ jobs:
       - name: Build & Package
         shell: pwsh
         run: |
-          cd ./src/Portal.Desktop
+          cd ./src/SulfurLauncher.Desktop
           New-Item -ItemType Directory -Force -Path "../../dist"
           dotnet restore -r win-x64
           dotnet publish -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:SelfContained=false /p:Version=${{ needs.prepare.outputs.app_version }} -o "../../dist" -p:DebugType=none -p:DebugSymbols=false
           cd "../../dist"
-          Rename-Item -Path "Portal.Desktop.exe" -NewName "Portal.win.x64.portable.exe" -Force
-          Compress-Archive -Path "Portal.win.x64.portable.exe" -DestinationPath "../Portal.win.x64.portable.zip" -Force
+          Rename-Item -Path "SulfurLauncher.Desktop.exe" -NewName "SulfurLauncher.win.x64.portable.exe" -Force
+          Compress-Archive -Path "SulfurLauncher.win.x64.portable.exe" -DestinationPath "../SulfurLauncher.win.x64.portable.zip" -Force
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7
         with:
           name: win-exe-win.x64-artifacts
-          path: ./Portal.*.zip
+          path: ./SulfurLauncher.*.zip
 
   win-installer:
     runs-on: windows-latest
@@ -232,15 +232,15 @@ jobs:
         shell: pwsh
         run: |
           cd ./assets/conf
-          pupnet -r win-x64 -k setup -y -o Portal.win.x64.installer.exe --app-version ${{ needs.prepare.outputs.app_version }}
+          pupnet -r win-x64 -k setup -y -o SulfurLauncher.win.x64.installer.exe --app-version ${{ needs.prepare.outputs.app_version }}
           ../../scripts/configure-windows-installer.ps1
-          Compress-Archive -Path "Deploy/OUT/Portal.win.x64.installer.exe" -DestinationPath "Deploy/OUT/Portal.win.x64.installer.zip" -Force
+          Compress-Archive -Path "Deploy/OUT/SulfurLauncher.win.x64.installer.exe" -DestinationPath "Deploy/OUT/SulfurLauncher.win.x64.installer.zip" -Force
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7
         with:
           name: win-installer-win.x64-artifacts
-          path: assets/conf/Deploy/OUT/Portal.win.*.installer.zip
+          path: assets/conf/Deploy/OUT/SulfurLauncher.win.*.installer.zip
 
   mac-dmg:
     runs-on: macos-latest
@@ -280,15 +280,15 @@ jobs:
 
       - name: Build macOS App
         run: |
-          cd ./src/Portal.Desktop
+          cd ./src/SulfurLauncher.Desktop
           dotnet restore -r ${{ matrix.rid }}
           dotnet msbuild -t:BundleApp -p:RuntimeIdentifier=${{ matrix.rid }} -property:Configuration=Release -p:SelfContained=true
-          cp "../../assets/Icon-Pattern-Shadow-Border.icns" "./bin/Release/net10.0/${{ matrix.rid }}/publish/Portal.app/Contents/Resources/"
+          cp "../../assets/Icon-Pattern-Shadow-Border.icns" "./bin/Release/net10.0/${{ matrix.rid }}/publish/SulfurLauncher.app/Contents/Resources/"
 
       # DotNet.Bundle 不支持 CFBundleURLTypes，portal:// 协议声明在打包后写入 Info.plist
       - name: Declare portal URL Scheme
         run: |
-          PLIST="./src/Portal.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/Portal.app/Contents/Info.plist"
+          PLIST="./src/SulfurLauncher.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/SulfurLauncher.app/Contents/Info.plist"
           /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes array" "$PLIST"
           /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0 dict" "$PLIST"
           /usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLName string cc.tiouoo.portal" "$PLIST"
@@ -298,8 +298,8 @@ jobs:
 
       - name: Package APP to ZIP
         run: |
-          cd ./src/Portal.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/
-          /usr/bin/ditto -c -k --keepParent Portal.app ../../../../../../../Portal.osx.mac.${{ matrix.dmg_arch }}.app.zip
+          cd ./src/SulfurLauncher.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/
+          /usr/bin/ditto -c -k --keepParent SulfurLauncher.app ../../../../../../../SulfurLauncher.osx.mac.${{ matrix.dmg_arch }}.app.zip
 
       # macOS Runner 预装的 aws/tap 未受信任，会导致 brew 输出警告，构建 DMG 前先移除
       - name: Untap Untrusted Homebrew Taps
@@ -308,16 +308,16 @@ jobs:
       - name: Build DMG
         uses: L-Super/create-dmg-actions@v1.1.0
         with:
-          dmg_name: "Portal.osx.mac.${{ matrix.dmg_arch }}"
-          src_dir: "./src/Portal.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/Portal.app"
+          dmg_name: "SulfurLauncher.osx.mac.${{ matrix.dmg_arch }}"
+          src_dir: "./src/SulfurLauncher.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/SulfurLauncher.app"
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7
         with:
           name: osx-${{ matrix.dmg_arch }}-artifacts
           path: |
-            ./Portal.osx.mac.${{ matrix.dmg_arch }}.dmg
-            ./Portal.osx.mac.${{ matrix.dmg_arch }}.app.zip
+            ./SulfurLauncher.osx.mac.${{ matrix.dmg_arch }}.dmg
+            ./SulfurLauncher.osx.mac.${{ matrix.dmg_arch }}.app.zip
 
   publish:
     needs: [prepare, linux-package, win-exe, win-installer, mac-dmg]
@@ -333,11 +333,11 @@ jobs:
       - name: Download All Artifacts
         uses: actions/download-artifact@v8
         with:
-          path: ./Portal.Release/
+          path: ./SulfurLauncher.Release/
           merge-multiple: true
 
       - name: List Files
-        run: ls -la ./Portal.Release/
+        run: ls -la ./SulfurLauncher.Release/
 
       - name: Generate Release Body
         run: |
@@ -349,7 +349,7 @@ jobs:
           RELEASE_DATE="${{ needs.prepare.outputs.release_date }}"
 
           {
-            echo "Portal v${VERSION}"
+            echo "SulfurLauncher v${VERSION}"
             echo "发布日期：${RELEASE_DATE}"
             echo "基准提交：\`${BASE_COMMIT}\`"
             echo ""
@@ -372,26 +372,26 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
-          name: "Portal v${{ needs.prepare.outputs.version }}"
+          name: "SulfurLauncher v${{ needs.prepare.outputs.version }}"
           body_path: RELEASE_BODY.md
           files: |
-            ./Portal.Release/*.dmg
-            ./Portal.Release/*.zip
-            ./Portal.Release/*.AppImage
-            ./Portal.Release/*.deb
-            ./Portal.Release/*.rpm
+            ./SulfurLauncher.Release/*.dmg
+            ./SulfurLauncher.Release/*.zip
+            ./SulfurLauncher.Release/*.AppImage
+            ./SulfurLauncher.Release/*.deb
+            ./SulfurLauncher.Release/*.rpm
 
       - name: Package All Builds
         run: |
-          cd ./Portal.Release
-          zip -qr ../Portal.v${{ needs.prepare.outputs.version }}.all-builds.zip .
-          ls -lh ../Portal.v${{ needs.prepare.outputs.version }}.all-builds.zip
+          cd ./SulfurLauncher.Release
+          zip -qr ../SulfurLauncher.v${{ needs.prepare.outputs.version }}.all-builds.zip .
+          ls -lh ../SulfurLauncher.v${{ needs.prepare.outputs.version }}.all-builds.zip
 
       - name: Upload All Builds Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: Portal.v${{ needs.prepare.outputs.version }}.all-builds
-          path: ./Portal.v${{ needs.prepare.outputs.version }}.all-builds.zip
+          name: SulfurLauncher.v${{ needs.prepare.outputs.version }}.all-builds
+          path: ./SulfurLauncher.v${{ needs.prepare.outputs.version }}.all-builds.zip
 
       - name: Sync to CNB (Release/Tag Only)
         env:
@@ -399,7 +399,7 @@ jobs:
           CNB_REPO: tiouo/portal
           CNB_TAG: ${{ needs.prepare.outputs.tag }}
           CNB_COMMIT: ${{ needs.prepare.outputs.commit }}
-          CNB_NAME: "Portal v${{ needs.prepare.outputs.version }}"
+          CNB_NAME: "SulfurLauncher v${{ needs.prepare.outputs.version }}"
           CNB_PRERELEASE: "false"
           CNB_MAKE_LATEST: "true"
           CNB_BODY_FILE: RELEASE_BODY.md

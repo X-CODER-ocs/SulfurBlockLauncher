@@ -1,39 +1,35 @@
 <p align="center">
-  <a href="https://ifdian.net/a/tiouo">
-    <img src="assets/top.png" alt="Portal Top">
-  </a>
   <a href="https://portal.tiouo.cc">
-    <img src="assets/header.png" alt="Portal">
+    <img src="assets/header.png" alt="SulfurLauncher">
   </a>
 </p>
 
 <p align="start">
-  <a href="https://github.com/tiouoo/Portal/actions/workflows/publish-commit.yml"><img src="https://img.shields.io/github/actions/workflow/status/tiouoo/Portal/publish-commit.yml?branch=main&label=%E6%9E%84%E5%BB%BA&logo=github&style=for-the-badge" alt="构建状态"></a>
-  <a href="https://github.com/tiouoo/Portal/releases"><img src="https://img.shields.io/github/v/release/tiouoo/Portal?display_name=tag&label=%E5%8F%91%E5%B8%83&logo=github&logoColor=white&color=ff007f&style=for-the-badge" alt="最新发布"></a>
-  <a href="https://github.com/tiouoo/Portal/releases"><img src="https://img.shields.io/github/v/release/tiouoo/Portal?include_prereleases&display_name=tag&label=%E9%A2%84%E5%8F%91%E5%B8%83&logo=github&logoColor=white&color=9c27b0&style=for-the-badge" alt="预发布"></a>  
-  <a href="https://github.com/tiouoo/Portal/stargazers"><img src="https://img.shields.io/github/stars/tiouoo/Portal?label=%E6%98%9F%E6%A0%87&logo=github&logoColor=white&color=eac54f&style=for-the-badge" alt="星标"></a>
-  <a href="https://github.com/tiouoo/Portal/releases"><img src="https://img.shields.io/github/downloads/tiouoo/Portal/total?label=%E4%B8%8B%E8%BD%BD%E9%87%8F&logo=github&logoColor=white&color=388bfd&style=for-the-badge" alt="下载量"></a>
+  <a href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/actions/workflows/publish-commit.yml"><img src="https://img.shields.io/github/actions/workflow/status/X-CODER-ocs/SulfurBlockLauncher/publish-commit.yml?branch=main&label=%E6%9E%84%E5%BB%BA&logo=github&style=for-the-badge" alt="构建状态"></a>
+  <a href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases"><img src="https://img.shields.io/github/v/release/X-CODER-ocs/SulfurBlockLauncher?display_name=tag&label=%E5%8F%91%E5%B8%83&logo=github&logoColor=white&color=ff007f&style=for-the-badge" alt="最新发布"></a>
+  <a href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases"><img src="https://img.shields.io/github/v/release/X-CODER-ocs/SulfurBlockLauncher?include_prereleases&display_name=tag&label=%E9%A2%84%E5%8F%91%E5%B8%83&logo=github&logoColor=white&color=9c27b0&style=for-the-badge" alt="预发布"></a>  
+  <a href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/stargazers"><img src="https://img.shields.io/github/stars/X-CODER-ocs/SulfurBlockLauncher?label=%E6%98%9F%E6%A0%87&logo=github&logoColor=white&color=eac54f&style=for-the-badge" alt="星标"></a>
+  <a href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases"><img src="https://img.shields.io/github/downloads/X-CODER-ocs/SulfurBlockLauncher/total?label=%E4%B8%8B%E8%BD%BD%E9%87%8F&logo=github&logoColor=white&color=388bfd&style=for-the-badge" alt="下载量"></a>
   <img src="https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF%E8%AF%81-GPL--3.0--or--later-9d4edd?logoColor=white&style=for-the-badge" alt="许可证">
   <a href="https://portal.tiouo.cc"><img src="https://img.shields.io/static/v1?label=%E5%AE%98%E7%BD%91&message=portal.tiouo.cc&color=38ce8f&logo=globe&logoColor=white&style=for-the-badge" alt="官网"></a>
-  <a href="https://ifdian.net/a/tiouo"><img src="https://img.shields.io/static/v1?label=%E7%88%B1%E5%8F%91%E7%94%B5&message=ifdian.net/a/tiouo&color=f89aba&logo=afdian&logoColor=white&style=for-the-badge" alt="爱发电"></a>
 </p>
 
 ---
 
 ## 少一点配置，多一点游戏
 
-<a href="https://portal.tiouo.cc">Portal</a> 是一款开源、跨平台的 Minecraft 启动器与实例管理器，同时支持 Java 版和基岩版，提供从游戏安装、账户登录到资源查找与文件整理的一体化体验，并对不同版本、整合包和世界进行独立管理
+<a href="https://portal.tiouo.cc">SulfurLauncher</a> 是一款开源、跨平台的 Minecraft 启动器与实例管理器，同时支持 Java 版和基岩版，提供从游戏安装、账户登录到资源查找与文件整理的一体化体验，并对不同版本、整合包和世界进行独立管理
 
-## 下载 Portal
+## 下载 SulfurLauncher
 
-从 [Releases](https://github.com/tiouoo/Portal/releases) 下载对应平台的最新版本：
+从 [Releases](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases) 下载对应平台的最新版本：
 
 | 平台                    | 正式版                                                                                                            | commit 版本                                                                                                        | nightly 版本                                                                                                       |
 | ----------------------- |------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| **Windows 10 / 11 x64** | [安装程序](https://github.com/tiouoo/Portal/releases/latest/download/Portal.win.x64.installer.zip) / [便携版](https://github.com/tiouoo/Portal/releases/latest/download/Portal.win.x64.portable.zip) | [安装程序](https://github.com/tiouoo/Portal/releases/download/publish-commit/Portal.win.x64.installer.zip) / [便携版](https://github.com/tiouoo/Portal/releases/download/publish-commit/Portal.win.x64.portable.zip) | [安装程序](https://github.com/tiouoo/Portal/releases/download/publish-nightly/Portal.win.x64.installer.zip) / [便携版](https://github.com/tiouoo/Portal/releases/download/publish-nightly/Portal.win.x64.portable.zip) |
-| **macOS Apple Silicon** | [磁盘映像](https://github.com/tiouoo/Portal/releases/latest/download/Portal.osx.mac.arm64.dmg) / [应用包](https://github.com/tiouoo/Portal/releases/latest/download/Portal.osx.mac.arm64.app.zip) | [磁盘映像](https://github.com/tiouoo/Portal/releases/download/publish-commit/Portal.osx.mac.arm64.dmg) / [应用包](https://github.com/tiouoo/Portal/releases/download/publish-commit/Portal.osx.mac.arm64.app.zip) | [磁盘映像](https://github.com/tiouoo/Portal/releases/download/publish-nightly/Portal.osx.mac.arm64.dmg) / [应用包](https://github.com/tiouoo/Portal/releases/download/publish-nightly/Portal.osx.mac.arm64.app.zip) |
-| **macOS Intel**         | [磁盘映像](https://github.com/tiouoo/Portal/releases/latest/download/Portal.osx.mac.x64.dmg) / [应用包](https://github.com/tiouoo/Portal/releases/latest/download/Portal.osx.mac.x64.app.zip) | [磁盘映像](https://github.com/tiouoo/Portal/releases/download/publish-commit/Portal.osx.mac.x64.dmg) / [应用包](https://github.com/tiouoo/Portal/releases/download/publish-commit/Portal.osx.mac.x64.app.zip) | [磁盘映像](https://github.com/tiouoo/Portal/releases/download/publish-nightly/Portal.osx.mac.x64.dmg) / [应用包](https://github.com/tiouoo/Portal/releases/download/publish-nightly/Portal.osx.mac.x64.app.zip) |
-| **Linux x64**           | [AppImage](https://github.com/tiouoo/Portal/releases/latest/download/Portal.linux.x64.AppImage) / [deb包](https://github.com/tiouoo/Portal/releases/latest/download/Portal.linux.x64.deb) / [rpm包](https://github.com/tiouoo/Portal/releases/latest/download/Portal.linux.x64.rpm) | [AppImage](https://github.com/tiouoo/Portal/releases/download/publish-commit/Portal.linux.x64.AppImage) / [deb包](https://github.com/tiouoo/Portal/releases/download/publish-commit/Portal.linux.x64.deb) / [rpm包](https://github.com/tiouoo/Portal/releases/download/publish-commit/Portal.linux.x64.rpm) | [AppImage](https://github.com/tiouoo/Portal/releases/download/publish-nightly/Portal.linux.x64.AppImage) / [deb包](https://github.com/tiouoo/Portal/releases/download/publish-nightly/Portal.linux.x64.deb) / [rpm包](https://github.com/tiouoo/Portal/releases/download/publish-nightly/Portal.linux.x64.rpm) |
+| **Windows 10 / 11 x64** | [安装程序](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/latest/download/SulfurLauncher.win.x64.installer.zip) / [便携版](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/latest/download/SulfurLauncher.win.x64.portable.zip) | [安装程序](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-commit/SulfurLauncher.win.x64.installer.zip) / [便携版](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-commit/SulfurLauncher.win.x64.portable.zip) | [安装程序](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-nightly/SulfurLauncher.win.x64.installer.zip) / [便携版](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-nightly/SulfurLauncher.win.x64.portable.zip) |
+| **macOS Apple Silicon** | [磁盘映像](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/latest/download/SulfurLauncher.osx.mac.arm64.dmg) / [应用包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/latest/download/SulfurLauncher.osx.mac.arm64.app.zip) | [磁盘映像](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-commit/SulfurLauncher.osx.mac.arm64.dmg) / [应用包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-commit/SulfurLauncher.osx.mac.arm64.app.zip) | [磁盘映像](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-nightly/SulfurLauncher.osx.mac.arm64.dmg) / [应用包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-nightly/SulfurLauncher.osx.mac.arm64.app.zip) |
+| **macOS Intel**         | [磁盘映像](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/latest/download/SulfurLauncher.osx.mac.x64.dmg) / [应用包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/latest/download/SulfurLauncher.osx.mac.x64.app.zip) | [磁盘映像](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-commit/SulfurLauncher.osx.mac.x64.dmg) / [应用包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-commit/SulfurLauncher.osx.mac.x64.app.zip) | [磁盘映像](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-nightly/SulfurLauncher.osx.mac.x64.dmg) / [应用包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-nightly/SulfurLauncher.osx.mac.x64.app.zip) |
+| **Linux x64**           | [AppImage](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/latest/download/SulfurLauncher.linux.x64.AppImage) / [deb包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/latest/download/SulfurLauncher.linux.x64.deb) / [rpm包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/latest/download/SulfurLauncher.linux.x64.rpm) | [AppImage](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-commit/SulfurLauncher.linux.x64.AppImage) / [deb包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-commit/SulfurLauncher.linux.x64.deb) / [rpm包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-commit/SulfurLauncher.linux.x64.rpm) | [AppImage](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-nightly/SulfurLauncher.linux.x64.AppImage) / [deb包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-nightly/SulfurLauncher.linux.x64.deb) / [rpm包](https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases/download/publish-nightly/SulfurLauncher.linux.x64.rpm) |
 | **Arch Linux / AUR**    | [portal-mc-bin](https://aur.archlinux.org/packages/portal-mc-bin)                                    | [portal-mc-commit-bin](https://aur.archlinux.org/packages/portal-mc-commit-bin)                                    | [portal-mc-nightly-bin](https://aur.archlinux.org/packages/portal-mc-nightly-bin)                                    |
 
 > [!NOTE]
@@ -45,9 +41,9 @@
 > yay -S portal-mc-nightly-bin          # nightly 版本
 > ```
 >
-> MacOS 首次打开 Portal 前，请先将 `Portal.app` 移动到“应用程序”文件夹，然后在终端运行以下命令：
+> MacOS 首次打开 SulfurLauncher 前，请先将 `SulfurLauncher.app` 移动到“应用程序”文件夹，然后在终端运行以下命令：
 > ```bash
-> sudo xattr -rd com.apple.quarantine /Applications/Portal.app
+> sudo xattr -rd com.apple.quarantine /Applications/SulfurLauncher.app
 > ```
 
 ## 功能
@@ -105,14 +101,14 @@ npm run dev
 
 ## 致谢
 
-Portal 建立在许多优秀的 [开源项目](src/Portal/Classes/OpenSourceProjects.cs) 之上
+SulfurLauncher 建立在许多优秀的 [开源项目](src/SulfurLauncher/Classes/OpenSourceProjects.cs) 之上
 
 > [!NOTE]
 > 项目中使用的部分开源库进行了二次修改：
 > - **MinecraftLaunch**：[Blessing-Studio/MinecraftLaunch](https://github.com/Blessing-Studio/MinecraftLaunch) → [tiouoo/MinecraftLaunch](https://github.com/tiouoo/MinecraftLaunch)
 > - **LiteSkinViewer**：[Ktn429/LiteSkinViewer](https://github.com/Ktn429/LiteSkinViewer) → [tiouoo/LiteSkinViewer](https://github.com/tiouoo/LiteSkinViewer)
 
-在交互设计、功能取舍与跨平台体验的探索中，Portal 也从下列开源项目的实践中获得了许多启发。感谢所有维护者与贡献者持续丰富 Minecraft 启动器生态；Portal 以独立的产品定位、架构与实现持续开发。
+在交互设计、功能取舍与跨平台体验的探索中，SulfurLauncher 也从下列开源项目的实践中获得了许多启发。感谢所有维护者与贡献者持续丰富 Minecraft 启动器生态；SulfurLauncher 以独立的产品定位、架构与实现持续开发。
 
 - [BedrockBoot](https://github.com/Round-Studio/BedrockBoot)：基岩版相关功能
 - [LauncherX](https://github.com/Corona-Studio/LXIT)：部分外观设计与功能

@@ -5,7 +5,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$manifest = Join-Path $env:TEMP "KuiperZone.PupNet/cc.tiouo.Portal-$Runtime-$Configuration-Setup/Portal.Desktop.iss"
+$manifest = Join-Path $env:TEMP "KuiperZone.PupNet/cc.tiouo.SulfurLauncher-$Runtime-$Configuration-Setup/SulfurLauncher.Desktop.iss"
 if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) {
     throw "PupNet Inno Setup manifest was not found: $manifest"
 }

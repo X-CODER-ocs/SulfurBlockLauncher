@@ -1,0 +1,276 @@
+:root {
+    --sulfur-yellow: #e8b923;
+    --sulfur-yellow-soft: #f4cd4a;
+    --sulfur-orange: #e8851a;
+    --sulfur-dark: #1a1813;
+    --sulfur-dark-2: #242016;
+    --sulfur-text: #f3efe2;
+    --sulfur-muted: #b9b29a;
+}
+
+html {
+    scroll-padding-top: 76px;
+}
+
+body {
+    font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    background: #faf8f1;
+    color: #2a271d;
+}
+
+/* ---------- Navbar ---------- */
+.bg-sulfur {
+    background: linear-gradient(90deg, #1d1b12 0%, #2c2713 100%);
+    border-bottom: 2px solid var(--sulfur-yellow);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--sulfur-text);
+    opacity: 0.85;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: var(--sulfur-yellow);
+    opacity: 1;
+}
+
+.brand-cube {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, var(--sulfur-yellow), var(--sulfur-orange));
+    border-radius: 4px;
+    transform: rotate(0deg);
+    box-shadow: 0 0 10px rgba(232, 185, 35, 0.6);
+}
+
+.navbar-brand {
+    color: var(--sulfur-yellow) !important;
+    letter-spacing: 0.3px;
+}
+
+/* ---------- Buttons ---------- */
+.btn-download {
+    background: linear-gradient(135deg, var(--sulfur-yellow), var(--sulfur-orange));
+    border: none;
+    color: #1a1813;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 0.55rem 1.4rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-download:hover {
+    color: #1a1813;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(232, 185, 35, 0.45);
+}
+
+.btn-outline-light {
+    border-radius: 10px;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+    margin-top: 70px;
+    background:
+        radial-gradient(circle at 50% -10%, rgba(232, 185, 35, 0.22), transparent 60%),
+        linear-gradient(160deg, #211e14 0%, #14130d 100%);
+    color: var(--sulfur-text);
+    padding: 3.5rem 0 4rem;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(232, 185, 35, 0.15);
+    border: 1px solid rgba(232, 185, 35, 0.5);
+    color: var(--sulfur-yellow-soft);
+    font-size: 0.85rem;
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+}
+
+.hero-title {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #ffe79a, var(--sulfur-yellow) 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 4px 30px rgba(232, 185, 35, 0.25);
+}
+
+.hero-sub {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    color: var(--sulfur-text);
+}
+
+.hero-sub2 {
+    color: var(--sulfur-muted);
+    margin-bottom: 1.8rem;
+}
+
+.hero-actions .btn {
+    margin: 0.4rem;
+}
+
+/* ---------- Sections ---------- */
+.section {
+    padding: 3.5rem 0;
+}
+
+.section-alt {
+    background: #f1ecdd;
+}
+
+.section-title {
+    text-align: center;
+    font-weight: 800;
+    font-size: 2rem;
+    margin-bottom: 0.4rem;
+    color: #211e14;
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 4px;
+    border-radius: 4px;
+    margin: 0.6rem auto 0;
+    background: linear-gradient(135deg, var(--sulfur-yellow), var(--sulfur-orange));
+}
+
+.section-lead {
+    text-align: center;
+    color: #6b6453;
+    margin-bottom: 2rem;
+}
+
+/* ---------- Feature cards ---------- */
+.feature-card {
+    background: #fff;
+    border: 1px solid #ece6d3;
+    border-radius: 16px;
+    padding: 1.6rem 1.4rem;
+    height: 100%;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(40, 35, 20, 0.12);
+    border-color: var(--sulfur-yellow);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 0.6rem;
+}
+
+.feature-card h5 {
+    font-weight: 700;
+    color: #211e14;
+}
+
+.feature-card p {
+    color: #6b6453;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+/* ---------- Download cards ---------- */
+.download-card {
+    display: block;
+    background: #fff;
+    border: 1px solid #ece6d3;
+    border-radius: 14px;
+    padding: 1.4rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    color: #211e14;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.download-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--sulfur-yellow);
+    box-shadow: 0 12px 28px rgba(40, 35, 20, 0.12);
+    text-decoration: none;
+    color: #211e14;
+}
+
+.download-os {
+    font-weight: 700;
+    font-size: 1.15rem;
+}
+
+.download-meta {
+    color: #8a8068;
+    font-size: 0.85rem;
+    margin-top: 0.2rem;
+}
+
+/* ---------- Feedback cards ---------- */
+.feedback-card {
+    background: #fff;
+    border: 1px solid #ece6d3;
+    border-radius: 16px;
+    padding: 1.8rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.feedback-card h5 {
+    font-weight: 700;
+    color: #211e14;
+}
+
+.qq-number {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--sulfur-orange);
+    letter-spacing: 1px;
+    margin: 0.4rem 0 0.6rem;
+}
+
+.qq-tip {
+    margin-left: 0.6rem;
+    color: #2e9e5b;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.qq-tip.show {
+    opacity: 1;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+    background: linear-gradient(90deg, #1d1b12 0%, #2c2713 100%);
+    color: var(--sulfur-text);
+    padding: 2.2rem 0 1.6rem;
+    margin-top: 1rem;
+}
+
+.footer-link {
+    color: var(--sulfur-muted);
+    text-decoration: none;
+    margin-left: 1.2rem;
+    font-size: 0.95rem;
+}
+
+.footer-link:hover {
+    color: var(--sulfur-yellow);
+    text-decoration: none;
+}
+
+.footer-divider {
+    border-color: rgba(255, 255, 255, 0.12);
+    margin: 1.2rem 0;
+}

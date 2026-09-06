@@ -1,0 +1,115 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <AssemblyTitle>SulfurLauncher</AssemblyTitle>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <IsWindowsBuildHost>$([MSBuild]::IsOSPlatform('Windows'))</IsWindowsBuildHost>
+        <TargetsWindows Condition="$(RuntimeIdentifier.StartsWith('win'))">true</TargetsWindows>
+        <TargetsWindows Condition="'$(RuntimeIdentifier)' == '' And $(RuntimeIdentifiers.StartsWith('win'))">true</TargetsWindows>
+        <TargetsWindows Condition="'$(RuntimeIdentifier)' == '' And '$(RuntimeIdentifiers)' == '' And '$(IsWindowsBuildHost)' == 'true'">true</TargetsWindows>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetsWindows)' == 'true'">
+        <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+        <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+        <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <HotAvaloniaAutoEnable>false</HotAvaloniaAutoEnable>
+        <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/cangcang/sulfurlauncher</RepositoryUrl>
+        <Description>SulfurLauncher</Description>
+        <PackageIcon>..\..\assets\SulfurLauncher.png</PackageIcon>
+        <PackageProjectUrl>https://github.com/cangcang/sulfurlauncher</PackageProjectUrl>
+        <PackageTags>SulfurLauncher</PackageTags>
+        <PackageVersion>1.0.0</PackageVersion>
+        <Copyright>https://github.com/cangcang/sulfurlauncher</Copyright>
+        <Authors>github.com/cangcang/sulfurlauncher</Authors>
+        <ApplicationIcon>..\..\assets\SulfurLauncher.ico</ApplicationIcon>
+        <Title>SulfurLauncher</Title>
+
+        <CFBundleName>SulfurLauncher</CFBundleName>
+        <CFBundleDisplayName>SulfurLauncher</CFBundleDisplayName>
+        <CFBundleIdentifier>cc.cangcang.sulfurlauncher</CFBundleIdentifier>
+        <CFBundleVersion>1.0.0</CFBundleVersion>
+        <CFBundlePackageType>AAPL</CFBundlePackageType>
+        <CFBundleSignature>Sulf</CFBundleSignature>
+        <CFBundleExecutable>SulfurLauncher.Desktop</CFBundleExecutable>
+        <CFBundleIconFile>SulfurLauncher.icns</CFBundleIconFile>
+        <CFBundleShortVersionString>1.0</CFBundleShortVersionString>
+        <NSPrincipalClass>NSApplication</NSPrincipalClass>
+        <NSHighResolutionCapable>true</NSHighResolutionCapable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Desktop"/>
+        <PackageReference Include="AvaloniaUI.DiagnosticsSupport">
+            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+        </PackageReference>
+
+        <PackageReference Include="Avalonia.Markup.Xaml.Loader" PrivateAssets="All" Publish="True"/>
+
+        <PackageReference Include="DotNet.Bundle"/>
+        <PackageReference Include="HotAvalonia" PrivateAssets="All" Condition="'$(Configuration)' == 'Debug'"/>
+        <PackageReference Include="SkiaSharp"/>
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\SulfurLauncher\SulfurLauncher.csproj"/>
+        <ProjectReference Condition="'$(TargetsWindows)' == 'true'"
+                          Include="..\SulfurLauncher.Bedrock.Windows\SulfurLauncher.Bedrock.Windows.csproj"/>
+        <ProjectReference Condition="'$(TargetsLinux)' == 'true'"
+                          Include="..\SulfurLauncher.Bedrock.Linux\SulfurLauncher.Bedrock.Linux.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="..\..\assets\SulfurLauncher.ico" Link="Assets/SulfurLauncher.ico"/>
+        <AvaloniaResource Remove="publish\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="SulfurLauncher.icns"/>
+        <AvaloniaResource Include="..\..\assets\SulfurLauncher.icns" Link="Assets/SulfurLauncher.icns"/>
+        <None Remove="publish\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AvaloniaXaml Remove="publish\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="publish\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Remove="publish\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Remove="publish\**"/>
+    </ItemGroup>
+
+    <!-- Copy the macOS app icon into the bundled .app/Contents/Resources so Finder
+         shows it. BundleApp only looks for the icon by CFBundleIconFile name at the
+         bundle root, so a manual copy is required. -->
+    <Target Name="CopyAppIconToBundle" AfterTargets="BundleApp">
+        <Message Importance="high" Text="[CopyAppIconToBundle] OutputPath=$(OutputPath) AssemblyName=$(AssemblyName)" />
+        <PropertyGroup>
+            <_AppIconSrc>$(MSBuildProjectDirectory)/../../assets/SulfurLauncher.icns</_AppIconSrc>
+            <_AppBundleDir Condition="Exists('$(OutputPath)publish/SulfurLauncher.app')">$(OutputPath)publish/SulfurLauncher.app</_AppBundleDir>
+            <_AppBundleDir Condition="'$(_AppBundleDir)' == '' And Exists('$(OutputPath)$(AssemblyName).app')">$(OutputPath)$(AssemblyName).app</_AppBundleDir>
+        </PropertyGroup>
+        <Message Importance="high" Text="[CopyAppIconToBundle] AppBundleDir=$(_AppBundleDir) IconExists=$([System.IO.File]::Exists('$(_AppIconSrc)'))" />
+        <MakeDir Directories="$(_AppBundleDir)/Contents/Resources" Condition="'$(_AppBundleDir)' != ''" />
+        <Copy SourceFiles="$(_AppIconSrc)"
+              DestinationFiles="$(_AppBundleDir)/Contents/Resources/SulfurLauncher.icns"
+              Condition="'$(_AppBundleDir)' != '' And Exists('$(_AppIconSrc)')" />
+    </Target>
+</Project>

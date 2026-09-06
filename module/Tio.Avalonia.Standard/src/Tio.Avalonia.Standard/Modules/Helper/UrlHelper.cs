@@ -1,6 +1,6 @@
 using System;
 
-namespace Portal.Core.Helpers;
+namespace SulfurLauncher.Core.Helpers;
 
 public static class UrlHelper
 {

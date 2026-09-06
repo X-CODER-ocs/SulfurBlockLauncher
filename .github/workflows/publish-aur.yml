@@ -48,10 +48,10 @@ jobs:
       - name: Download AppImage & compute sha256
         run: |
           cd "$GITHUB_WORKSPACE"
-          curl -fL -o Portal.AppImage \
-            "https://github.com/${{ github.repository }}/releases/download/${{ inputs.tag }}/Portal.linux.x64.AppImage"
+          curl -fL -o SulfurLauncher.AppImage \
+            "https://github.com/${{ github.repository }}/releases/download/${{ inputs.tag }}/SulfurLauncher.linux.x64.AppImage"
           if [ "${{ inputs.moving_tag }}" = "false" ]; then
-            echo "sha=$(sha256sum Portal.AppImage | cut -d' ' -f1)" >> $GITHUB_ENV
+            echo "sha=$(sha256sum SulfurLauncher.AppImage | cut -d' ' -f1)" >> $GITHUB_ENV
           else
             echo "sha=SKIP" >> $GITHUB_ENV
           fi
@@ -78,7 +78,7 @@ jobs:
           cp "$GITHUB_WORKSPACE/packaging/aur/${{ inputs.pkgname }}.PKGBUILD" PKGBUILD
           sed -i "s|^pkgver=.*|pkgver=${{ inputs.app_version }}|" PKGBUILD
           if [ "${{ inputs.moving_tag }}" = "true" ]; then
-            sed -i "s|^_appimg=\"Portal.AppImage\"|_appimg=\"Portal-${{ inputs.app_version }}.AppImage\"|" PKGBUILD
+            sed -i "s|^_appimg=\"SulfurLauncher.AppImage\"|_appimg=\"SulfurLauncher-${{ inputs.app_version }}.AppImage\"|" PKGBUILD
           fi
           if [ "${{ inputs.moving_tag }}" = "false" ]; then
             sed -i "s|^sha256sums_x86_64=.*|sha256sums_x86_64=('${{ env.sha }}' 'SKIP')|" PKGBUILD

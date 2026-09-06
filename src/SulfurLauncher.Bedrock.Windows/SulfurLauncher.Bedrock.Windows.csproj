@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+        <RootNamespace>SulfurLauncher.Bedrock</RootNamespace>
+        <PlatformTarget>x64</PlatformTarget>
+        <NativeInjectorResource>$(MSBuildThisFileDirectory)..\SulfurLauncher.Bedrock.Injector\SulfurLauncher.Inject.dll</NativeInjectorResource>
+        <NativeBootstrapResource>$(MSBuildThisFileDirectory)..\SulfurLauncher.Bedrock.Bootstrap\SulfurLauncher.Bootstrap.dll</NativeBootstrapResource>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SulfurLauncher.Bedrock.Core\SulfurLauncher.Bedrock.Core.csproj" />
+      <ProjectReference Include="..\SulfurLauncher.Bedrock.Core.Windows\SulfurLauncher.Bedrock.Core.Windows.csproj" />
+      <ProjectReference Include="..\SulfurLauncher.Bedrock.Xbox\SulfurLauncher.Bedrock.Xbox.csproj" />
+      <ProjectReference Include="..\SulfurLauncher.Bedrock.Standard\SulfurLauncher.Bedrock.Standard.csproj" />
+      <ProjectReference Include="..\SulfurLauncher.Bedrock.PeNet\src\PeNet\SulfurLauncher.Bedrock.PeNet.csproj" />
+      <ProjectReference Include="..\SulfurLauncher.Localization\SulfurLauncher.Localization.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="..\SulfurLauncher.Bedrock.Preload\SulfurLauncher.Preload.dll"
+                        LogicalName="SulfurLauncher.Preload.dll" />
+      <EmbeddedResource Include="..\SulfurLauncher.Bedrock.Hook\SulfurLauncher.XUserHook.dll"
+                        LogicalName="SulfurLauncher.Bedrock.XUserHook.dll" />
+      <EmbeddedResource Include="$(NativeInjectorResource)"
+                        LogicalName="SulfurLauncher.Inject.dll" />
+      <EmbeddedResource Include="$(NativeBootstrapResource)"
+                        LogicalName="SulfurLauncher.Bootstrap.dll" />
+    </ItemGroup>
+
+</Project>

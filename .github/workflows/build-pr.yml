@@ -77,19 +77,19 @@ jobs:
       - name: Build & Package (Windows x64)
         shell: pwsh
         run: |
-          cd ./src/Portal.Desktop
+          cd ./src/SulfurLauncher.Desktop
           New-Item -ItemType Directory -Force -Path "../../dist"
           dotnet restore -r win-x64
           dotnet publish -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:SelfContained=false /p:Version=${{ needs.prepare.outputs.app_version }} -o "../../dist" -p:DebugType=none -p:DebugSymbols=false
           cd "../../dist"
-          Rename-Item -Path "Portal.Desktop.exe" -NewName "Portal.win-x64.PR-${{ github.event.number }}.exe" -Force
-          Compress-Archive -Path "Portal.win-x64.PR-${{ github.event.number }}.exe" -DestinationPath "../Portal.win-x64.PR-${{ github.event.number }}.zip" -Force
+          Rename-Item -Path "SulfurLauncher.Desktop.exe" -NewName "SulfurLauncher.win-x64.PR-${{ github.event.number }}.exe" -Force
+          Compress-Archive -Path "SulfurLauncher.win-x64.PR-${{ github.event.number }}.exe" -DestinationPath "../SulfurLauncher.win-x64.PR-${{ github.event.number }}.zip" -Force
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: Portal.win-x64.PR-${{ github.event.number }}
-          path: ./Portal.*.zip
+          name: SulfurLauncher.win-x64.PR-${{ github.event.number }}
+          path: ./SulfurLauncher.*.zip
           retention-days: 7
 
   linux-x64-build:
@@ -112,7 +112,7 @@ jobs:
           git submodule foreach --recursive 'branch=$(git config -f "$toplevel/.gitmodules" --get "submodule.$name.branch" || echo main); git fetch origin "$branch" && git checkout -B "$branch" "origin/$branch"'
 
       - name: Build Linux x64
-        run: dotnet build ./src/Portal.Desktop/Portal.Desktop.csproj -c Release -r linux-x64
+        run: dotnet build ./src/SulfurLauncher.Desktop/SulfurLauncher.Desktop.csproj -c Release -r linux-x64
 
   comment-pr:
     runs-on: ubuntu-latest

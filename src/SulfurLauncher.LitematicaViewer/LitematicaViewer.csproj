@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>SulfurLauncher.LitematicaViewer</RootNamespace>
+    <AssemblyName>SulfurLauncher.LitematicaViewer</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\setting.json" />
+    <EmbeddedResource Include="Resources\categories.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="fNbt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SulfurLauncher.Localization\SulfurLauncher.Localization.csproj" />
+  </ItemGroup>
+
+</Project>

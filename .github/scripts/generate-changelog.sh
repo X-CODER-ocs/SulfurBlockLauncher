@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="${1:-https://github.com/tiouoo/Portal}"
+REPO_URL="${1:-https://github.com/tiouoo/SulfurLauncher}"
 GITHUB_SHA="${GITHUB_SHA:-}"
 
 STABLE_TAG=$(git tag -l --sort=-v:refname 'v*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n1 || true)

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>SulfurLauncher.Bedrock.Linux</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SulfurLauncher.Bedrock.PeNet\src\PeNet\SulfurLauncher.Bedrock.PeNet.csproj" />
+    <ProjectReference Include="..\SulfurLauncher.Bedrock.Core\SulfurLauncher.Bedrock.Core.csproj" />
+    <ProjectReference Include="..\SulfurLauncher.Bedrock.Standard\SulfurLauncher.Bedrock.Standard.csproj" />
+    <ProjectReference Include="..\SulfurLauncher.Localization\SulfurLauncher.Localization.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\SulfurLauncher.Bedrock.Preload\SulfurLauncher.Preload.dll" LogicalName="SulfurLauncher.Preload.dll" />
+    <EmbeddedResource Include="..\SulfurLauncher.Bedrock.Bootstrap\SulfurLauncher.Bootstrap.dll" LogicalName="SulfurLauncher.Bootstrap.dll" />
+  </ItemGroup>
+
+</Project>

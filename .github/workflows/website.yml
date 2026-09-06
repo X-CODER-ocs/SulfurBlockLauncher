@@ -1,0 +1,48 @@
+name: website/build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'SulfurBlockLauncher.Web/**'
+      - '.github/workflows/website.yml'
+  pull_request:
+    paths:
+      - 'SulfurBlockLauncher.Web/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.400'
+
+      - name: Restore
+        run: dotnet restore SulfurBlockLauncher.Web/SulfurBlockLauncher.Web.csproj
+
+      - name: Build
+        run: dotnet build SulfurBlockLauncher.Web/SulfurBlockLauncher.Web.csproj -c Release --no-restore
+
+      - name: Publish
+        run: dotnet publish SulfurBlockLauncher.Web/SulfurBlockLauncher.Web.csproj -c Release -o ./website-publish --no-build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: sulfurlauncher-website
+          path: ./website-publish
+          retention-days: 14
+
+      # 说明：本项目官网是用 ASP.NET Core (Razor Pages, .NET 10) 写的，
+      # 属于“服务端渲染”应用，需要 .NET 运行时才能跑，无法直接丢到 GitHub Pages 这种静态托管。
+      # 想要公网可访问的站点，把上面这个 artifact 部署到任意支持 .NET 的 host 即可
+      # （例如云服务器 / Azure App Service / Fly.io 等）；或者把官网改成纯静态站后走 GitHub Pages。

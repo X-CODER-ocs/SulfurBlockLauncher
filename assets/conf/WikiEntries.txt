@@ -808,7 +808,7 @@ architecturecraft|建筑师工艺 (Architecture Craft)
 chameleon@texel-chameleon|变色龙*
 mrtjpcore
 cyclops-core@
-netherportalfix@|下界传送门修正 (NetherPortalFix)¨netherportalfix-fabric|下界传送门修正 (NetherPortalFix)
+netherportalfix@|下界传送门修正 (NetherSulfurLauncherFix)¨netherportalfix-fabric|下界传送门修正 (NetherSulfurLauncherFix)
 rftools-dimensions@|RF工具：维度 (RFTools Dimensions)
 signals|信号*
 extreme-reactors|极限反应堆*¨@extreme-reactors|极限反应堆 (Extreme Reactors) - 仅 2.4.9 及以下，长期未更新
@@ -1758,7 +1758,7 @@ planttech-2|植物科技2 (PlantTech 2)
 toast-control@|消息框控制*
 
 cocoa-magic|可可工艺*
-betterportals|更好的传送门 (Better Portals)
+betterportals|更好的传送门 (Better SulfurLaunchers)
 classic-combat@|经典战斗*
 
 less-lag|较少的滞后*
@@ -2407,7 +2407,7 @@ hypnotics|安眠药 (hypnotics)
 villager-market|村民市场*
 
 linear|线性放置*
-immersive-portals-for-forge@immersiveportals|沉浸式传送门 (Immersive Portals)¨immersive-portals-mod@immersive-portals-neoforge|沉浸式传送门 (Immersive Portals)
+immersive-portals-for-forge@immersiveportals|沉浸式传送门 (Immersive SulfurLaunchers)¨immersive-portals-mod@immersive-portals-neoforge|沉浸式传送门 (Immersive SulfurLaunchers)
 universalbestiary
 autumnity@|秋原*
 worldgeneration-profiler
@@ -2841,7 +2841,7 @@ imblockerfabric@imblocker|输入法冲突修复 (IMBlockerFabric)
 saomclib
 survival-utilities|生存工具*
 slashblade|拔刀剑 (SlashBlade)
-portal-blocks-2-0|传送门方块 (Portal Blocks)
+portal-blocks-2-0|传送门方块 (SulfurLauncher Blocks)
 slimecraft-add-tools-etc
 mechanized-steam-power|机械化蒸汽动力*
 moreswordonline|动漫神域 (SwordCraftOnline)
@@ -3610,7 +3610,7 @@ wiki-zoomer@
 personality@personality!
 mc-modsurement@allurement!
 dwarf-miner-totem|矮人矿工*
-yungs-better-portals|YUNG 的传送门机制重构 (YUNG's Better Portals)
+yungs-better-portals|YUNG 的传送门机制重构 (YUNG's Better SulfurLaunchers)
 german-road-signs-mod|德国交通标志*
 iguana-in-a-blanket@iguana|真实调整 (Iguana in a Blanket)
 anthill-inside@anthillinside|蚂蚁物流*
@@ -3647,7 +3647,7 @@ limitless|无上限附魔*
 vpn-blocker|禁用VPN (VPN Blocker)
 premium-wood@
 tenshilib@¨tenshilib-fabric
-randomportals|随意传送门 (RandomPortals)
+randomportals|随意传送门 (RandomSulfurLaunchers)
 configured|配置界面*¨configured-fabric|配置界面 (Configured)
 
 jellyfishing@|抓水母*
@@ -3762,7 +3762,7 @@ astromine-core|天体矿工：核心 (Astromine: Core)
 dungeondq
 dynamic-trees-integrated-dynamics|动态的树：动态联合/集成动力附属 (Dynamic Trees - Integrated Dynamics)
 skyblock-builder@|空岛建立者*
-antiportals@|反传送门 (AntiPortals)
+antiportals@|反传送门 (AntiSulfurLaunchers)
 trash-cans@|垃圾桶*
 mattdahepic-core
 mob-farm-helpers-forge|刷怪塔小帮手 (Mob Farm Helpers)¨mob-farm-helpers-fabric|刷怪塔小帮手 (Mob Farm Helpers)
@@ -7746,7 +7746,7 @@ cave-generator|洞穴生成器*
 console-filter
 customized-dungeon-loot@
 customquests
-portal-cubed|Portal Cubed / Thinking With Portatos - 无法¨@portal-cubed
+portal-cubed|SulfurLauncher Cubed / Thinking With Portatos - 无法¨@portal-cubed
 pehkui-resizer
 kaffees-dual-ride@kaffees_dual_ride
 @sfreeze
@@ -10351,7 +10351,7 @@ barrels-2012@
 tfc-sample-drill
 tfc-tng-rosia¨tfc-rosia
 aether-additions
-custom-portal-api-forge@customportalapi|自定义传送门 API Forge 版 (Custom Portal API [Forge])
+custom-portal-api-forge@customportalapi|自定义传送门 API Forge 版 (Custom SulfurLauncher API [Forge])
 jaopca-extras@
 
 enclosure@
@@ -14033,7 +14033,7 @@ hotbaaaar@|超长快捷栏/忄夬扌疌木兰 (HotBaaaar)
 ui@ui-lib
 random-item@random-items|随机物品*
 lucky-clover@lucky-clover!
-@better-portals|更好的传送门 (Better Portals)
+@better-portals|更好的传送门 (Better SulfurLaunchers)
 social-distance@|社交距离*
 gt@gtnn
 hunger-plus@|饥饿+*
@@ -20085,7 +20085,7 @@ tablistextension@|TAB 列表扩展 (TabListExtension)
 rally-of-the-guard-guardvillagers
 bncci
 @recipe-maker
-portaltransform@|传送门嬗变 (PortalTransform)
+portaltransform@|传送门嬗变 (SulfurLauncherTransform)
 @a555sd|更多的画 (More Paintings)
 unusual-furniture@
 xiaoanmooncake@|小安的月饼狂热 (Xiaoan's Mooncake Fever)
@@ -26576,7 +26576,7 @@ kaleidoscope-bloodwine@kaleidoscope_bloodwine|森罗酒馆：血酒 (Kaleidoscop
 iss-tms-this-is-a-magic-staff@this-is-a-magic-staff|万法皆杖 (This is a Magic Staff)
 ai-myhs-plants-vs-zombies@ai_myhs-plants-vs.-zombies|Ai_myh的植物大战僵尸 (Ai_myh's Plants Vs. Zombies Mod)
 cursedfate-npcs
-moderngamingworlds-nether-portal-restrictor@nether-portal-restrictor|下界传送门限制器 (Nether Portal Restrictor)
+moderngamingworlds-nether-portal-restrictor@nether-portal-restrictor|下界传送门限制器 (Nether SulfurLauncher Restrictor)
 kubejs-kaleidoscope@
 happyghast-extend|乐魂拓展 (HappyGhast Extend)
 planar-artifice-forked-continuation

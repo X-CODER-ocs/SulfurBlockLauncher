@@ -1,0 +1,77 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/cangcang/sulfurlauncher</RepositoryUrl>
+        <Description>SulfurLauncher</Description>
+        <PackageIcon>..\..\assets\SulfurLauncher.png</PackageIcon>
+        <PackageProjectUrl>https://github.com/cangcang/sulfurlauncher</PackageProjectUrl>
+        <PackageTags>SulfurLauncher</PackageTags>
+        <PackageVersion>0.0.0</PackageVersion>
+        <Copyright>https://github.com/cangcang/sulfurlauncher</Copyright>
+        <Authors>github.com/cangcang/sulfurlauncher</Authors>
+        <ApplicationIcon>..\..\assets\SulfurLauncher.ico</ApplicationIcon>
+        <Title>SulfurLauncher</Title>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**"/>
+        <EmbeddedResource Include="..\..\assets\conf\WikiEntries.txt">
+            <Link>Assets\WikiEntries.txt</Link>
+        </EmbeddedResource>
+        <AvaloniaResource Include="..\..\assets\SulfurLauncher.ico" Link="Assets/SulfurLauncher.ico"/>
+        <AvaloniaResource Include="..\..\assets\SulfurLauncher.png" Link="Assets/SulfurLauncher.png"/>
+        <AvaloniaResource Include="..\..\assets\SulfurLauncher.icns" Link="Assets/SulfurLauncher.icns"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AsyncImageLoader.Avalonia"/>
+        <PackageReference Include="Avalonia"/>
+        <PackageReference Include="Avalonia.AvaloniaEdit"/>
+        <PackageReference Include="Avalonia.Controls.ItemsRepeater"/>
+        <PackageReference Include="Avalonia.Fonts.Inter"/>
+        <PackageReference Include="Avalonia.Markup.Xaml.Loader" PrivateAssets="All" />
+        <PackageReference Include="AvaloniaUI.DiagnosticsSupport">
+            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="CommunityToolkit.Mvvm"/>
+        <PackageReference Include="HotAvalonia" Condition="'$(Configuration)' == 'Debug'"/>
+        <PackageReference Include="Irihi.Lingua"/>
+        <PackageReference Include="SkiaSharp"/>
+        <PackageReference Include="Tomlyn"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\module\Tio.Avalonia.Standard\src\Tio.Avalonia.Standard.Tab\Tio.Avalonia.Standard.Tab.csproj"/>
+        <ProjectReference Include="..\..\module\Tio.Avalonia.Standard\src\Tio.Avalonia.Standard\Tio.Avalonia.Standard.csproj"/>
+        <ProjectReference Include="..\SulfurLauncher.Core\SulfurLauncher.Core.csproj"/>
+        <ProjectReference Include="..\SulfurLauncher.LitematicaViewer\LitematicaViewer.csproj"/>
+        <ProjectReference Include="..\SulfurLauncher.Localization\SulfurLauncher.Localization.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\Pages\ToolsPages\MultiplayerPages\RedstoneMultiplayerPage.axaml.cs">
+        <DependentUpon>RedstoneMultiplayerPage.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Pages\ToolsPages\MultiplayerPages\TerracottaMultiplayerPage.axaml.cs">
+        <DependentUpon>TerracottaMultiplayerPage.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Pages\ToolsPages\MultiplayerPages\MultiplayerPage.axaml.cs">
+        <DependentUpon>MultiplayerPage.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Pages\ToolsPages\MultiplayerPages\MultiplayerPortDialog.axaml.cs">
+        <DependentUpon>MultiplayerPortDialog.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Pages\ToolsPages\MultiplayerPages\MultiplayerContentPage.axaml.cs">
+        <DependentUpon>MultiplayerContentPage.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+    
+</Project>

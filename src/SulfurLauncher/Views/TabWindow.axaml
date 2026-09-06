@@ -1,0 +1,289 @@
+﻿<tio:TioWindow
+    Height="710"
+    Icon="/Assets/SulfurLauncher.ico"
+    IsCloseBtnShow="{OnPlatform Default=True,
+                                macOS=False}"
+    IsMaxBtnShow="{OnPlatform Default=True,
+                              macOS=False}"
+    IsMinBtnShow="{OnPlatform Default=True,
+                              macOS=False}"
+    MinHeight="620"
+    MinWidth="1020"
+    Title="SulfurLauncher"
+    TitleBarControlBtnMargin="0,0,10,0"
+    TitleBarHeight="44"
+    Width="1200"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="SulfurLauncher.Views.TabWindow"
+    x:DataType="views:TabWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:common="clr-namespace:Tio.Avalonia.Standard.Tab.Common;assembly=Tio.Avalonia.Standard.Tab"
+    xmlns:components="clr-namespace:SulfurLauncher.Views.Components"
+    xmlns:converter="clr-namespace:SulfurLauncher.Module.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:entries="clr-namespace:Tio.Avalonia.Standard.Tab.Entries;assembly=Tio.Avalonia.Standard.Tab"
+    xmlns:loc="using:SulfurLauncher.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+    xmlns:tio="https://github.com/tiouoo/TioUi.Avalonia"
+    xmlns:views="clr-namespace:SulfurLauncher.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <tio:TioWindow.Resources>
+        <SolidColorBrush Color="Transparent" x:Key="TitleBarBackgroundColor" />
+        <common:NavScrollOpacityMaskConverter x:Key="NavScrollOpacityMaskConverter" />
+        <converter:IntCompareConverter x:Key="IntCompareConverter" />
+    </tio:TioWindow.Resources>
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem Header="{Translate {x:Static loc:AppLanguageManager+Keys.tabwindow_tabs}}">
+                <NativeMenu>
+                    <NativeMenuItem Click="NM_NewTab" Header="{Translate {x:Static loc:AppLanguageManager+Keys.tabwindow_newTab}}" />
+                    <NativeMenuItem
+                        Click="NM_CloseTab"
+                        Header="{Translate {x:Static loc:AppLanguageManager+Keys.tabwindow_closeTab}}"
+                        IsEnabled="{Binding SelectedTab.IsCloseable}" />
+                    <NativeMenuItem
+                        Click="NM_CloseOtherTab"
+                        Header="{Translate {x:Static loc:AppLanguageManager+Keys.tabwindow_closeOtherTabs}}"
+                        IsEnabled="{Binding Tabs.Count, Converter={StaticResource IntCompareConverter}, ConverterParameter='> 1'}" />
+                    <NativeMenuItem
+                        Click="NM_OpenInNewWindow"
+                        Header="{Translate {x:Static loc:AppLanguageManager+Keys.tabwindow_openInNewWindow}}"
+                        IsEnabled="{Binding Tabs.Count, Converter={StaticResource IntCompareConverter}, ConverterParameter='> 1'}" />
+                </NativeMenu>
+            </NativeMenuItem>
+        </NativeMenu>
+    </NativeMenu.Menu>
+    <tio:TioWindow.Styles>
+        <Style Selector="Button.title-bar-button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Arrow" />
+            <Setter Property="Height" Value="25" />
+            <Setter Property="Width" Value="25" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="7"
+                        Height="24"
+                        Name="bd"
+                        Width="24">
+                        <Path
+                            Data="{TemplateBinding Content}"
+                            Fill="{DynamicResource ForegroundColor}"
+                            Height="10"
+                            HorizontalAlignment="Center"
+                            Margin="{TemplateBinding Padding}"
+                            Name="ico"
+                            Stretch="Uniform"
+                            VerticalAlignment="Center"
+                            Width="10" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+            <Style Selector="^:pointerover">
+                <Style Selector="^ /template/ Border">
+                    <Setter Property="Background" Value="{DynamicResource TranslucentBackgroundColor}" />
+                </Style>
+                <Style Selector="^.close-button /template/ Border">
+                    <Setter Property="Background">
+                        <SolidColorBrush Color="Red" Opacity="{DynamicResource TranslucentBackGroundOpacity}" />
+                    </Setter>
+                </Style>
+                <Style Selector="^.close-button /template/ Border">
+                    <Style Selector="^ Path">
+                        <Setter Property="Fill" Value="White" />
+                    </Style>
+                </Style>
+            </Style>
+        </Style>
+        <Style Selector="Border.tab-root:pointerover">
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="Border.tab-root">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Duration="0:0:0.15" Property="Opacity" />
+                </Transitions>
+            </Setter>
+        </Style>
+    </tio:TioWindow.Styles>
+    <tio:TioWindow.TitleBarLeftContent>
+        <Border IsVisible="False" Name="TitleBarLogo">
+            <StackPanel
+                IsHitTestVisible="False"
+                Margin="{OnPlatform Default=8 0 0 0,
+                                    macOS=65 0 0 0}"
+                Orientation="Horizontal"
+                VerticalAlignment="Center">
+                <TextBlock
+                    FontSize="16"
+                    Margin="8,2,0,0"
+                    Text="SulfurLauncher"
+                    VerticalAlignment="Center" />
+            </StackPanel>
+        </Border>
+    </tio:TioWindow.TitleBarLeftContent>
+    <tio:TioWindow.TitleBarRightContent>
+        <DockPanel Name="TitleBarThings" VerticalAlignment="Center">
+            <components:TitleBarComponent Name="BarComponent" />
+        </DockPanel>
+    </tio:TioWindow.TitleBarRightContent>
+    <Grid Background="Transparent">
+        <ScrollViewer
+            Background="Transparent"
+            Classes="Flat"
+            Height="44"
+            HorizontalAlignment="Left"
+            HorizontalScrollBarVisibility="Auto"
+            Margin="3,-44,85,0"
+            Name="NavScrollViewer"
+            OpacityMask="{Binding IsTabMaskVisible, Converter={StaticResource NavScrollOpacityMaskConverter}}"
+            PointerWheelChanged="InputElement_OnPointerWheelChanged"
+            VerticalAlignment="Top"
+            VerticalScrollBarVisibility="Disabled">
+            <ScrollViewer.Styles>
+                <Style Selector="ScrollViewer#NavScrollViewer /template/ ScrollBar#PART_HorizontalScrollBar">
+                    <Setter Property="Margin" Value="0,0,0,1" />
+                </Style>
+            </ScrollViewer.Styles>
+            <DockPanel>
+                <tio:SelectionList
+                    Indicator="{x:Null}"
+                    ItemsSource="{Binding Tabs}"
+                    Name="TabSelectionList"
+                    SelectedItem="{Binding SelectedTab}">
+                    <tio:SelectionList.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </tio:SelectionList.ItemsPanel>
+                    <tio:SelectionList.ItemTemplate>
+                        <DataTemplate DataType="entries:TabEntry">
+                            <Border
+                                BorderBrush="{DynamicResource PanelBackgroundColor}"
+                                BorderThickness="0"
+                                Classes="tab-root"
+                                CornerRadius="10"
+                                Height="30"
+                                Margin="3,1,3,0"
+                                MinWidth="{Binding MinWidth}"
+                                Name="ItemRoot"
+                                PointerPressed="OnPointerPressed"
+                                Tag="{Binding}">
+                                <Panel
+                                    HorizontalAlignment="Stretch"
+                                    Margin="9,0,10,0"
+                                    VerticalAlignment="Stretch">
+                                    <DockPanel VerticalAlignment="Stretch">
+                                        <Panel
+                                            DockPanel.Dock="Left"
+                                            Height="{Binding IconHeight}"
+                                            HorizontalAlignment="Left"
+                                            IsVisible="{Binding IsIconVisible}"
+                                            Margin="{Binding IconMargin}"
+                                            VerticalAlignment="Center"
+                                            Width="{Binding IconWidth}">
+                                            <TextBlock
+                                                FontFamily="{StaticResource IconFont}"
+                                                FontSize="{Binding IconHeight}"
+                                                FontWeight="Thin"
+                                                HorizontalAlignment="Center"
+                                                IsVisible="{Binding HasFontIcon}"
+                                                Text="{Binding IconGlyph}"
+                                                VerticalAlignment="Center" />
+                                            <PathIcon
+                                                Data="{Binding Icon}"
+                                                Height="{Binding IconHeight}"
+                                                HorizontalAlignment="Center"
+                                                IsVisible="{Binding !HasFontIcon}"
+                                                VerticalAlignment="Center"
+                                                Width="{Binding IconWidth}" />
+                                        </Panel>
+                                        <ContentControl Content="{Binding Header}" VerticalAlignment="Center">
+                                            <ContentControl.ContentTemplate>
+                                                <DataTemplate DataType="{x:Type sys:String}">
+                                                    <TextBlock
+                                                        FontSize="13"
+                                                        Margin="2,0,25,0"
+                                                        Text="{Binding}"
+                                                        VerticalAlignment="Center" />
+                                                </DataTemplate>
+                                            </ContentControl.ContentTemplate>
+                                        </ContentControl>
+                                    </DockPanel>
+                                    <Grid
+                                        HorizontalAlignment="Right"
+                                        IsVisible="{Binding IsCloseable}"
+                                        Margin="0,0,-4,0">
+                                        <Button
+                                            Background="Transparent"
+                                            Command="{Binding Close}"
+                                            Height="28"
+                                            HorizontalAlignment="Right"
+                                            Margin="20,0,3,0"
+                                            MaxHeight="14"
+                                            MaxWidth="16"
+                                            MinHeight="14"
+                                            Name="CloseButton"
+                                            Theme="{StaticResource TransparentButton}"
+                                            ToolTip.ShowDelay="900"
+                                            ToolTip.Tip="{Translate {x:Static loc:AppLanguageManager+Keys.app_tooltips_closeTab}}"
+                                            VerticalAlignment="Center"
+                                            Width="20">
+                                            <Button.Transitions>
+                                                <Transitions>
+                                                    <DoubleTransition Duration="0:0:0.07" Property="Opacity" />
+                                                </Transitions>
+                                            </Button.Transitions>
+                                            <TextBlock
+                                                FontFamily="{StaticResource IconFont}"
+                                                FontSize="16"
+                                                FontWeight="Thin"
+                                                HorizontalAlignment="Center"
+                                                Text="&#xe609;"
+                                                VerticalAlignment="Center" />
+                                        </Button>
+                                    </Grid>
+                                </Panel>
+                            </Border>
+                        </DataTemplate>
+                    </tio:SelectionList.ItemTemplate>
+                </tio:SelectionList>
+                <Button
+                    Classes="tab-add-btn"
+                    Click="Button_OnClick"
+                    CornerRadius="10"
+                    DockPanel.Dock="Right"
+                    Height="30"
+                    Margin="3,0,25,0"
+                    Theme="{StaticResource TransparentButton}"
+                    ToolTip.ShowDelay="900"
+                    ToolTip.Tip="{Translate {x:Static loc:AppLanguageManager+Keys.app_tooltips_newTab}}"
+                    Width="30">
+                    <TextBlock
+                        FontFamily="{StaticResource IconFont}"
+                        FontSize="18"
+                        FontWeight="Thin"
+                        HorizontalAlignment="Center"
+                        Text="&#xe645;"
+                        VerticalAlignment="Center" />
+                </Button>
+            </DockPanel>
+        </ScrollViewer>
+        <TransitioningContentControl Background="Transparent" Content="{Binding SelectedTab.Content}">
+            <TransitioningContentControl.PageTransition>
+                <CompositePageTransition>
+                    <CrossFade Duration="0:0:0.2" />
+
+                </CompositePageTransition>
+            </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
+
+
+    </Grid>
+</tio:TioWindow>

@@ -1,0 +1,265 @@
+{
+  "appearance": {
+    "title": "界面外观",
+    "themeStyle": "主题样式",
+    "themeSystem": "系统",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "themeMirage": "幻影",
+    "themeColor": "主题色",
+    "appScale": "应用缩放",
+    "applyChanges": "应用更改",
+    "customScale": "自定义缩放",
+    "backgroundStyle": "背景风格",
+    "backgroundDefault": "默认主题",
+    "backgroundImage": "图片",
+    "backgroundSolidColor": "纯色",
+    "backgroundAcrylic": "亚克力",
+    "backgroundMica": "云母",
+    "backgroundTransparent": "透明",
+    "language": "语言",
+    "effectiveScale": "实际缩放: ",
+    "backgroundColor": "背景颜色",
+    "backgroundImageLabel": "背景图片",
+    "selectBackgroundImage": "选择背景图片",
+    "changeBackgroundImage": "更改背景图片",
+    "changeBackgroundImageFailed": "更改背景图片失败：{0}",
+    "recentBackgrounds": "最近使用的背景",
+    "removeBackgroundFromHistory": "从历史记录中移除",
+    "removeBackgroundFromHistoryFailed": "移除背景图片失败：{0}",
+    "imageBlurRadius": "模糊程度",
+    "enableImageMask": "启用背景遮罩",
+    "imageMaskColor": "遮罩颜色",
+    "imageMaskOpacity": "遮罩透明度",
+    "acrylicColor": "亚克力颜色",
+    "opacity": "透明度",
+    "blurColor": "模糊颜色",
+    "micaColor": "云母颜色",
+    "controlOpacity": "控件不透明度",
+    "translucentControlOpacity": "半透明控件不透明度",
+    "enableCustomForegroundColor": "使用自定义字体颜色",
+    "foregroundColor": "全局字体颜色",
+    "disableSystemWindowBorder": "禁用系统边框",
+    "enableWindowBorder": "显示边框",
+    "borderColor": "边框颜色",
+    "borderThickness": "边框宽度",
+    "borderCornerRadius": "边框圆角",
+    "showWidgetBackground": "小组件背景"
+  },
+  "about": {
+    "title": "关于应用",
+    "latestVersion": "最新版",
+    "checkForUpdates": "检查更新",
+    "newVersionFound": "发现新版本",
+    "downloadNewVersion": "下载新版本",
+    "autoCheckForUpdates": "自动更新",
+    "updateSource": "更新源",
+    "githubMirrorHint": " *前往 设置-网络代理 开启 GitHub 镜像加速可加快更新速度",
+    "updateChannel": "更新通道",
+    "channelRelease": "正式版",
+    "channelDailyBuild": "每日构建版本",
+    "channelCommitBuild": "commit 版本",
+    "cnbChannelHint": " * Cnb 通道仅提供正式版",
+    "thirdPartyComponentLibraries": "第三方组件库",
+    "projectWebsite": "项目网站",
+    "githubSourceCode": "GitHub 源代码",
+    "issueFeedback": "问题反馈",
+    "officialQqGroup": "官方 QQ 群",
+    "sponsorProject": "赞助项目",
+    "qqGroupCopied": "群号已复制到剪贴板",
+    "sourceCode": "源代码：",
+    "license": "许可证：",
+    "frontendFramework": "前端框架：",
+    "iconLibrary": "图标库：",
+    "controlLibrary": "控件库："
+  },
+  "account": {
+    "title": "账户档案",
+    "saveSkin": "保存皮肤",
+    "previewSkin": "皮肤预览",
+    "switchAvatar": "切换头像",
+    "refreshInfo": "刷新信息",
+    "editInfo": "修改信息",
+    "editNote": "修改备注",
+    "copyUuid": "复制uuid",
+    "removeAccount": "移除账户",
+    "bedrockAccounts": "基岩版账户",
+    "disable": "禁用",
+    "enable": "启用"
+  },
+  "advanced": {
+    "title": "高级选项",
+    "autoSetChineseLanguage": "自动设置中文",
+    "autoSetChineseLanguageHint": " *启动游戏时自动将游戏语言切换为简体中文",
+    "gameOverlay": "游戏内覆盖层",
+    "gameOverlayHint": " *在游戏内按下 Shift+Tab 显示或隐藏覆盖层",
+    "gameFullscreen": "游戏全屏",
+    "gameFullscreenHint": " *启动游戏后默认以全屏模式打开游戏窗口",
+    "minecraftWindowTitle": "Minecraft窗口标题",
+    "leaveEmptyForDefault": "留空默认",
+    "minecraftWindowSize": "Minecraft窗口大小",
+    "jvmArgs": "JVM虚拟机参数",
+    "leaveEmptyByDefault": "默认留空",
+    "beforeLaunchCommand": "启动前执行命令",
+    "beforeLaunchCommandHint": "默认留空 在游戏启动前执行并等待其完成",
+    "afterLaunchCommand": "启动后执行命令",
+    "afterLaunchCommandHint": "默认留空 在游戏进程创建后于后台执行",
+    "packagedCommand": "包装命令",
+    "launchCommandPlaceholder": "默认留空 例：cmd /c {command}",
+    "width": "宽度 ",
+    "height": "高度 ",
+    "launcherVisibility": "启动器可见性",
+    "keepUnchanged": "游戏启动后保持不变",
+    "exitLauncher": "游戏启动后退出启动器",
+    "hideAndRestore": "游戏启动后隐藏，游戏退出后重新显示",
+    "minimizeLauncher": "游戏启动后最小化",
+    "minimizeAndRestore": "游戏启动后最小化，游戏退出后恢复"
+  },
+  "agent": {
+    "title": "网络代理",
+    "enableGithubMirror": "GitHub 镜像加速",
+    "mirrorMode": "镜像模式",
+    "prefixProxyMode": "前缀代理 - 在原地址前拼接镜像站",
+    "directAccessMode": "直接访问 - 替换域名为镜像站",
+    "mirrorUrl": "镜像源地址",
+    "prefixProxyModeHint": " *前缀代理模式：填写镜像站地址，如 https://ghfast.top 或 ghproxy.net",
+    "directAccessModeHint": " *直接访问模式：填写镜像站域名，如 bgithub.xyz",
+    "enableProxyServer": "使用代理服务器",
+    "disableSystemProxy": "禁用系统代理",
+    "disableSystemProxyHint": " *单独启用时，所有网络请求将直接连接，不使用系统代理",
+    "proxyServerAddress": "代理服务器地址",
+    "enableCustomUserAgent": "自定义 UserAgent",
+    "defaultUserAgent": " *默认UserAgent: ",
+    "proxyUrlPlaceholder": " *两种模式均可用 {url} 占位符代表原始下载地址，如 https://example.com/?q={url}"
+  },
+  "applicationdebug": {
+    "title": "其他设置",
+    "defaultPage": "默认页面",
+    "newTabContent": "新标签页内容",
+    "newTab": "新标签页",
+    "homePage": "起始页",
+    "widgets": "小组件",
+    "mainPage": "主页",
+    "launchPage": "启动",
+    "filePicker": "文件选择器",
+    "systemDialog": "系统对话框",
+    "managedDialog": "接管对话框",
+    "restartRequiredHint": " *需要重启程序",
+    "portalProtocol": "SulfurLauncher 协议",
+    "portalProtocolHint": " *注册后，可在浏览器通过协议调起启动器",
+    "logLevel": "日志等级",
+    "debugMode": "调试模式",
+    "debugModeHint": " *显示应用启动和运行日志，需要重启程序后生效。",
+    "relayNodesTitle": "联机中央节点",
+    "relayNodesHint": "每行填写一个链接或节点地址。http/https 链接会在更新时获取其中的 peers 列表；tcp/udp/ws 等地址会直接作为中央节点使用。更新会将获取到的内容追加到下方，不会覆盖你已填写的内容，并自动剔除重复项。",
+    "updateRelayNodes": "更新节点",
+    "relayNodesUpdated": "公共节点已更新",
+    "relayAutoUpdate": "自动更新公共节点",
+    "relayAutoUpdateHint": " *启动应用时自动从上方链接获取并合并公共节点。"
+    ,"customHomepageTitle": "自定义主页"
+    ,"customHomepageHint": "复刻 PCL-CE 的主页自定义功能，支持预设、本地 Custom.xaml 和联网主页。联网内容会缓存到本地。"
+    ,"customHomepageBlank": "空白"
+    ,"customHomepagePreset": "预设"
+    ,"customHomepageLocal": "本地文件"
+    ,"customHomepageOnline": "联网更新"
+    ,"customHomepagePresetLabel": "主页预设"
+    ,"customHomepageUrl": "下载地址"
+    ,"customHomepageRefresh": "刷新主页"
+    ,"customHomepageOpenFile": "打开本地文件"
+    ,"customHomepagePresetTrivia": "你知道吗？"
+    ,"customHomepagePresetEchoCave": "回声洞（已移除）"
+    ,"customHomepagePresetMcNews": "Minecraft 新闻（作者：最亮的信标）"
+    ,"customHomepagePresetDailyModpack": "每日整合包推荐（作者：wkea）"
+    ,"customHomepagePresetMcSkin": "Minecraft 皮肤推荐（作者：wkea）"
+    ,"customHomepagePresetOpenBmclapi": "OpenBMCLAPI 仪表盘 Lite（作者：Silverteal、Mxmilu666）"
+    ,"customHomepagePresetPclManual": "PCL 新功能说明书（作者：WForst-Breeze）"
+    ,"customHomepagePresetMagazine": "杂志主页（作者：CreeperIsASpy）"
+    ,"customHomepagePresetGithub": "PCL GitHub 仪表盘（作者：Deep-Dark-Forest）"
+    ,"customHomepagePresetMcUpdate": "Minecraft 更新摘要（作者：pynickle，部分由 AI 生成）"
+    ,"customHomepagePresetNewsToday": "今日新闻热点（作者：EYicheng）"
+    ,"customHomepagePresetKnowledge": "Minecraft 芝士站（作者：awaEric233）"
+    ,"customHomepagePresetModpack": "整合包推荐引擎（作者：CHMYGZ）"
+    ,"customHomepagePresetBangumi": "Bangumi 番剧主页（作者：wzyaeu）"
+    ,"customHomepagePresetAnnouncement": "PCL CE 公告栏"
+    ,"customHomepagePresetOfficialFeed": "Minecraft 官方信息流"
+  },
+  "download": {
+    "title": "下载设置",
+    "downloadSource": "资源下载源",
+    "minecraftMetadata": "Minecraft 元数据",
+    "minecraftFileSource": "Minecraft 文件、加载器、Java",
+    "resourceDownloadSource": "资源/模组文件下载源",
+    "modrinthResourceDownloadSource": "Modrinth 文件下载源",
+    "curseForgeResourceDownloadSource": "CurseForge 文件下载源",
+    "maxDownloadThreads": "最大下载线程数",
+    "maxRetryCount": "最大重试次数",
+    "enableFragmentDownload": "启用分片下载",
+    "maxFragmentCount": "最大文件分片数",
+    "highConcurrencyWarning": "并发数过高会导致卡顿",
+    "warning": "警告"
+  },
+  "gamefolder": {
+    "title": "游戏目录",
+    "defaultFolder": "默认文件夹",
+    "folderManagement": "文件夹管理",
+    "addFolder": "添加文件夹",
+    "folderName": "文件夹名称",
+    "removeFolder": "移除文件夹",
+    "openFolder": "打开文件夹",
+    "countSuffix": "个",
+    "instanceCount": "实例数量",
+    "folderSize": "文件夹大小"
+  },
+  "java": {
+    "title": "运行环境",
+    "maxMemory": "最大内存",
+    "optimizeMemory": "内存优化",
+    "memoryExceedWarning": " *超出当前系统可用内存",
+    "autoCleanMemoryBeforeLaunch": "游戏启动前自动清理内存",
+    "autoCleanMemoryBeforeLaunchHint": "游戏启动时将申请管理员权限以清理内存，可能会弹出 UAC 提示。",
+    "autoHighPerformanceGpu": "自动为 Java 使用高性能显卡",
+    "autoHighPerformanceGpuHint": "启动游戏时，自动为 Java 选择高性能独立显卡",
+    "javaManagement": "Java 管理",
+    "deepScan": "强力扫描",
+    "autoScan": "自动扫描",
+    "addManually": "手动添加",
+    "versions": "Java 版本",
+    "manualSelect": "手动选择"
+  },
+  "notification": {
+    "title": "通知选项",
+    "notificationMethod": "通知方式",
+    "bubble": "气泡",
+    "card": "卡片",
+    "notificationPermission": "通知权限",
+    "showSelectedAccount": "显示选中账户",
+    "showDragDropTip": "文件拖入提示",
+    "showUpdateTip": "更新提示",
+    "optional": "可选项",
+    "showMinecraftNews": "在新标签页中显示Minecraft新闻",
+    "showRecentPlays": "在新标签页中显示最近游戏"
+  },
+  "shortcuts": {
+    "title": "按键绑定",
+    "searchPlaceholder": "搜索操作名称或快捷键，例如：切换主题、Ctrl+Shift+Q",
+    "shortcutHint": "按 Esc 清空当前快捷键,组合键需至少包含一个修饰键（Ctrl / Shift / Alt / Win）",
+    "none": "（无）",
+    "resetToDefault": "恢复默认",
+    "resetToDefaultHint": "恢复为该操作的默认快捷键"
+  },
+  "storage": {
+    "title": "存储空间",
+    "total": "总计",
+    "games": "游戏",
+    "openFolder": "打开文件夹",
+    "portalData": "SulfurLauncher 数据",
+    "cache": "缓存",
+    "runtime": "运行时",
+    "other": "其他",
+    "multiplayer": "多人游戏",
+    "minecraftJava": "Minecraft Java",
+    "minecraftBedrock": "Minecraft 基岩版",
+    "traditionalFormat": "传统格式",
+    "portalMcFormat": "SulfurLauncherMC 格式"
+  }
+}

@@ -59,8 +59,8 @@
 
 | 占位符 | 含义 | 示例 |
 | --- | --- | --- |
-| `{launcher_dir}` | 启动器程序目录 | `D:\Portal` |
-| `{launcher_path}` | 启动器可执行文件路径 | `D:\Portal\Portal.exe` |
+| `{launcher_dir}` | 启动器程序目录 | `D:\SulfurLauncher` |
+| `{launcher_path}` | 启动器可执行文件路径 | `D:\SulfurLauncher\SulfurLauncher.exe` |
 
 ## 特殊占位符
 
