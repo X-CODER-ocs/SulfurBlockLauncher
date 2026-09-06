@@ -66,15 +66,15 @@ internal sealed class XboxPreauthService
         }, key, cancellationToken);
 
         var profile = await AuthorizeSisuAsync("http://xboxlive.com", account.AccessToken, deviceToken,
-            proofKey, key, cancellationToken);
+            userToken, proofKey, key, cancellationToken);
         var playfab = await AuthorizeSisuAsync("https://b980a380.minecraft.playfabapi.com/", account.AccessToken,
-            deviceToken, proofKey, key, cancellationToken);
+            deviceToken, userToken, proofKey, key, cancellationToken);
         var multiplayer = await AuthorizeSisuAsync("https://multiplayer.minecraft.net/", account.AccessToken,
-            deviceToken, proofKey, key, cancellationToken);
+            deviceToken, userToken, proofKey, key, cancellationToken);
         var realms = await AuthorizeSisuAsync("https://pocket.realms.minecraft.net/", account.AccessToken,
-            deviceToken, proofKey, key, cancellationToken);
+            deviceToken, userToken, proofKey, key, cancellationToken);
         var licensing = await AuthorizeSisuAsync("http://licensing.xboxlive.com", account.AccessToken,
-            deviceToken, proofKey, key, cancellationToken);
+            deviceToken, userToken, proofKey, key, cancellationToken);
 
         var profileClaims = profile.GetProperty("DisplayClaims").GetProperty("xui")[0];
         var payload = new Dictionary<string, object?>
@@ -123,15 +123,62 @@ internal sealed class XboxPreauthService
     }
 
     private async Task<JsonElement> AuthorizeSisuAsync(string relyingParty, string accessToken, string deviceToken,
-        object proofKey, ECDsa key, CancellationToken cancellationToken)
+        string userToken, object proofKey, ECDsa key, CancellationToken cancellationToken)
     {
-        var response = await PostAsync("https://sisu.xboxlive.com/authorize", new
+        // SISU body: note "deviceToken" must be camelCase (Xbox Live is case-sensitive).
+        var body = new Dictionary<string, object?>
         {
-            AccessToken = $"t={accessToken}", AppId = XboxAppId, DeviceToken = deviceToken,
-            Sandbox = "RETAIL", UseModernGamertag = true, SiteName = "user.auth.xboxlive.com",
-            RelyingParty = relyingParty, OfferTermsAcceptance = true, AcceptOffers = true, ProofKey = proofKey
-        }, key, cancellationToken);
-        return response.GetProperty("AuthorizationToken").Clone();
+            ["AccessToken"] = $"t={accessToken}",
+            ["AppId"] = XboxAppId,
+            ["deviceToken"] = deviceToken,
+            ["Sandbox"] = "RETAIL",
+            ["UseModernGamertag"] = true,
+            ["SiteName"] = "user.auth.xboxlive.com",
+            ["RelyingParty"] = relyingParty,
+            ["OfferTermsAcceptance"] = true,
+            ["AcceptOffers"] = true,
+            ["ProofKey"] = proofKey
+        };
+        try
+        {
+            var response = await PostAsync("https://sisu.xboxlive.com/authorize", body, key, cancellationToken);
+            if (response.TryGetProperty("AuthorizationToken", out var authToken) &&
+                authToken.TryGetProperty("Token", out var sisuToken) && sisuToken.ValueKind == JsonValueKind.String)
+                return authToken.Clone();
+        }
+        catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException)
+        {
+            // SISU may return 403 for some accounts; fall back to XSTS below.
+        }
+
+        // XSTS fallback: first device-bound (like a real GDK title), then plain.
+        foreach (var deviceBound in new[] { true, false })
+        {
+            try
+            {
+                var properties = new Dictionary<string, object?>
+                {
+                    ["SandboxId"] = "RETAIL",
+                    ["UserTokens"] = new[] { userToken }
+                };
+                if (deviceBound)
+                {
+                    properties["DeviceToken"] = deviceToken;
+                    properties["ProofKey"] = proofKey;
+                }
+                var xsts = await PostAsync("https://xsts.auth.xboxlive.com/xsts/authorize", new
+                {
+                    RelyingParty = relyingParty, TokenType = "JWT", Properties = properties
+                }, key, cancellationToken);
+                if (xsts.TryGetProperty("Token", out var tok) && tok.ValueKind == JsonValueKind.String)
+                    return xsts.Clone();
+            }
+            catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException)
+            {
+                continue;
+            }
+        }
+        throw new InvalidOperationException($"Both SISU and XSTS authorization failed for {relyingParty}");
     }
 
     private async Task<JsonElement> PostAsync(string url, object body, ECDsa key,
