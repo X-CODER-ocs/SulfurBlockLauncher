@@ -20,38 +20,16 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.0.x
-
-      - name: Publish Blazor WebAssembly app
-        run: |
-          dotnet publish SulfurBlockLauncher.Web/SulfurBlockLauncher.Web.csproj \
-            -c Release \
-            -o dist
-
-      - name: Fix base href for GitHub Pages subpath
-        run: |
-          sed -i 's|<base href="/" />|<base href="/SulfurBlockLauncher/" />|' dist/wwwroot/index.html
-
-      - name: Fix Blazor boot script fingerprint
-        run: |
-          cd dist/wwwroot
-          BOOT_FILE=$(ls _framework/blazor.webassembly.*.js 2>/dev/null | head -1)
-          if [ -n "$BOOT_FILE" ]; then
-            sed -i "s|_framework/blazor.webassembly.js|$BOOT_FILE|" index.html
-          fi
-
       - name: Prepare for GitHub Pages
         run: |
-          touch dist/wwwroot/.nojekyll
-          cp dist/wwwroot/index.html dist/wwwroot/404.html
+          cd SulfurBlockLauncher.Web/wwwroot
+          touch .nojekyll
+          cp index.html 404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/wwwroot
+          path: SulfurBlockLauncher.Web/wwwroot
 
       - name: Deploy to GitHub Pages
         id: deployment

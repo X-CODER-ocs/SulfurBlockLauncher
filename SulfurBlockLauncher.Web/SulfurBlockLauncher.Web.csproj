@@ -1,15 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+<!-- 官网为纯静态 HTML，无需编译。此项目文件仅用于目录标识。 -->
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.11" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.14.4" />
-  </ItemGroup>
 
 </Project>
