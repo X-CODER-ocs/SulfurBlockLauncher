@@ -214,15 +214,22 @@ jobs:
         run: |
           set -euo pipefail
           CODENET_VER="10.0.400"
-          ASSET="dotnet-codenet-osx-x64.tar.gz"
+          # 根据目标 RID 选择对应架构的 SDK
+          case "${{ matrix.rid }}" in
+            osx-x64)   ARCH="x64" ;;
+            osx-arm64) ARCH="arm64" ;;
+            *)         echo "未知 RID: ${{ matrix.rid }}" >&2; exit 1 ;;
+          esac
+          ASSET="dotnet-codenet-osx-${ARCH}.tar.gz"
           DEST="$RUNNER_TEMP/codenet"
           mkdir -p "$DEST"
-          echo "从 Open-code-Studio/CodeNet 发布下载定制版 .NET SDK (sdk-v${CODENET_VER}) ..."
+          echo "从 Open-code-Studio/CodeNet 发布下载定制版 .NET SDK (sdk-v${CODENET_VER}, ${ARCH}) ..."
           gh release download "sdk-v${CODENET_VER}" -R Open-code-Studio/CodeNet -p "$ASSET" -D "$DEST"
           tar xzf "$DEST/$ASSET" -C "$DEST"
           echo "DOTNET_ROOT=$DEST/dotnet11x64" >> "$GITHUB_ENV"
           echo "$DEST/dotnet11x64" >> "$GITHUB_PATH"
           "$DEST/dotnet11x64/dotnet" --version
+          "$DEST/dotnet11x64/dotnet" --info 2>/dev/null | grep Architecture
 
       - name: Update Submodules
         run: |
