@@ -101,13 +101,28 @@ jobs:
         include:
           - kind: appimage
             package_type: appimage
+            runtime: linux-x64
             output: SulfurLauncher.linux.x64.AppImage
           - kind: deb
             package_type: deb
+            runtime: linux-x64
             output: SulfurLauncher.linux.x64.deb
           - kind: rpm
             package_type: rpm
+            runtime: linux-x64
             output: SulfurLauncher.linux.x64.rpm
+          - kind: appimage
+            package_type: appimage
+            runtime: linux-arm64
+            output: SulfurLauncher.linux.arm64.AppImage
+          - kind: deb
+            package_type: deb
+            runtime: linux-arm64
+            output: SulfurLauncher.linux.arm64.deb
+          - kind: rpm
+            package_type: rpm
+            runtime: linux-arm64
+            output: SulfurLauncher.linux.arm64.rpm
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -137,7 +152,7 @@ jobs:
       - name: Build ${{ matrix.kind }} Package
         run: |
           cd ./assets/conf
-          pupnet --runtime linux-x64 --kind ${{ matrix.kind }} -o ${{ matrix.output }} -y --app-version ${{ needs.prepare.outputs.app_version }}
+          pupnet --runtime ${{ matrix.runtime }} --kind ${{ matrix.kind }} -o ${{ matrix.output }} -y --app-version ${{ needs.prepare.outputs.app_version }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7
@@ -154,6 +169,13 @@ jobs:
       GRAVITYCONE_UPTIME_API_KEY: ${{ secrets.GRAVITYCONE_UPTIME_API_KEY }}
       PRE_MC_KEY: ${{ secrets.PRE_MC_KEY }}
       REL_MC_KEY: ${{ secrets.REL_MC_KEY }}
+    strategy:
+      matrix:
+        include:
+          - runtime: win-x64
+            arch: x64
+          - runtime: win-arm64
+            arch: arm64
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -182,16 +204,16 @@ jobs:
         run: |
           cd ./src/SulfurLauncher.Desktop
           New-Item -ItemType Directory -Force -Path "../../dist"
-          dotnet restore -r win-x64
-          dotnet publish -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:SelfContained=false /p:Version=${{ needs.prepare.outputs.app_version }} -o "../../dist" -p:DebugType=none -p:DebugSymbols=false
+          dotnet restore -r ${{ matrix.runtime }}
+          dotnet publish -c Release -r ${{ matrix.runtime }} /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:SelfContained=false /p:Version=${{ needs.prepare.outputs.app_version }} -o "../../dist" -p:DebugType=none -p:DebugSymbols=false
           cd "../../dist"
-          Rename-Item -Path "SulfurLauncher.Desktop.exe" -NewName "SulfurLauncher.win.x64.portable.exe" -Force
-          Compress-Archive -Path "SulfurLauncher.win.x64.portable.exe" -DestinationPath "../SulfurLauncher.win.x64.portable.zip" -Force
+          Rename-Item -Path "SulfurLauncher.Desktop.exe" -NewName "SulfurLauncher.win.${{ matrix.arch }}.portable.exe" -Force
+          Compress-Archive -Path "SulfurLauncher.win.${{ matrix.arch }}.portable.exe" -DestinationPath "../SulfurLauncher.win.${{ matrix.arch }}.portable.zip" -Force
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: win-exe-win.x64-artifacts
+          name: win-exe-win.${{ matrix.arch }}-artifacts
           path: ./SulfurLauncher.*.zip
 
   win-installer:
@@ -203,6 +225,13 @@ jobs:
       GRAVITYCONE_UPTIME_API_KEY: ${{ secrets.GRAVITYCONE_UPTIME_API_KEY }}
       PRE_MC_KEY: ${{ secrets.PRE_MC_KEY }}
       REL_MC_KEY: ${{ secrets.REL_MC_KEY }}
+    strategy:
+      matrix:
+        include:
+          - runtime: win-x64
+            arch: x64
+          - runtime: win-arm64
+            arch: arm64
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -238,14 +267,14 @@ jobs:
         shell: pwsh
         run: |
           cd ./assets/conf
-          pupnet -r win-x64 -k setup -y -o SulfurLauncher.win.x64.installer.exe --app-version ${{ needs.prepare.outputs.app_version }}
-          ../../scripts/configure-windows-installer.ps1
-          Compress-Archive -Path "Deploy/OUT/SulfurLauncher.win.x64.installer.exe" -DestinationPath "Deploy/OUT/SulfurLauncher.win.x64.installer.zip" -Force
+          pupnet -r ${{ matrix.runtime }} -k setup -y -o SulfurLauncher.win.${{ matrix.arch }}.installer.exe --app-version ${{ needs.prepare.outputs.app_version }}
+          ../../scripts/configure-windows-installer.ps1 -Runtime ${{ matrix.runtime }}
+          Compress-Archive -Path "Deploy/OUT/SulfurLauncher.win.${{ matrix.arch }}.installer.exe" -DestinationPath "Deploy/OUT/SulfurLauncher.win.${{ matrix.arch }}.installer.zip" -Force
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: win-installer-win.x64-artifacts
+          name: win-installer-win.${{ matrix.arch }}-artifacts
           path: assets/conf/Deploy/OUT/SulfurLauncher.win.*.installer.zip
 
   mac-dmg:
