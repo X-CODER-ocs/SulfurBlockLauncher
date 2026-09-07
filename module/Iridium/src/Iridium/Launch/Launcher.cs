@@ -76,6 +76,10 @@ public sealed class Launcher {
             foreach (var (key, value) in environmentVariables)
                 startInfo.EnvironmentVariables[key] = value;
 
+        // macOS: preload the JIT SIGBUS workaround dylib into the spawned JVM.
+        // See MacOSJitFix for details.
+        MacOSJitFix.Apply(startInfo);
+
         var process = Process.Start(startInfo)
             ?? throw new InvalidOperationException($"Failed to start Minecraft process: {startInfo.FileName}");
         process.EnableRaisingEvents = true;

@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Iridium.Java;
+using Iridium.Launch;
 using Iridium.Models.Java;
 
 namespace Iridium.Java;
@@ -46,7 +47,7 @@ public sealed class JavaParser {
     }
     
     private static async ValueTask<Dictionary<string, string>> GetJavaPropertiesAsync(string javaPath, CancellationToken cancellationToken) {
-        using var process = Process.Start(new ProcessStartInfo {
+        var startInfo = new ProcessStartInfo {
             FileName = javaPath,
             UseShellExecute = false,
             CreateNoWindow = true,
@@ -55,7 +56,11 @@ public sealed class JavaParser {
                 "-XshowSettings:properties",
                 "-version"
             },
-        });
+        };
+        // macOS SIP/AMFI-disabled workaround: preload the JIT SIGBUS fix so
+        // `java -XshowSettings:properties -version` does not crash in CodeHeap::allocate.
+        MacOSJitFix.Apply(startInfo);
+        using var process = Process.Start(startInfo);
 
         if (process is null) return [];
 

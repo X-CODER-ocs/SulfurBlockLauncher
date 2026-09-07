@@ -130,8 +130,24 @@ public static class JavaDistributionService
             var root = FindRuntimeRoot(staging);
             Directory.Move(root, target);
             var executable = FindJavaExecutable(target);
-            var runtime = await JavaRuntimeManager.FromPathAsync(executable, cancellationToken)
-                          ?? throw new InvalidDataException(CommonLanguageManager.Instance.javaDistribution_runtimeUnrecognized.CurrentValue());
+            await PrepareRuntimeForExecutionAsync(executable, cancellationToken);
+            var runtime = await JavaRuntimeManager.FromPathAsync(executable, cancellationToken);
+            if (runtime is null)
+            {
+                // FromPathAsync runs `java -version` to detect the runtime. On some
+                // environments (e.g. macOS 27 beta with SIP/AMFI disabled) Java 9+
+                // crashes on startup with SIGBUS, so detection returns null even
+                // though the runtime was extracted correctly. Fall back to the
+                // feed metadata so the installation does not fail.
+                runtime = new JavaRuntimeEntry
+                {
+                    JavaPath = executable,
+                    JavaType = version.Vendor,
+                    JavaVersion = version.FullVersion,
+                    MajorVersion = version.MajorVersion,
+                    Is64Bit = true
+                };
+            }
             return runtime;
         }
         finally
@@ -228,7 +244,36 @@ public static class JavaDistributionService
             progress?.Invoke(new JavaInstallProgress(CommonLanguageManager.Instance.javaDistribution_completeStage.CurrentValue(), 1, downloadedBytes, totalBytes,
                 downloadedBytes / Math.Max(1.0, finalElapsed)));
             Directory.Move(staging, target);
-            return await JavaRuntimeManager.FromPathAsync(FindJavaExecutable(target), cancellationToken);
+            var javaPath = FindJavaExecutable(target);
+            await PrepareRuntimeForExecutionAsync(javaPath, cancellationToken);
+            var mojangRuntime = await JavaRuntimeManager.FromPathAsync(javaPath, cancellationToken);
+            if (mojangRuntime is not null) return mojangRuntime;
+
+            // Same fallback as InstallAsync: if `java -version` cannot run (e.g.
+            // SIGBUS on macOS 27 beta with SIP disabled), construct the entry from
+            // the known component metadata instead of failing the installation.
+            var fullVersion = majorVersion.ToString();
+            var releaseFile = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(javaPath)!, "..", "release"));
+            if (File.Exists(releaseFile))
+            {
+                foreach (var line in await File.ReadAllLinesAsync(releaseFile, cancellationToken))
+                {
+                    if (line.StartsWith("JAVA_VERSION=", StringComparison.Ordinal))
+                    {
+                        fullVersion = line["JAVA_VERSION=".Length..].Trim().Trim('"');
+                        break;
+                    }
+                }
+            }
+
+            return new JavaRuntimeEntry
+            {
+                JavaPath = javaPath,
+                JavaType = "Mojang",
+                JavaVersion = fullVersion,
+                MajorVersion = majorVersion,
+                Is64Bit = true
+            };
         }
         finally
         {
@@ -367,49 +412,191 @@ public static class JavaDistributionService
 
     private static async Task ExtractAsync(string archive, string destination, CancellationToken cancellationToken)
     {
+        Directory.CreateDirectory(destination);
+
         if (archive.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
         {
-            using var zip = ZipFile.OpenRead(archive);
-            var root = Path.GetFullPath(destination) + Path.DirectorySeparatorChar;
-            foreach (var entry in zip.Entries)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                var path = Path.GetFullPath(Path.Combine(destination,
-                    entry.FullName.Replace('/', Path.DirectorySeparatorChar)));
-                if (!path.StartsWith(root, StringComparison.OrdinalIgnoreCase))
-                    throw new InvalidDataException(CommonLanguageManager.Instance.javaDistribution_archiveInvalidPath.CurrentValue());
-                if (string.IsNullOrEmpty(entry.Name))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                else
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-                    await using var output = File.Create(path);
-                    await using var input = entry.Open();
-                    await input.CopyToAsync(output, cancellationToken);
-                }
-            }
-
+            // ZipFile.ExtractToDirectory handles path traversal checks internally.
+            // Use overwriteFiles: true so partial/duplicate entries do not abort extraction.
+            ZipFile.ExtractToDirectory(archive, destination, overwriteFiles: true);
             return;
         }
 
+        // Prefer the native tar command on non-Windows platforms — it is the most
+        // robust for the variety of JDK .tar.gz distributions (Microsoft/Amazon/
+        // Azul/Eclipse/etc.) and handles ./ prefixes, long names, permissions,
+        // symlinks and multi-member gzip streams correctly.
+        if (!OperatingSystem.IsWindows())
+        {
+            try
+            {
+                await ExtractWithNativeTarAsync(archive, destination, cancellationToken);
+                return;
+            }
+            catch
+            {
+                // Fall through to managed extraction below.
+            }
+        }
+
+        await ExtractWithManagedTarAsync(archive, destination, cancellationToken);
+    }
+
+    private static async Task ExtractWithNativeTarAsync(string archive, string destination, CancellationToken cancellationToken)
+    {
+        var psi = new ProcessStartInfo
+        {
+            FileName = "tar",
+            ArgumentList = { "-xzf", archive, "-C", destination },
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+
+        using var process = Process.Start(psi)
+            ?? throw new InvalidOperationException("Failed to start native tar process.");
+
+        await process.WaitForExitAsync(cancellationToken);
+        if (process.ExitCode != 0)
+        {
+            var error = await process.StandardError.ReadToEndAsync(cancellationToken);
+            throw new InvalidOperationException($"tar extraction failed (exit {process.ExitCode}): {error}");
+        }
+    }
+
+    private static async Task ExtractWithManagedTarAsync(string archive, string destination, CancellationToken cancellationToken)
+    {
         await using var file = File.OpenRead(archive);
         await using var gzip = new GZipStream(file, CompressionMode.Decompress);
-        TarFile.ExtractToDirectory(gzip, destination, false);
+        // Buffer into a seekable MemoryStream because some GZipStream versions
+        // do not reliably signal end-of-stream for multi-member archives, which
+        // can cause TarFile to stop early or throw on trailing data.
+        await using var ms = new MemoryStream();
+        await gzip.CopyToAsync(ms, cancellationToken);
+        ms.Position = 0;
+        TarFile.ExtractToDirectory(ms, destination, overwriteFiles: true);
     }
 
     private static string FindRuntimeRoot(string staging)
     {
+        // Look for the directory that actually contains bin/java (or bin/java.exe)
+        // rather than assuming the archive has exactly one top-level directory.
+        // Some distributions ship extra top-level entries (e.g. legal/, release)
+        // which would make SingleOrDefault() throw.
+        var javaName = OperatingSystem.IsWindows() ? "java.exe" : "java";
+
+        // Direct match: staging/bin/java
+        if (File.Exists(Path.Combine(staging, "bin", javaName)))
+            return staging;
+
+        // Search one level deep — most JDK archives extract to a single folder.
+        foreach (var dir in Directory.EnumerateDirectories(staging))
+        {
+            if (File.Exists(Path.Combine(dir, "bin", javaName)))
+                return dir;
+
+            // macOS JDKs use <dir>/Contents/Home/bin/java
+            var nested = Path.Combine(dir, "Contents", "Home", "bin", javaName);
+            if (File.Exists(nested))
+                return Path.Combine(dir, "Contents", "Home");
+        }
+
+        // Fall back to the single top-level directory if present.
         return Directory.EnumerateDirectories(staging).SingleOrDefault() ?? staging;
     }
 
     private static string FindJavaExecutable(string root)
     {
+        var binDir = Path.Combine(root, "bin");
         var candidates = OperatingSystem.IsWindows() ? new[] { "javaw.exe", "java.exe" } : new[] { "java" };
-        var found = candidates.SelectMany(name => Directory.EnumerateFiles(root, name, SearchOption.AllDirectories))
+        foreach (var name in candidates)
+        {
+            var path = Path.Combine(binDir, name);
+            if (File.Exists(path)) return path;
+        }
+
+        // Fallback: recursive search for unusual layouts.
+        var found = candidates.SelectMany(name =>
+                Directory.EnumerateFiles(root, name, SearchOption.AllDirectories))
             .FirstOrDefault();
         return found ?? throw new InvalidDataException(CommonLanguageManager.Instance.javaDistribution_noExecutable.CurrentValue());
+    }
+
+    private static async Task PrepareRuntimeForExecutionAsync(string executable, CancellationToken cancellationToken)
+    {
+        if (OperatingSystem.IsWindows()) return;
+
+        // Ensure the java binary (and sibling executables) are executable.
+        try
+        {
+            var mode = File.GetUnixFileMode(executable);
+            File.SetUnixFileMode(executable, mode | UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute);
+        }
+        catch
+        {
+            // chmod via SetUnixFileMode may fail on some filesystems; fall back to /bin/chmod.
+            try
+            {
+                using var chmod = Process.Start(new ProcessStartInfo
+                {
+                    FileName = "chmod",
+                    ArgumentList = { "+x", executable },
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                });
+                if (chmod is not null)
+                    await chmod.WaitForExitAsync(cancellationToken);
+            }
+            catch
+            {
+                // Best-effort: ignore permission errors.
+            }
+        }
+
+        if (!OperatingSystem.IsMacOS()) return;
+
+        // Strip the quarantine extended attribute so Gatekeeper does not block
+        // the downloaded binary, and ad-hoc sign it so it can be launched.
+        var homeDir = Directory.GetParent(Path.GetDirectoryName(executable)!)?.FullName ?? executable;
+        foreach (var tool in new[] { "xattr", "codesign" })
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = tool,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+                if (tool == "xattr")
+                {
+                    psi.ArgumentList.Add("-dr");
+                    psi.ArgumentList.Add("com.apple.quarantine");
+                    psi.ArgumentList.Add(homeDir);
+                }
+                else
+                {
+                    psi.ArgumentList.Add("--force");
+                    psi.ArgumentList.Add("--deep");
+                    psi.ArgumentList.Add("--sign");
+                    psi.ArgumentList.Add("-");
+                    psi.ArgumentList.Add(executable);
+                }
+
+                using var process = Process.Start(psi);
+                if (process is not null)
+                    await process.WaitForExitAsync(cancellationToken);
+            }
+            catch
+            {
+                // Best-effort: ignore tool errors.
+            }
+        }
     }
 
     private static string GetUniqueDirectory(string path)

@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using Iridium.Launch;
 
 namespace SulfurLauncher.Core.Minecraft.Instance.Java;
 
@@ -47,6 +48,9 @@ public static class JavaRuntimeVerifier
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
+            // macOS SIP/AMFI-disabled workaround: preload the JIT SIGBUS fix so
+            // `java --list-modules` does not crash in CodeHeap::allocate.
+            MacOSJitFix.Apply(startInfo);
             using var process = Process.Start(startInfo);
             if (process is null)
                 return false;
