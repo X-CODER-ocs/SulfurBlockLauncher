@@ -103,6 +103,34 @@ public sealed partial class ArgumentParser : IArgumentParser {
             .Parse(entry, features)
             .Select(argument => ReplacePlaceholders(argument, gameReplacements)));
 
+        // Legacy minecraftArguments (e.g. OptiFine) often only contain --tweakClass
+        // and omit the standard arguments that LaunchWrapper/tweakers expect. Inject
+        // them here if the parsed set does not already include --gameDir.
+        if (hasLegacyArguments && !game.Contains("--gameDir") && !game.Contains("--game_directory")) {
+            // Inject the placeholders first, then replace them in place so the
+            // replacement logic is consistent with the rest of the argument list.
+            var inject = new (string Flag, string Placeholder)[] {
+                ("--username", "${auth_player_name}"),
+                ("--version", "${version_name}"),
+                ("--gameDir", "${game_directory}"),
+                ("--assetsDir", "${game_assets}"),
+                ("--assetIndex", "${assets_index_name}"),
+                ("--uuid", "${auth_uuid}"),
+                ("--accessToken", "${auth_access_token}"),
+                ("--userType", "${user_type}"),
+                ("--userProperties", "${user_properties}")
+            };
+            // Insert before the first --tweakClass so LaunchWrapper can parse gameDir
+            // before any tweaker's acceptOptions is called.
+            var idx = game.FindIndex(a => a == "--tweakClass");
+            if (idx < 0) idx = 0;
+            for (var i = inject.Length - 1; i >= 0; i--) {
+                var (flag, placeholder) = inject[i];
+                game.Insert(idx, ReplacePlaceholders(flag, gameReplacements));
+                game.Insert(idx + 1, ReplacePlaceholders(placeholder, gameReplacements));
+            }
+        }
+
         // Modern versions carry their own --width/--height rules in arguments.game;
         // the launcher only supplies them for legacy (minecraftArguments) versions.
         if (hasLegacyArguments && features.GetValueOrDefault("has_custom_resolution")) {
