@@ -275,7 +275,6 @@ jobs:
           cd ./src/SulfurLauncher.Desktop
           dotnet restore -r ${{ matrix.rid }}
           dotnet msbuild -t:BundleApp -p:RuntimeIdentifier=${{ matrix.rid }} -property:Configuration=Release -p:SelfContained=true
-          cp "../../assets/Icon-Pattern-Shadow-Border.icns" "./bin/Release/net10.0/${{ matrix.rid }}/publish/SulfurLauncher.app/Contents/Resources/"
 
       # DotNet.Bundle 不支持 CFBundleURLTypes，sl:// 协议声明在打包后写入 Info.plist
       - name: Declare sl URL Scheme
