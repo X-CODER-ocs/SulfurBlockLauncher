@@ -1,4 +1,7 @@
 <p align="center">
+  <a href="https://ifdian.net/a/tiouo">
+    <img src="assets/top.png" alt="赞助 SulfurLauncher">
+  </a>
   <a href="https://portal.tiouo.cc">
     <img src="assets/header.png" alt="SulfurLauncher">
   </a>
