@@ -303,6 +303,16 @@ jobs:
           dmg_name: "SulfurLauncher.osx.mac.${{ matrix.dmg_arch }}"
           src_dir: "./src/SulfurLauncher.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/SulfurLauncher.app"
 
+      - name: Build PKG
+        run: |
+          pkgbuild \
+            --root "./src/SulfurLauncher.Desktop/bin/Release/net10.0/${{ matrix.rid }}/publish/SulfurLauncher.app" \
+            --install-location "/Applications/SulfurLauncher.app" \
+            --identifier "studio.lively.sulfurlauncher" \
+            --version "${{ needs.prepare.outputs.app_version }}" \
+            --timestamp \
+            "SulfurLauncher.osx.mac.${{ matrix.dmg_arch }}.pkg"
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7
         with:
@@ -310,6 +320,7 @@ jobs:
           path: |
             ./SulfurLauncher.osx.mac.${{ matrix.dmg_arch }}.dmg
             ./SulfurLauncher.osx.mac.${{ matrix.dmg_arch }}.app.zip
+            ./SulfurLauncher.osx.mac.${{ matrix.dmg_arch }}.pkg
 
   publish:
     needs: [prepare, linux-package, win-exe, win-installer, mac-dmg]
@@ -357,6 +368,7 @@ jobs:
           files: |
             ./SulfurLauncher.Release/*.dmg
             ./SulfurLauncher.Release/*.zip
+            ./SulfurLauncher.Release/*.pkg
             ./SulfurLauncher.Release/*.AppImage
             ./SulfurLauncher.Release/*.deb
             ./SulfurLauncher.Release/*.rpm
