@@ -121,7 +121,7 @@
                 BorderBrush="{DynamicResource TranslucentBorderBrush}"
                 BorderThickness="1"
                 Click="OpenLink_OnClick"
-                CommandParameter="https://portal.tiouo.cc"
+                CommandParameter="https://x-coder-ocs.github.io/SulfurBlockLauncher/"
                 CornerRadius="12"
                 Height="65"
                 HorizontalAlignment="Stretch"
@@ -257,8 +257,79 @@
                         <TextBlock
                             FontSize="12"
                             Foreground="{DynamicResource InnerForegroundColor}"
-                            Text="475032328" />
+                            Text="545716736" />
                     </StackPanel>
+                    <TextBlock
+                        FontFamily="{StaticResource IconFont}"
+                        FontSize="18"
+                        FontWeight="Thin"
+                        Grid.Column="2"
+                        Text="&#xe612;"
+                        VerticalAlignment="Center" />
+                </Grid>
+            </Button>
+            <Button
+                Background="{DynamicResource TranslucentBackgroundColor}"
+                BorderBrush="{DynamicResource TranslucentBorderBrush}"
+                BorderThickness="1"
+                Click="OpenLink_OnClick"
+                CommandParameter="https://t.me/surlaucher"
+                CornerRadius="12"
+                Grid.Row="2"
+                Height="65"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Padding="18,14"
+                Theme="{StaticResource TransparentButton}">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                    <TextBlock
+                        FontFamily="{StaticResource IconFont}"
+                        FontSize="24"
+                        FontWeight="Thin"
+                        Text="&#xe610;"
+                        VerticalAlignment="Center" />
+                    <TextBlock
+                        FontSize="15"
+                        FontWeight="SemiBold"
+                        Grid.Column="1"
+                        Text="{Translate {x:Static loc:SettingsLanguageManager+Keys.about_telegramGroup}}"
+                        VerticalAlignment="Center" />
+                    <TextBlock
+                        FontFamily="{StaticResource IconFont}"
+                        FontSize="18"
+                        FontWeight="Thin"
+                        Grid.Column="2"
+                        Text="&#xe612;"
+                        VerticalAlignment="Center" />
+                </Grid>
+            </Button>
+            <Button
+                Background="{DynamicResource TranslucentBackgroundColor}"
+                BorderBrush="{DynamicResource TranslucentBorderBrush}"
+                BorderThickness="1"
+                Click="OpenLink_OnClick"
+                CommandParameter="https://discord.gg/pxSz993ns"
+                CornerRadius="12"
+                Grid.Column="1"
+                Grid.Row="2"
+                Height="65"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Padding="18,14"
+                Theme="{StaticResource TransparentButton}">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                    <TextBlock
+                        FontFamily="{StaticResource IconFont}"
+                        FontSize="28"
+                        FontWeight="Thin"
+                        Text="&#xe651;"
+                        VerticalAlignment="Center" />
+                    <TextBlock
+                        FontSize="15"
+                        FontWeight="SemiBold"
+                        Grid.Column="1"
+                        Text="{Translate {x:Static loc:SettingsLanguageManager+Keys.about_discordServer}}"
+                        VerticalAlignment="Center" />
                     <TextBlock
                         FontFamily="{StaticResource IconFont}"
                         FontSize="18"

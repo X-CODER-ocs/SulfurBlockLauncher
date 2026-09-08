@@ -130,7 +130,7 @@ public partial class About : Dsc
         var topLevel = TopLevel.GetTopLevel(this);
         if (topLevel?.Clipboard is not { } clipboard) return;
 
-        await clipboard.SetTextAsync("475032328");
+        await clipboard.SetTextAsync("545716736");
         topLevel.Notice(SettingsLanguageManager.Instance.about_qqGroupCopied.CurrentValue(), NotificationType.Success);
     }
 }
