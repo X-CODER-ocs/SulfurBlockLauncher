@@ -61,11 +61,12 @@ public static class MacOSJitFix
         if (dylib is null)
             return false;
 
-        var existing = startInfo.EnvironmentVariables[EnvVar];
-        if (!string.IsNullOrEmpty(existing))
-            startInfo.EnvironmentVariables[EnvVar] = $"{dylib}:{existing}";
-        else
-            startInfo.EnvironmentVariables[EnvVar] = dylib;
+        var env = startInfo.EnvironmentVariables;
+        // StringDictionary/IDictionary indexer may throw KeyNotFoundException
+        // for missing keys on some .NET runtimes; use ContainsKey as a guard.
+        env[EnvVar] = env.ContainsKey(EnvVar) && !string.IsNullOrEmpty(env[EnvVar])
+            ? $"{dylib}:{env[EnvVar]}"
+            : dylib;
 
         return true;
     }

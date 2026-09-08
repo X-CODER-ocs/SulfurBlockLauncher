@@ -71,10 +71,9 @@ jobs:
             package_type: deb
             runtime: linux-arm64
             output: SulfurLauncher.linux.arm64.deb
-          - kind: rpm
-            package_type: rpm
-            runtime: linux-arm64
-            output: SulfurLauncher.linux.arm64.rpm
+          # rpm arm64 skipped: rpmbuild on x86_64 runner cannot cross-compile
+          # arm64 packages. Users on arm64 Linux should use the .deb or
+          # AppImage builds instead.
     steps:
       - name: Checkout
         uses: actions/checkout@v7
