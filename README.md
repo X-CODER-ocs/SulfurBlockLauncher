@@ -1,8 +1,8 @@
 <p align="center">
-  <a href="https://ifdian.net/a/tiouo">
+  <a href="https://x-coder-ocs.github.io/SulfurBlockLauncher/">
     <img src="assets/top.png" alt="赞助 SulfurLauncher">
   </a>
-  <a href="https://portal.tiouo.cc">
+  <a href="https://x-coder-ocs.github.io/SulfurBlockLauncher/">
     <img src="assets/header.png" alt="SulfurLauncher">
   </a>
 </p>
@@ -14,7 +14,7 @@
   <a href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/stargazers"><img src="https://img.shields.io/github/stars/X-CODER-ocs/SulfurBlockLauncher?label=%E6%98%9F%E6%A0%87&logo=github&logoColor=white&color=eac54f&style=for-the-badge" alt="星标"></a>
   <a href="https://github.com/X-CODER-ocs/SulfurBlockLauncher/releases"><img src="https://img.shields.io/github/downloads/X-CODER-ocs/SulfurBlockLauncher/total?label=%E4%B8%8B%E8%BD%BD%E9%87%8F&logo=github&logoColor=white&color=388bfd&style=for-the-badge" alt="下载量"></a>
   <img src="https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF%E8%AF%81-GPL--3.0--or--later-9d4edd?logoColor=white&style=for-the-badge" alt="许可证">
-  <a href="[https://portal.tiouo.cc](https://x-coder-ocs.github.io/SulfurBlockLauncher/#features)"><img src="https://img.shields.io/static/v1?label=%E5%AE%98%E7%BD%91&message=https://x-coder-ocs.github.io/SulfurBlockLauncher/#features&color=38ce8f&logo=globe&logoColor=white&style=for-the-badge" alt="官网"></a>
+  <a href="[https://x-coder-ocs.github.io/SulfurBlockLauncher/](https://x-coder-ocs.github.io/SulfurBlockLauncher/)"><img src="https://img.shields.io/static/v1?label=%E5%AE%98%E7%BD%91&message=https://x-coder-ocs.github.io/SulfurBlockLauncher/&color=38ce8f&logo=globe&logoColor=white&style=for-the-badge" alt="官网"></a>
 </p>
 
 ---
