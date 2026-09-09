@@ -62,10 +62,13 @@ public static class MacOSJitFix
             return false;
 
         var env = startInfo.EnvironmentVariables;
-        // StringDictionary/IDictionary indexer may throw KeyNotFoundException
-        // for missing keys on some .NET runtimes; use ContainsKey as a guard.
-        env[EnvVar] = env.ContainsKey(EnvVar) && !string.IsNullOrEmpty(env[EnvVar])
-            ? $"{dylib}:{env[EnvVar]}"
+        // EnvironmentVariables is a StringDictionary; reading a missing key via
+        // the indexer throws KeyNotFoundException on some runtimes. Use a safe
+        // pattern that never throws regardless of the runtime implementation.
+        string? existing = null;
+        try { existing = env[EnvVar]; } catch { /* key not present */ }
+        env[EnvVar] = !string.IsNullOrEmpty(existing)
+            ? $"{dylib}:{existing}"
             : dylib;
 
         return true;
