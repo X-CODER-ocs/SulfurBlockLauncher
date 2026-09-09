@@ -201,8 +201,13 @@ public sealed partial class ArgumentParser : IArgumentParser {
         if (!OperatingSystem.IsWindows())
             jvm.Add($"-Duser.home={Path.GetDirectoryName(paths.InstanceRoot) ?? paths.InstanceRoot}");
 
-        if (OperatingSystem.IsMacOS())
+        if (OperatingSystem.IsMacOS()) {
             jvm.Add($"-Xdock:name=Minecraft {entry.Id}");
+            // Ensure -XstartOnFirstThread is always present on macOS; GLFW requires
+            // it and version JSON rule matching can fail if the OS name differs.
+            if (!jvm.Contains("-XstartOnFirstThread"))
+                jvm.Add("-XstartOnFirstThread");
+        }
 
         jvm.Add("-Djava.net.useSystemProxies=true");
 
