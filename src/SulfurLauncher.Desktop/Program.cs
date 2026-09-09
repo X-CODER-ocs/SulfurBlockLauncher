@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Text;
 using Avalonia;
 using SulfurLauncher.Core.Module.Initialize;
@@ -15,6 +15,11 @@ internal static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        // macOS SIP/AMFI-disabled workaround: must be the very first thing we do.
+        // Installs a SIGBUS handler that re-enables JIT write access, preventing
+        // crashes in both the .NET runtime (GC) and Java subprocesses.
+        MacOSJitFixNative.Install();
+
         App.StartupTimestamp = Stopwatch.GetTimestamp();
         Console.OutputEncoding = Encoding.UTF8;
 
