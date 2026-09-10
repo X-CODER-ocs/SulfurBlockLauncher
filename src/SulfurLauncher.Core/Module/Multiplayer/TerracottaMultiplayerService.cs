@@ -752,15 +752,13 @@ public sealed class TerracottaMultiplayerService
             RedirectStandardOutput = true,
             RedirectStandardError = true
         };
-        if (OperatingSystem.IsMacOS())
-        {
-            startInfo.ArgumentList.Add("--daemon");
-        }
-        else
-        {
-            startInfo.ArgumentList.Add("--hmcl");
-            startInfo.ArgumentList.Add(PortFile);
-        }
+        // Terracotta publishes its HTTP port by writing <PortFile> when started with
+        // --hmcl (and echoes it to stdout). The --daemon mode is an internal mode that
+        // never writes the port file, so WaitForPortAsync can never observe readiness
+        // and every start was misreported as "exited before writing the port file".
+        // Use --hmcl on every OS so port detection works identically everywhere.
+        startInfo.ArgumentList.Add("--hmcl");
+        startInfo.ArgumentList.Add(PortFile);
 
         var process = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
         if (!process.Start())
