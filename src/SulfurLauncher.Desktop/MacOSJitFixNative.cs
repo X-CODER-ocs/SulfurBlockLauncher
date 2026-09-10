@@ -3,28 +3,31 @@ using System.Runtime.InteropServices;
 namespace SulfurLauncher.Desktop;
 
 /// <summary>
-/// Installs a SIGBUS handler directly into the current .NET process on macOS
-/// to work around the JIT write-protection issue caused by SIP/AMFI being disabled.
+/// Works around the macOS 27 + SIP/AMFI-disabled JIT write-protection bug.
 /// <para>
-/// When amfi_get_out_of_my_way=1, dyld resets MAP_JIT regions to read-execute after
-/// dlopen. Both the .NET runtime (GC background thread) and Java subprocesses crash
-/// with SIGBUS (BUS_ADRALN) when writing to JIT code pages.
+/// When <c>amfi_get_out_of_my_way=1</c>, dyld treats every process as
+/// platform-signed and resets <c>MAP_JIT</c> regions to read-execute after
+/// <c>dlopen</c> / mmap. The .NET runtime's JIT compiler and GC background
+/// thread crash when writing to JIT code pages (SIGBUS / GC corruption).
 /// </para>
 /// <para>
-/// This handler calls pthread_jit_write_protect_np(0) to re-enable writes, after
-/// which the kernel retries the faulting instruction. It must be installed before
-/// any JIT/GC activity, so call <see cref="Install"/> at the very beginning of Main.
+/// Fix: install a SIGBUS handler that calls
+/// <c>pthread_jit_write_protect_np(0)</c>. Because signal handlers run in the
+/// faulting thread's context, this re-enables JIT writes for whichever thread
+/// triggered the fault. The kernel then retries the faulting store instruction.
+/// Call <see cref="Install"/> at the very beginning of <c>Main</c>.
 /// </para>
 /// </summary>
 internal static class MacOSJitFixNative
 {
-    [StructLayout(LayoutKind.Sequential)]
+    // macOS struct sigaction layout (arm64): 8 + 4 + 4 = 16 bytes.
+    // sigset_t is __uint32_t (4 bytes), NOT a pointer.
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
     private struct Sigaction
     {
-        public nuint SaSigaction;
-        public UIntPtr SaMask;          // uses sa_mask but we keep it simple
+        public nuint SaSigaction; // union sa_handler/sa_sigaction (func ptr)
+        public uint SaMask;       // sigset_t = uint32_t
         public int SaFlags;
-        public nuint SaRestorer;       // not used but present in struct layout
     }
 
     [DllImport("libsystem_c.dylib", SetLastError = true)]
@@ -41,14 +44,16 @@ internal static class MacOSJitFixNative
     private const int SA_RESTART = 0x2;
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    private static unsafe void SigbusHandler(int sig, nint info, nint ctx)
+    private static void SigbusHandler(int sig, nint info, nint ctx)
     {
+        // Runs in the faulting thread's context, so this enables JIT writes
+        // for exactly the thread that needs it.
         pthread_jit_write_protect_np(0);
     }
 
     /// <summary>
-    /// Installs the SIGBUS handler and disables JIT write protection.
-    /// No-op on non-macOS platforms.
+    /// Disables JIT write protection for the main thread and installs the
+    /// SIGBUS handler. No-op on non-macOS platforms.
     /// </summary>
     public static unsafe void Install()
     {
@@ -57,24 +62,21 @@ internal static class MacOSJitFixNative
 
         try
         {
-            // Disable write protection immediately.
+            // Protect the main thread immediately (before any JIT activity).
             pthread_jit_write_protect_np(0);
 
-            // Install SIGBUS handler.
             var sa = new Sigaction
             {
                 SaSigaction = (nuint)(delegate* unmanaged[Cdecl]<int, nint, nint, void>)&SigbusHandler,
                 SaFlags = SA_SIGINFO | SA_RESTART,
-                SaMask = UIntPtr.Zero,
-                SaRestorer = 0
+                SaMask = 0
             };
 
             sigaction(SIGBUS, ref sa, nint.Zero);
-
         }
         catch
         {
-            // Best-effort; if P/Invoke fails, the process continues without the fix.
+            // Best-effort; continue even if signal setup fails.
         }
     }
 }

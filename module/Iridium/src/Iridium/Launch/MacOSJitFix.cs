@@ -61,12 +61,12 @@ public static class MacOSJitFix
         if (dylib is null)
             return false;
 
-        var env = startInfo.EnvironmentVariables;
-        // EnvironmentVariables is a StringDictionary; reading a missing key via
-        // the indexer throws KeyNotFoundException on some runtimes. Use a safe
-        // pattern that never throws regardless of the runtime implementation.
-        string? existing = null;
-        try { existing = env[EnvVar]; } catch { /* key not present */ }
+        // Use the modern IDictionary<string,string?> API (ProcessStartInfo.Environment)
+        // instead of the legacy StringDictionary (EnvironmentVariables). The legacy
+        // indexer throws KeyNotFoundException on missing keys across some runtime
+        // builds; the modern dictionary's TryGetValue / indexer never throws.
+        var env = startInfo.Environment;
+        env.TryGetValue(EnvVar, out var existing);
         env[EnvVar] = !string.IsNullOrEmpty(existing)
             ? $"{dylib}:{existing}"
             : dylib;
