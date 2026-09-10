@@ -249,6 +249,14 @@
     "resetToDefault": "恢复默认",
     "resetToDefaultHint": "恢复为该操作的默认快捷键"
   },
+  "ai": {
+    "title": "AI 设置",
+    "serverUrl": "AI 服务器地址",
+    "serverUrlHint": " *填写 OpenAI 兼容 API 的基础地址，例如 https://api.openai.com/v1 或 http://127.0.0.1:11434/v1。留空则使用内置服务。",
+    "apiKey": "API 密钥",
+    "model": "模型名称",
+    "modelHint": " *留空默认 gpt-4o，请填写该服务器支持的模型名称。"
+  },
   "storage": {
     "title": "存储空间",
     "total": "总计",

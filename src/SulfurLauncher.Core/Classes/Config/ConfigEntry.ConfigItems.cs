@@ -60,6 +60,9 @@ public partial class ConfigEntry : ObservableObject
     [ObservableProperty] public partial DownloadSearchSort DefaultDownloadSearchSort { get; set; } = DownloadSearchSort.Relevance;
     [ObservableProperty] public partial int ResourceListSortIndex { get; set; }
     [ObservableProperty] public partial string DownloadLastSelectedPage { get; set; } = string.Empty;
+    [ObservableProperty] public partial string? AiServerBaseUrl { get; set; }
+    [ObservableProperty] public partial string? AiApiKey { get; set; }
+    [ObservableProperty] public partial string AiModel { get; set; } = "gpt-4o";
     [ObservableProperty] public partial string MultiplayerLastSelectedPage { get; set; } = "Java";
     [ObservableProperty] public partial string RedstoneSelectedNode { get; set; } = "auto";
     [ObservableProperty] public partial string GravityConeRelaySources { get; set; } =

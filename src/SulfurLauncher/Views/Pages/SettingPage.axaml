@@ -110,6 +110,20 @@
                     </tio:NavMenuItem>
                     <tio:NavMenuItem
                         Command="{Binding NavigateTypeCommand}"
+                        CommandParameter="{x:Type p:AiSettings}"
+                        Header="{Translate {x:Static loc:PagesLanguageManager+Keys.settingpage_Ai}}">
+                        <tio:NavMenuItem.Icon>
+                            <TextBlock
+                                FontFamily="{StaticResource IconFont}"
+                                FontSize="17"
+                                Margin="0,-1"
+                                Padding="2,0,0,0"
+                                Text="&#xe62b;"
+                                VerticalAlignment="Center" />
+                        </tio:NavMenuItem.Icon>
+                    </tio:NavMenuItem>
+                    <tio:NavMenuItem
+                        Command="{Binding NavigateTypeCommand}"
                         CommandParameter="{x:Type p:About}"
                         Header="{Translate {x:Static loc:PagesLanguageManager+Keys.settingpage_About}}"
                         Name="AboutItem">

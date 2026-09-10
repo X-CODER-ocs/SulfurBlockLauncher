@@ -247,6 +247,14 @@
     "resetToDefault": "Reset to Default",
     "resetToDefaultHint": "Reset to the default shortcut for this action"
   },
+  "ai": {
+    "title": "AI Settings",
+    "serverUrl": "AI Server URL",
+    "serverUrlHint": " *Enter the base URL of an OpenAI-compatible API, e.g. https://api.openai.com/v1 or http://127.0.0.1:11434/v1. Leave empty to use the built-in service.",
+    "apiKey": "API Key",
+    "model": "Model Name",
+    "modelHint": " *Defaults to gpt-4o when left empty; enter a model supported by your server."
+  },
   "storage": {
     "title": "Storage",
     "total": "Total",

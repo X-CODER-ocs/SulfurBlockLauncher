@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using SulfurLauncher.Core.Const;
 using SulfurLauncher.Localization;
 
 namespace SulfurLauncher.Core.Services;
@@ -83,9 +84,26 @@ public static class LogSharingService
 
     public static async Task<string> AnalyseAiAsync(string content, Action<string>? onChunk, CancellationToken ct)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.logshare.cn/v1/ai/analyse");
+        var config = Data.ConfigEntry;
+        var baseUrl = string.IsNullOrWhiteSpace(config.AiServerBaseUrl)
+            ? "https://api.logshare.cn/v1/ai/analyse"
+            : config.AiServerBaseUrl.Trim().TrimEnd('/') + "/chat/completions";
+        var key = config.AiApiKey?.Trim();
+        var model = string.IsNullOrWhiteSpace(config.AiModel) ? null : config.AiModel.Trim();
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, baseUrl);
+        if (!string.IsNullOrWhiteSpace(key))
+            request.Headers.TryAddWithoutValidation("Authorization", $"Bearer {key}");
         request.Content = new StringContent(
-            JsonSerializer.Serialize(new { content = LimitContent(content, 1_048_576, 50_000) }),
+            JsonSerializer.Serialize(new
+            {
+                model = model ?? "gpt-4o",
+                stream = true,
+                messages = new[]
+                {
+                    new { role = "user", content = LimitContent(content, 1_048_576, 50_000) }
+                }
+            }),
             Encoding.UTF8, "application/json");
         using var response = await Client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
         if (!response.IsSuccessStatusCode)
