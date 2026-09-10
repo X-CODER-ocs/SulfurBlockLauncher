@@ -61,15 +61,24 @@ public static class MacOSJitFix
         if (dylib is null)
             return false;
 
-        // Use the modern IDictionary<string,string?> API (ProcessStartInfo.Environment)
-        // instead of the legacy StringDictionary (EnvironmentVariables). The legacy
-        // indexer throws KeyNotFoundException on missing keys across some runtime
-        // builds; the modern dictionary's TryGetValue / indexer never throws.
-        var env = startInfo.Environment;
-        env.TryGetValue(EnvVar, out var existing);
-        env[EnvVar] = !string.IsNullOrEmpty(existing)
-            ? $"{dylib}:{existing}"
-            : dylib;
+        try
+        {
+            // Prefer the modern IDictionary<string,string?> API (ProcessStartInfo.Environment)
+            // over the legacy StringDictionary (EnvironmentVariables). The legacy indexer
+            // throws KeyNotFoundException on missing keys across some runtime builds;
+            // the modern dictionary's TryGetValue / indexer never throws.
+            var env = startInfo.Environment;
+            env.TryGetValue(EnvVar, out var existing);
+            env[EnvVar] = !string.IsNullOrEmpty(existing)
+                ? $"{dylib}:{existing}"
+                : dylib;
+        }
+        catch (Exception)
+        {
+            // Nether-hardening: environment injection must never take down a Java scan.
+            // If any runtime quirk makes the dictionary throw here, skip injection.
+            return false;
+        }
 
         return true;
     }
