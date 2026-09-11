@@ -100,6 +100,7 @@ public sealed class TerracottaMultiplayerService
 
     private TerracottaState _state = new();
     private Process? _process;
+    private Process? _daemonProcess;
     private CancellationTokenSource? _pollerCancellation;
 
     private TerracottaMultiplayerService()
@@ -724,12 +725,14 @@ public sealed class TerracottaMultiplayerService
             {
                 TryKill(_process);
                 _process = null;
+                KillDaemon();
                 throw;
             }
             catch (Exception exception) when (!cancellationToken.IsCancellationRequested)
             {
                 TryKill(_process);
                 _process = null;
+                KillDaemon();
                 SetStartError(exception.Message);
                 throw;
             }
@@ -757,6 +760,14 @@ public sealed class TerracottaMultiplayerService
         // never writes the port file, so WaitForPortAsync can never observe readiness
         // and every start was misreported as "exited before writing the port file".
         // Use --hmcl on every OS so port detection works identically everywhere.
+        // On macOS the --hmcl client additionally requires a resident daemon: without
+        // one it tries to bootstrap one through launchctl against a system LaunchAgent
+        // plist, which fails on macOS (Bootstrap failed: 5: Input/output error). Pre-spawn
+        // a --daemon process directly (it runs fine without launchctl), so the --hmcl
+        // client joins it via the global mutex and writes the port file.
+        if (OperatingSystem.IsMacOS())
+            EnsureDaemon(binaryPath);
+
         startInfo.ArgumentList.Add("--hmcl");
         startInfo.ArgumentList.Add(PortFile);
 
@@ -768,6 +779,35 @@ public sealed class TerracottaMultiplayerService
         CaptureOutput(process);
         Logger.Info($"[Terracotta] Started process (pid {process.Id})");
         return process;
+    }
+
+    /// <summary>
+    /// Terracotta needs a resident daemon on macOS for the --hmcl client to join via the
+    /// global mutex and write the port file. Start one directly (without launchctl).
+    /// </summary>
+    private void EnsureDaemon(string binaryPath)
+    {
+        if (_daemonProcess is { HasExited: false })
+            return;
+        var daemonInfo = new ProcessStartInfo(binaryPath)
+        {
+            WorkingDirectory = Root,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+        daemonInfo.ArgumentList.Add("--daemon");
+        var daemon = new Process { StartInfo = daemonInfo };
+        if (!daemon.Start())
+            throw new InvalidOperationException(string.Format(
+                CommonLanguageManager.Instance.common_cannotStart.CurrentValue(), BinaryName));
+        _daemonProcess = daemon;
+        Logger.Info($"[Terracotta] Started macOS daemon (pid {daemon.Id})");
+    }
+
+    private void KillDaemon()
+    {
+        TryKill(_daemonProcess);
+        _daemonProcess = null;
     }
 
     private void CaptureOutput(Process process)
@@ -1017,6 +1057,7 @@ public sealed class TerracottaMultiplayerService
             if (process is { HasExited: false })
                 TryKill(process);
             _process = null;
+            KillDaemon();
 
             int? port;
             lock (_stateLock)
