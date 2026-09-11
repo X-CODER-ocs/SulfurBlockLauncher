@@ -21,7 +21,7 @@
 
 ## 少一点配置，多一点游戏
 
-<a href="https://portal.tiouo.cc">SulfurLauncher</a> 是一款开源、跨平台的 Minecraft 启动器与实例管理器，同时支持 Java 版和基岩版，提供从游戏安装、账户登录到资源查找与文件整理的一体化体验，并对不同版本、整合包和世界进行独立管理
+<a href="https://x-coder-ocs.github.io/SulfurBlockLauncher/">SulfurLauncher</a> 是一款开源、跨平台的 Minecraft 启动器与实例管理器，同时支持 Java 版和基岩版，提供从游戏安装、账户登录到资源查找与文件整理的一体化体验，并对不同版本、整合包和世界进行独立管理
 
 ## 下载 SulfurLauncher
 
