@@ -116,6 +116,7 @@ public partial class RedstoneMultiplayerViewModel : ObservableObject, IAsyncDisp
     public partial RedstoneNodeOption? SelectedNodeOption { get; set; }
 
     public bool ShowUnsupported => State is { Supported: false };
+    public bool ShowServiceUnavailable => HongshiMultiplayerService.IsServiceUnavailable;
     public bool ShowDownloadCard => IsDownloading || ShowDownloadBanner;
     public bool ShowDownloadBanner => State is { Supported: true, BinaryInstalled: false };
     public bool IsDownloading => State?.Status == HongshiStatus.Downloading;

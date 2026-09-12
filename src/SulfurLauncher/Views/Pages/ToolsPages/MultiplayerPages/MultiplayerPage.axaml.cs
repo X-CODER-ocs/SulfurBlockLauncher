@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
@@ -41,6 +41,7 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
     private MultiplayerPageViewModel? _currentViewModel;
     private RedstoneMultiplayerPage? _redstonePage;
     private TerracottaMultiplayerPage? _terracottaPage;
+    private PlayitMultiplayerPage? _playitPage;
     private bool _isSelectingSection;
     private bool _hasLoaded;
     private MultiplayerSection _selectedSection;
@@ -103,8 +104,11 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
         _terracottaPage?.ViewModel.DisposeAsync().AsTask().Forget("Dispose Terracotta multiplayer page");
         _redstonePage?.ViewModel.Deactivate();
         _redstonePage?.ViewModel.DisposeAsync().AsTask().Forget("Dispose Redstone multiplayer page");
+        _playitPage?.ViewModel.Deactivate();
+        _playitPage?.ViewModel.DisposeAsync().AsTask().Forget("Dispose Play It multiplayer page");
         _terracottaPage = null;
         _redstonePage = null;
+        _playitPage = null;
         foreach (var viewModel in _viewModels.Values)
         {
             viewModel.PropertyChanged -= ViewModelOnPropertyChanged;
@@ -193,6 +197,7 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
             foreach (var existingViewModel in _viewModels.Values) existingViewModel.Deactivate();
             _terracottaPage?.ViewModel.Deactivate();
             _redstonePage?.ViewModel.Deactivate();
+            _playitPage?.ViewModel.Deactivate();
         _currentViewModel = null;
 
             switch (section)
@@ -208,6 +213,9 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
                     break;
                 case MultiplayerSection.Redstone:
                     SelectRedstone();
+                    break;
+                case MultiplayerSection.Playit:
+                    SelectPlayit();
                     break;
             }
         }
@@ -255,6 +263,23 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
         _redstonePage ??= new RedstoneMultiplayerPage();
         ApplyStandaloneHeader(RedstoneNavItem, _redstoneBigIcon, _redstonePage.ViewModel);
         Frame.Content = _redstonePage;
+    }
+
+    private void SelectPlayit()
+    {
+        _playitPage ??= new PlayitMultiplayerPage();
+        NavMenu.SelectedItem = PlayitNavItem;
+        HeaderTitle.Text = PlayitNavItem.Header?.ToString() ?? string.Empty;
+        HeaderIcon.IsVisible = true;
+        HeaderIcon.Text = "\ue620";
+        HeaderIcon.FontSize = 22;
+        HeaderImage.IsVisible = false;
+        HeaderImage.Source = null;
+        HeaderStatus.IsVisible = false;
+        HeaderStatusText.Text = string.Empty;
+        _playitPage.ViewModel.Activate();
+        Frame.Content = _playitPage;
+        Logger.Info($"[Multiplayer] Selected Play It standalone section.");
     }
 
     private void ApplyStandaloneHeader(NavMenuItem item, Bitmap? bitmap, IMultiplayerPageLifecycle viewModel)
@@ -314,7 +339,8 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
         Java,
         Bedrock,
         Terracotta,
-        Redstone
+        Redstone,
+        Playit
     }
 }
 

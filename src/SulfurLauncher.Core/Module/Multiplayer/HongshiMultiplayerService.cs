@@ -70,6 +70,11 @@ public sealed class HongshiMultiplayerService
     public const string NodeEndpoint = "https://hongshi.site/newserver.json";
     public const int ControlPort = 7000;
 
+    /// <summary>
+    /// 红石联机后端服务已停运；此开关用于在 UI 中提示用户该功能暂不可用。
+    /// </summary>
+    public const bool IsServiceUnavailable = true;
+
     private const int MaxBinarySize = 256 * 1024 * 1024;
     private static readonly TimeSpan NodeProbeTimeout = TimeSpan.FromMilliseconds(1500);
     private static readonly TimeSpan StartTimeout = TimeSpan.FromSeconds(20);

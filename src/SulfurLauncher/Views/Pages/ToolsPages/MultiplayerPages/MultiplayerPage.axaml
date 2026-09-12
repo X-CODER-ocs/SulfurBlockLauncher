@@ -76,6 +76,19 @@
                     </tio:NavMenuItem.Icon>
                 </tio:NavMenuItem>
                 <tio:NavMenuItem
+                    Header="{Translate {x:Static loc:CommonLanguageManager+Keys.multiplayer_playitMultiplayer}}"
+                    Name="PlayitNavItem"
+                    Tag="Playit">
+                    <tio:NavMenuItem.Icon>
+                        <TextBlock
+                            FontFamily="{StaticResource IconFont}"
+                            FontSize="18"
+                            Margin="0,-1"
+                            Padding="1,0,0,0"
+                            Text="&#xe620;" />
+                    </tio:NavMenuItem.Icon>
+                </tio:NavMenuItem>
+                <tio:NavMenuItem
                     Header="{Translate {x:Static loc:CommonLanguageManager+Keys.multiplayer_redstoneMultiplayer}}"
                     Name="RedstoneNavItem"
                     Tag="Redstone">

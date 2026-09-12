@@ -24,7 +24,7 @@ public enum ComponentUpdateStatus
 
 public static class GravityConeInstaller
 {
-    public const string ManifestUrl = "https://https://github.com/cangcang/sulfurlauncher/gc.json";
+    public const string ManifestUrl = "https://portal.tiouo.cc/gc.json";
     public const string GravityConeVersion = "0.1.4-alpha";
     public const string EasyTierVersion = "2.6.4";
 

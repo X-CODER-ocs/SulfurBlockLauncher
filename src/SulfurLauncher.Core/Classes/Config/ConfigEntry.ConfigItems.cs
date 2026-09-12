@@ -64,6 +64,7 @@ public partial class ConfigEntry : ObservableObject
     [ObservableProperty] public partial string? AiApiKey { get; set; }
     [ObservableProperty] public partial string AiModel { get; set; } = "gpt-4o";
     [ObservableProperty] public partial string MultiplayerLastSelectedPage { get; set; } = "Java";
+    [ObservableProperty] public partial string? PlayitSecretKey { get; set; }
     [ObservableProperty] public partial string RedstoneSelectedNode { get; set; } = "auto";
     [ObservableProperty] public partial string GravityConeRelaySources { get; set; } =
         Module.Multiplayer.GravityConeRelayClient.DefaultRelaySourceUrl;
