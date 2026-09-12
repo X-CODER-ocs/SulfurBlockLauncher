@@ -37,44 +37,45 @@
                         Content="{Binding ImportText}"
                         DockPanel.Dock="Bottom"
                         Margin="0,10,0,0" />
-                    <ListBox
-                        ItemsSource="{Binding Skins}"
-                        SelectedItem="{Binding Selected}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate x:DataType="account:SkinItemViewModel">
-                                <StackPanel
-                                    Margin="4,2"
-                                    Orientation="Horizontal"
-                                    Spacing="10">
-                                    <Image
-                                        Height="40"
-                                        Source="{Binding Thumbnail}"
-                                        Width="40" />
+                    <Grid>
+                        <ListBox
+                            ItemsSource="{Binding Skins}"
+                            SelectedItem="{Binding Selected}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate x:DataType="account:SkinItemViewModel">
                                     <StackPanel
-                                        Spacing="2"
-                                        VerticalAlignment="Center">
-                                        <TextBlock
-                                            FontSize="12"
-                                            FontWeight="600"
-                                            Text="{Binding DisplayName}" />
-                                        <TextBlock
-                                            FontSize="11"
-                                            Foreground="{DynamicResource SukiMuteText}"
-                                            Text="{Binding ModelText}" />
+                                        Margin="4,2"
+                                        Orientation="Horizontal"
+                                        Spacing="10">
+                                        <Image
+                                            Height="40"
+                                            Source="{Binding Thumbnail}"
+                                            Width="40" />
+                                        <StackPanel
+                                            Spacing="2"
+                                            VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="12"
+                                                FontWeight="600"
+                                                Text="{Binding DisplayName}" />
+                                            <TextBlock
+                                                FontSize="11"
+                                                Foreground="{DynamicResource SukiMuteText}"
+                                                Text="{Binding ModelText}" />
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                        <ListBox.EmptyView>
-                            <TextBlock
-                                Foreground="{DynamicResource SukiMuteText}"
-                                HorizontalAlignment="Center"
-                                Text="{Binding EmptyText}"
-                                TextAlignment="Center"
-                                TextWrapping="Wrap"
-                                VerticalAlignment="Center" />
-                        </ListBox.EmptyView>
-                    </ListBox>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <TextBlock
+                            Foreground="{DynamicResource SukiMuteText}"
+                            HorizontalAlignment="Center"
+                            IsVisible="{Binding HasSkins, Converter={x:Static BoolConverters.Not}}"
+                            Text="{Binding EmptyText}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"
+                            VerticalAlignment="Center" />
+                    </Grid>
                 </DockPanel>
             </Border>
 

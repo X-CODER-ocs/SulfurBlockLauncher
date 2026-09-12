@@ -172,6 +172,8 @@ public partial class SkinLibraryDialogViewModel : ObservableObject, IDialogConte
 
     public bool HasSelection => Selected is not null;
 
+    public bool HasSkins => Skins.Count > 0;
+
     public ICommand ImportCommand { get; }
     public ICommand DeleteCommand { get; }
     public ICommand ApplyCommand { get; }
@@ -208,6 +210,7 @@ public partial class SkinLibraryDialogViewModel : ObservableObject, IDialogConte
         var index = 0;
         foreach (var item in SkinLibraryService.Instance.GetAll())
             Skins.Add(new SkinItemViewModel(item, ++index));
+        OnPropertyChanged(nameof(HasSkins));
     }
 
     private async Task ImportAsync()
