@@ -289,9 +289,8 @@ public partial class TabWindow : TioTabWindowBase
             _isConfigEntrySubscribed = false;
         }
 
-        // Stop detached multiplayer daemons (Terracotta, RedStone) before the app exits.
+        // Stop detached multiplayer daemons (Terracotta) before the app exits.
         _ = TerracottaMultiplayerService.Instance.StopAsync();
-        _ = HongshiMultiplayerService.Instance.StopAsync();
 
         _macOsWindowHandle = IntPtr.Zero;
 

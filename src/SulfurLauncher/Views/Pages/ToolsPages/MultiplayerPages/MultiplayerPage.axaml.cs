@@ -34,12 +34,9 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
     private readonly HashSet<MinecraftEdition> _initializedEditions = [];
     private readonly Dictionary<MinecraftEdition, MultiplayerContentPage> _pages = new();
     private readonly Dictionary<MinecraftEdition, MultiplayerPageViewModel> _viewModels = new();
-    private Bitmap? _redstoneIcon;
     private Bitmap? _terracottaIcon;
-    private Bitmap? _redstoneBigIcon;
     private Bitmap? _terracottaBigIcon;
     private MultiplayerPageViewModel? _currentViewModel;
-    private RedstoneMultiplayerPage? _redstonePage;
     private TerracottaMultiplayerPage? _terracottaPage;
     private PlayitMultiplayerPage? _playitPage;
     private bool _isSelectingSection;
@@ -59,9 +56,6 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
         InitializeComponent();
         _terracottaIcon = DecodeNavigationIcon("avares://SulfurLauncher/Assets/Multiplayer/terracotta.png");
         TerracottaNavIcon.Source = _terracottaIcon;
-        _redstoneIcon = DecodeNavigationIcon("avares://SulfurLauncher/Assets/Multiplayer/redstone.png");
-        RedstoneNavIcon.Source = _redstoneIcon;
-        _redstoneBigIcon = DecodeNavigationIcon("avares://SulfurLauncher/Assets/Multiplayer/redstone.png", 28);
         _terracottaBigIcon = DecodeNavigationIcon("avares://SulfurLauncher/Assets/Multiplayer/terracotta.png", 28);
         
         _selectedSection = section;
@@ -90,24 +84,16 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
         _currentViewModel = null;
         HeaderImage.Source = null;
         TerracottaNavIcon.Source = null;
-        RedstoneNavIcon.Source = null;
         _terracottaIcon?.Dispose();
         _terracottaIcon = null;
         _terracottaBigIcon?.Dispose();
-        _redstoneIcon?.Dispose();
-        _redstoneBigIcon?.Dispose();
-        _redstoneIcon = null;
         _terracottaBigIcon = null;
-        _redstoneBigIcon = null;
         Frame.Content = null;
         _terracottaPage?.ViewModel.Deactivate();
         _terracottaPage?.ViewModel.DisposeAsync().AsTask().Forget("Dispose Terracotta multiplayer page");
-        _redstonePage?.ViewModel.Deactivate();
-        _redstonePage?.ViewModel.DisposeAsync().AsTask().Forget("Dispose Redstone multiplayer page");
         _playitPage?.ViewModel.Deactivate();
         _playitPage?.ViewModel.DisposeAsync().AsTask().Forget("Dispose Play It multiplayer page");
         _terracottaPage = null;
-        _redstonePage = null;
         _playitPage = null;
         foreach (var viewModel in _viewModels.Values)
         {
@@ -196,7 +182,6 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
             Data.ConfigEntry.MultiplayerLastSelectedPage = section.ToString();
             foreach (var existingViewModel in _viewModels.Values) existingViewModel.Deactivate();
             _terracottaPage?.ViewModel.Deactivate();
-            _redstonePage?.ViewModel.Deactivate();
             _playitPage?.ViewModel.Deactivate();
         _currentViewModel = null;
 
@@ -210,9 +195,6 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
                     break;
                 case MultiplayerSection.Terracotta:
                     SelectTerracotta();
-                    break;
-                case MultiplayerSection.Redstone:
-                    SelectRedstone();
                     break;
                 case MultiplayerSection.Playit:
                     SelectPlayit();
@@ -256,13 +238,6 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
         _terracottaPage ??= new TerracottaMultiplayerPage();
         ApplyStandaloneHeader(TerracottaNavItem, _terracottaBigIcon, _terracottaPage.ViewModel);
         Frame.Content = _terracottaPage;
-    }
-
-    private void SelectRedstone()
-    {
-        _redstonePage ??= new RedstoneMultiplayerPage();
-        ApplyStandaloneHeader(RedstoneNavItem, _redstoneBigIcon, _redstonePage.ViewModel);
-        Frame.Content = _redstonePage;
     }
 
     private void SelectPlayit()
@@ -339,7 +314,6 @@ public partial class MultiplayerPage : UserControl, ITioTabPage
         Java,
         Bedrock,
         Terracotta,
-        Redstone,
         Playit
     }
 }

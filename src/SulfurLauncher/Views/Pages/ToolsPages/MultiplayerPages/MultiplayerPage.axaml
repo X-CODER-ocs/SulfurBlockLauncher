@@ -88,20 +88,6 @@
                             Text="&#xe620;" />
                     </tio:NavMenuItem.Icon>
                 </tio:NavMenuItem>
-                <tio:NavMenuItem
-                    Header="{Translate {x:Static loc:CommonLanguageManager+Keys.multiplayer_redstoneMultiplayer}}"
-                    Name="RedstoneNavItem"
-                    Tag="Redstone">
-                    <tio:NavMenuItem.Icon>
-                        <Image
-                            Height="20"
-                            Margin="0,-2"
-                            Name="RedstoneNavIcon"
-                            RenderOptions.BitmapInterpolationMode="HighQuality"
-                            Stretch="Uniform"
-                            Width="20" />
-                    </tio:NavMenuItem.Icon>
-                </tio:NavMenuItem>
             </tio:NavMenu>
         </controls:ScrollView>
 

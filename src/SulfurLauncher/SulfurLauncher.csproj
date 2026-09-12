@@ -52,10 +52,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\Pages\ToolsPages\MultiplayerPages\RedstoneMultiplayerPage.axaml.cs">
-        <DependentUpon>RedstoneMultiplayerPage.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\Pages\ToolsPages\MultiplayerPages\TerracottaMultiplayerPage.axaml.cs">
         <DependentUpon>TerracottaMultiplayerPage.axaml</DependentUpon>
         <SubType>Code</SubType>
