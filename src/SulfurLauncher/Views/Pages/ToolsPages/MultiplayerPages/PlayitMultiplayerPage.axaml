@@ -3,6 +3,7 @@
     d:DesignWidth="960"
     mc:Ignorable="d"
     x:Class="SulfurLauncher.Views.Pages.ToolsPages.MultiplayerPages.PlayitMultiplayerPage"
+    x:DataType="multiplayerPages:PlayitMultiplayerViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:loc="using:SulfurLauncher.Localization"
