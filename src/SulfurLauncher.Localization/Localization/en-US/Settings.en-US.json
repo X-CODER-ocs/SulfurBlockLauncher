@@ -85,7 +85,22 @@
     "removeAccount": "Remove Account",
     "bedrockAccounts": "Bedrock Accounts",
     "disable": "Disable",
-    "enable": "Enable"
+    "enable": "Enable",
+    "skinLibrary": "Skin Library",
+    "skinLibraryImport": "Import Skin",
+    "skinLibraryImportFailed": "Import failed: {0}",
+    "skinLibraryInvalidFile": "Invalid skin file. A 64×64 or 64×32 PNG is required.",
+    "skinLibraryDelete": "Delete",
+    "skinLibraryApply": "Apply to Account",
+    "skinLibraryClose": "Close",
+    "skinLibraryEmpty": "The skin library is empty. Tap Import Skin to add one.",
+    "skinLibraryModelLabel": "Model",
+    "skinLibraryModelClassic": "Classic (Steve)",
+    "skinLibraryModelSlim": "Slim (Alex)",
+    "skinLibraryImported": "Added to the skin library",
+    "skinLibraryDeleted": "Removed from the skin library",
+    "skinLibraryApplied": "Applied to “{0}”",
+    "skinLibrarySelectHint": "Select a skin to preview"
   },
   "advanced": {
     "title": "Advanced Options",

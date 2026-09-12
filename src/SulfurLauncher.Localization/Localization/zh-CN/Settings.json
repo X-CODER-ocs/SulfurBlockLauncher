@@ -87,7 +87,22 @@
     "removeAccount": "移除账户",
     "bedrockAccounts": "基岩版账户",
     "disable": "禁用",
-    "enable": "启用"
+    "enable": "启用",
+    "skinLibrary": "皮肤库",
+    "skinLibraryImport": "导入皮肤",
+    "skinLibraryImportFailed": "导入失败：{0}",
+    "skinLibraryInvalidFile": "无效的皮肤文件，需为 64×64 或 64×32 的 PNG",
+    "skinLibraryDelete": "删除",
+    "skinLibraryApply": "应用到当前账户",
+    "skinLibraryClose": "关闭",
+    "skinLibraryEmpty": "皮肤库为空，点击“导入皮肤”添加",
+    "skinLibraryModelLabel": "模型",
+    "skinLibraryModelClassic": "经典 (Steve)",
+    "skinLibraryModelSlim": "纤瘦 (Alex)",
+    "skinLibraryImported": "已导入皮肤库",
+    "skinLibraryDeleted": "已从皮肤库删除",
+    "skinLibraryApplied": "已应用到账户“{0}”",
+    "skinLibrarySelectHint": "点击左侧皮肤进行预览"
   },
   "advanced": {
     "title": "高级选项",

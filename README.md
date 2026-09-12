@@ -122,3 +122,4 @@ SulfurLauncher 建立在许多优秀的 [开源项目](src/SulfurLauncher/Classe
 - [BakaXL](https://bakaxl.com)：内置游戏图标
 - [Bedrock on linux](https://github.com/Wyze3306/BedrockOnLinux) : 适用于Linux的基岩版启动支持
 - [portal](https://portal.tiouo.cc/) : 大部分功能设计,外观
+- [BlockHelm-Launcher](https://github.com/zqq-699/BlockHelm-Launcher)：皮肤库功能参考

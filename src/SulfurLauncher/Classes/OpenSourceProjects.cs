@@ -39,6 +39,8 @@ public static class OpenSourceProjects
         new("GravityCone", "MIT License", "https://github.com/Tianpao/GravityCone"),
         new("EasyTier", "GNU LGPL v3.0", "https://github.com/EasyTier/EasyTier"),
         new("BedrockLauncher.Core", "MIT license", "https://github.com/Round-Studio/BedrockLauncher.Core"),
+        new("BlockHelm-Launcher (Skin Library reference)", "GNU GPL v3.0",
+            "https://github.com/zqq-699/BlockHelm-Launcher"),
         new("GDK-Proton", CommonLanguageManager.Instance.about_noLicense.CurrentValue(),
             "https://github.com/Weather-OS/GDK-Proton")
     ];
