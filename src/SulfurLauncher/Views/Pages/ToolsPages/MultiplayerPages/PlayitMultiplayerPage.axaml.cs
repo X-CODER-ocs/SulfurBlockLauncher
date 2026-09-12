@@ -175,20 +175,66 @@ public partial class PlayitMultiplayerViewModel : ObservableObject, IAsyncDispos
     {
         if (IsBusy) return;
         IsBusy = true;
+        var taskName = CommonLanguageManager.Instance.multiplayer_playitDownloading.CurrentValue();
+        var task = TaskManager.Instance.CreateTask(new TaskOptions
+        {
+            Name = taskName,
+            Description = CommonLanguageManager.Instance.multiplayer_preparingDownload.CurrentValue(),
+            Progress = 0,
+            Actions =
+            [
+                new TaskActionDefinition
+                {
+                    Name = CommonLanguageManager.Instance.multiplayer_cancelDownload.CurrentValue(),
+                    Description = CommonLanguageManager.Instance.multiplayer_cancelComponentDownload.CurrentValue(),
+                    IconKey = "Cancel",
+                    ExecuteAsync = (managedTask, _) =>
+                    {
+                        managedTask.RequestCancellation();
+                        return Task.CompletedTask;
+                    },
+                    CanExecute = managedTask => managedTask.CanBeCancelled,
+                    IsVisible = managedTask => !managedTask.IsTerminal
+                }
+            ]
+        }, async context =>
+        {
+            await _service.EnsureInstalledAsync(context.CancellationToken, fraction =>
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (context.Task.IsTerminal || context.CancellationToken.IsCancellationRequested) return;
+                    context.ReportProgress(Math.Clamp(fraction, 0, 1));
+                    context.SetDescription(string.Format(
+                        CommonLanguageManager.Instance.multiplayer_playitDownloadProgress.CurrentValue(),
+                        (int)(fraction * 100)));
+                });
+            });
+            context.ReportProgress(1);
+            context.SetDescription(CommonLanguageManager.Instance.multiplayer_componentDownloaded.CurrentValue());
+        });
+        task.Start();
+        _ = ObserveInstallationAsync(task);
+    }
+
+    private async Task ObserveInstallationAsync(ManagedTask task)
+    {
         try
         {
-            State = _service.State;
-            await _service.EnsureInstalledAsync(_lifetime.Token);
+            await task.Completion;
         }
-        catch (Exception ex) when (ex is not OperationCanceledException)
+        catch (Exception exception)
         {
-            Logger.Error($"[PlayIt] Download failed: {ex}");
+            Logger.Warning($"[PlayIt] Installation task failed: {exception}");
         }
         finally
         {
             IsBusy = false;
             RefreshFromService();
             OnPropertyChanged(nameof(ShowDownloadCard));
+            OnPropertyChanged(nameof(CanStart));
+            await Task.Delay(TimeSpan.FromSeconds(3));
+            TaskManager.Instance.RemoveTerminalTask(task);
         }
     }
 

@@ -79,7 +79,7 @@ public sealed class PlayitMultiplayerService
         }
     }
 
-    public async Task EnsureInstalledAsync(CancellationToken cancellationToken)
+    public async Task EnsureInstalledAsync(CancellationToken cancellationToken, Action<float>? onProgress = null)
     {
         if (IsInstalled()) return;
         Directory.CreateDirectory(Root);
@@ -106,7 +106,11 @@ public sealed class PlayitMultiplayerService
                 if (n == 0) break;
                 await target.WriteAsync(buffer.AsMemory(0, n), cancellationToken);
                 read += n;
-                if (total > 0) State.DownloadProgress = (int)(read * 100 / total);
+                if (total > 0)
+                {
+                    State.DownloadProgress = (int)(read * 100 / total);
+                    onProgress?.Invoke((float)read / total);
+                }
                 if (n % (64 * 1024) == 0) Publish();
             }
         }

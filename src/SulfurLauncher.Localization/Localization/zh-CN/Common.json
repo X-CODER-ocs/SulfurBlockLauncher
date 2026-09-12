@@ -1043,6 +1043,7 @@
     "playitComponentMissingTitle": "需要下载 Play It 内核",
     "playitDownloadCore": "下载并安装 Play It 内核",
     "playitDownloading": "正在下载 Play It 内核...",
+    "playitDownloadProgress": "正在下载 Play It 内核：{0}%",
     "playitDownloadFailed": "Play It 内核下载失败：{0}",
     "playitStartService": "启动 Play It 代理",
     "playitStopService": "停止代理",

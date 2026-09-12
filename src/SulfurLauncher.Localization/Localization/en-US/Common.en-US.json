@@ -1043,6 +1043,7 @@
     "playitComponentMissingTitle": "Play It engine is not installed",
     "playitDownloadCore": "Download and install Play It engine",
     "playitDownloading": "Downloading Play It engine...",
+    "playitDownloadProgress": "Downloading Play It engine: {0}%",
     "playitDownloadFailed": "Failed to download the Play It engine: {0}",
     "playitStartService": "Start Play It agent",
     "playitStopService": "Stop agent",
