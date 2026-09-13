@@ -100,7 +100,10 @@
     "skinLibraryImported": "Added to the skin library",
     "skinLibraryDeleted": "Removed from the skin library",
     "skinLibraryApplied": "Applied to “{0}”",
-    "skinLibrarySelectHint": "Select a skin to preview"
+    "skinLibrarySelectHint": "Select a skin to preview",
+    "skinLibrarySelectAccountHint": "Select an account to apply the skin to",
+    "skinLibrarySelectAccountPlaceholder": "Select account",
+    "skinLibraryApplyAccount": "Apply to Selected Account"
   },
   "advanced": {
     "title": "Advanced Options",

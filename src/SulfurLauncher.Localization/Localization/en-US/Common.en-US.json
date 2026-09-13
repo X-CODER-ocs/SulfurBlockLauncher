@@ -2282,6 +2282,8 @@
     "shortcuts": "Key Bindings",
     "shortcutsPath": "Settings/Key Bindings",
     "storage": "Storage",
-    "storagePath": "Settings/Storage"
+    "storagePath": "Settings/Storage",
+    "skinLibrary": "Skin Library",
+    "skinLibraryPath": "Local skin library"
   }
 }

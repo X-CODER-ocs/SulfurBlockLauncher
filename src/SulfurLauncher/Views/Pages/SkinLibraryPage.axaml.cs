@@ -1,49 +1,72 @@
+using System.Collections.ObjectModel;
 using System.Numerics;
 using System.Windows.Input;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
-using System.Collections.ObjectModel;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiteSkinViewer3D.Shared.Enums;
+using SulfurLauncher.Core.Const;
 using SulfurLauncher.Core.Minecraft.Classes;
+using SulfurLauncher.Core.Module.AggregatedSearch;
 using SulfurLauncher.Core.Module.Initialize;
 using SulfurLauncher.Core.Module.SkinLibrary;
 using SulfurLauncher.Localization;
-using Tio.Avalonia.Standard.Tab.Gateway;
+using Tio.Avalonia.Standard.Tab.Entries;
+using Tio.Avalonia.Standard.Tab.Interface;
 using TioUi.Common;
 using TioUi.Common.Extensions;
-using TioUi.Common.Interfaces;
 using TioUi.Controls;
 using Pointer = LiteSkinViewer3D.Shared.Enums.PointerType;
 
-namespace SulfurLauncher.Views.Components.Operations.Account;
+namespace SulfurLauncher.Views.Pages;
 
-public partial class SkinLibraryDialog : UserControl
+[AggregatedSearchPage("pages_skinLibrary", "pages_skinLibraryPath", "SkinLibrary")]
+public partial class SkinLibraryPage : UserControl, ITioTabPage
 {
-    private float _initialY;
-    private Pointer _pressedPointer;
+    private readonly SkinLibraryPageViewModel _viewModel;
 
-    public SkinLibraryDialog(SkinLibraryDialogViewModel viewModel)
+    public SkinLibraryPage()
     {
         InitializeComponent();
-        DataContext = viewModel;
+        _viewModel = new SkinLibraryPageViewModel();
+        DataContext = _viewModel;
     }
+
+    public PageInfo PageInfo { get; init; } = new()
+    {
+        Title = CommonLanguageManager.Instance.pages_skinLibrary.CurrentValue(),
+        IconGlyph = "\ue63f",
+        IconFont = IconResources.FontFamilyName
+    };
+
+    public TabEntry HostTab { get; set; }
 
     protected override void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
+        _viewModel.AttachTopLevel(TopLevel.GetTopLevel(this));
         SkinViewer.PointerMoved += OnPointerMoved;
         SkinViewer.PointerPressed += OnPointerPressed;
         SkinViewer.PointerReleased += OnPointerReleased;
         SkinViewer.PointerWheelChanged += OnPointerWheelChanged;
-        SkinViewer.RenderMode = SkinRenderMode.MSAA;
-        SkinViewer.IsTopLayer3D = true;
     }
+
+    public void OnClose()
+    {
+        if (DataContext is IDisposable disposable) disposable.Dispose();
+        _viewModel.DetachTopLevel();
+        DataContext = null;
+    }
+
+    private float _initialY;
+    private Pointer _pressedPointer;
 
     private void OnPointerMoved(object? s, PointerEventArgs e)
     {
@@ -87,121 +110,92 @@ public partial class SkinLibraryDialog : UserControl
     }
 }
 
-public static class SkinLibraryDialogLauncher
+public partial class SkinLibraryPageViewModel : ObservableObject, IDisposable
 {
-    public static async Task<SkinLibraryItem?> Show(Control owner, MinecraftAccount account,
-        Action? changed = null)
-    {
-        var topLevel = TopLevel.GetTopLevel(owner);
-        var options = new OverlayDialogOptions
-        {
-            Mode = DialogMode.None,
-            Buttons = DialogButton.None,
-            CanLightDismiss = false,
-            CanDragMove = true,
-            IsCloseButtonVisible = false,
-            CanResize = false,
-            VerticalAnchor = VerticalPosition.Center
-        };
+    private TopLevel? _topLevel;
+    private bool _isLoaded;
 
-        var viewModel = new SkinLibraryDialogViewModel(account, topLevel);
-        var dialog = new SkinLibraryDialog(viewModel);
-        viewModel.Notify += tuple => topLevel?.Notice(tuple.Message, tuple.Type);
-
-        var applied = await OverlayDialog.ShowCustomAsync<SkinLibraryItem?>(
-            dialog, viewModel, owner.TryGetHostId(), options);
-
-        if (applied is not null)
-        {
-            ConfigSaver.SaveConfig();
-            changed?.Invoke();
-        }
-
-        return applied;
-    }
-}
-
-public sealed class SkinItemViewModel : ObservableObject
-{
-    private Bitmap? _thumbnail;
-
-    public SkinItemViewModel(SkinLibraryItem item, int index)
-    {
-        Item = item;
-        DisplayName = $"Skin {index}";
-    }
-
-    public SkinLibraryItem Item { get; }
-
-    public string DisplayName { get; }
-
-    public string ModelText => Item.SkinModel == SkinModel.Slim
-        ? SettingsLanguageManager.Instance.account_skinLibraryModelSlim.CurrentValue()
-        : SettingsLanguageManager.Instance.account_skinLibraryModelClassic.CurrentValue();
-
-    public Bitmap? Thumbnail => _thumbnail ??= SkinLibraryService.Instance.GetHeadImage(Item);
-}
-
-public partial class SkinLibraryDialogViewModel : ObservableObject, IDialogContext
-{
-    private readonly MinecraftAccount _account;
-    private readonly TopLevel? _topLevel;
+    public ObservableCollection<AccountItemViewModel> Accounts { get; } = [];
 
     public ObservableCollection<SkinItemViewModel> Skins { get; } = [];
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanApply))]
     [NotifyPropertyChangedFor(nameof(PreviewPath))]
     [NotifyPropertyChangedFor(nameof(HasSelection))]
     public partial SkinItemViewModel? Selected { get; set; }
 
-    public string Title => SettingsLanguageManager.Instance.account_skinLibrary.CurrentValue();
+    private AccountItemViewModel? _selectedAccount;
+    public AccountItemViewModel? SelectedAccount
+    {
+        get => _selectedAccount;
+        set
+        {
+            if (SetProperty(ref _selectedAccount, value)) OnPropertyChanged(nameof(CanApply));
+        }
+    }
 
+    public string Title => CommonLanguageManager.Instance.pages_skinLibrary.CurrentValue();
+    public string SelectAccountHint => SettingsLanguageManager.Instance.account_skinLibrarySelectAccountHint.CurrentValue();
+    public string SelectAccountPlaceholder => SettingsLanguageManager.Instance.account_skinLibrarySelectAccountPlaceholder.CurrentValue();
     public string ImportText => SettingsLanguageManager.Instance.account_skinLibraryImport.CurrentValue();
-
     public string DeleteText => SettingsLanguageManager.Instance.account_skinLibraryDelete.CurrentValue();
-
-    public string ApplyText => SettingsLanguageManager.Instance.account_skinLibraryApply.CurrentValue();
-
-    public string CloseText => SettingsLanguageManager.Instance.account_skinLibraryClose.CurrentValue();
-
+    public string ApplyText => SettingsLanguageManager.Instance.account_skinLibraryApplyAccount.CurrentValue();
     public string EmptyText => SettingsLanguageManager.Instance.account_skinLibraryEmpty.CurrentValue();
-
     public string SelectHint => SettingsLanguageManager.Instance.account_skinLibrarySelectHint.CurrentValue();
 
     public string? PreviewPath => Selected?.Item.FilePath;
-
     public bool HasSelection => Selected is not null;
-
     public bool HasSkins => Skins.Count > 0;
+    public bool CanApply => Selected is not null && SelectedAccount is not null;
 
     public ICommand ImportCommand { get; }
     public ICommand DeleteCommand { get; }
     public ICommand ApplyCommand { get; }
-    public ICommand CloseCommand { get; }
 
-    public event EventHandler<object?>? RequestClose;
     public event Action<(NotificationType Type, string Message)>? Notify;
 
-    public SkinLibraryDialogViewModel(MinecraftAccount account, TopLevel? topLevel)
+    public SkinLibraryPageViewModel()
     {
-        _account = account;
-        _topLevel = topLevel;
         ImportCommand = new AsyncRelayCommand(ImportAsync);
         DeleteCommand = new RelayCommand(Delete);
-        ApplyCommand = new RelayCommand(Apply);
-        CloseCommand = new RelayCommand(Close);
+        ApplyCommand = new RelayCommand(Apply, () => CanApply);
+        PopulateAccounts();
         Reload();
-    }
-
-    public void Close()
-    {
-        RequestClose?.Invoke(this, null);
     }
 
     partial void OnSelectedChanged(SkinItemViewModel? value)
     {
         (DeleteCommand as RelayCommand)?.NotifyCanExecuteChanged();
         (ApplyCommand as RelayCommand)?.NotifyCanExecuteChanged();
+    }
+
+    public void AttachTopLevel(TopLevel? topLevel)
+    {
+        _topLevel = topLevel;
+        // Ensure each attach subscribes exactly once.
+        Notify -= HandleNotify;
+        if (topLevel is not null) Notify += HandleNotify;
+        _isLoaded = true;
+    }
+
+    private void HandleNotify((NotificationType Type, string Message) tuple) =>
+        _topLevel?.Notice(tuple.Message, tuple.Type);
+
+    public void DetachTopLevel()
+    {
+        _isLoaded = false;
+        _topLevel = null;
+    }
+
+    private void PopulateAccounts()
+    {
+        Accounts.Clear();
+        foreach (var account in Data.ConfigEntry.MinecraftAccounts)
+            Accounts.Add(new AccountItemViewModel(account));
+        var currentName = Data.ConfigEntry.UsingMinecraftMinecraftAccount?.Name;
+        SelectedAccount = Accounts.FirstOrDefault(a => a.Account.Name == currentName)
+                          ?? Accounts.FirstOrDefault();
     }
 
     private void Reload()
@@ -211,6 +205,7 @@ public partial class SkinLibraryDialogViewModel : ObservableObject, IDialogConte
         foreach (var item in SkinLibraryService.Instance.GetAll())
             Skins.Add(new SkinItemViewModel(item, ++index));
         OnPropertyChanged(nameof(HasSkins));
+        OnPropertyChanged(nameof(CanApply));
     }
 
     private async Task ImportAsync()
@@ -281,9 +276,13 @@ public partial class SkinLibraryDialogViewModel : ObservableObject, IDialogConte
 
     private void Apply()
     {
-        if (Selected is null) return;
-        SkinLibraryService.Instance.ApplyToAccount(_account, Selected.Item);
-        RequestClose?.Invoke(this, Selected.Item);
+        if (!CanApply || SelectedAccount is not { } accountItem) return;
+        SkinLibraryService.Instance.ApplyToAccount(accountItem.Account, Selected!.Item);
+        ConfigSaver.SaveConfig();
+        if (_topLevel is { } topLevel)
+            topLevel.Notice(string.Format(
+                SettingsLanguageManager.Instance.account_skinLibraryApplied.CurrentValue(),
+                accountItem.Account.Name), NotificationType.Success);
     }
 
     private static SkinModel DetectModel(string filePath)
@@ -294,4 +293,44 @@ public partial class SkinLibraryDialogViewModel : ObservableObject, IDialogConte
             ? SkinModel.Slim
             : SkinModel.Classic;
     }
+
+    public void Dispose()
+    {
+        DetachTopLevel();
+    }
+}
+
+public sealed class AccountItemViewModel
+{
+    public AccountItemViewModel(MinecraftAccount account)
+    {
+        Account = account;
+    }
+
+    public MinecraftAccount Account { get; }
+
+    public string DisplayName => Account.ShortDisplay;
+
+    public override string ToString() => DisplayName;
+}
+
+public sealed class SkinItemViewModel : ObservableObject
+{
+    private Bitmap? _thumbnail;
+
+    public SkinItemViewModel(SkinLibraryItem item, int index)
+    {
+        Item = item;
+        DisplayName = $"Skin {index}";
+    }
+
+    public SkinLibraryItem Item { get; }
+
+    public string DisplayName { get; }
+
+    public string ModelText => Item.SkinModel == SkinModel.Slim
+        ? SettingsLanguageManager.Instance.account_skinLibraryModelSlim.CurrentValue()
+        : SettingsLanguageManager.Instance.account_skinLibraryModelClassic.CurrentValue();
+
+    public Bitmap? Thumbnail => _thumbnail ??= SkinLibraryService.Instance.GetHeadImage(Item);
 }

@@ -2282,6 +2282,8 @@
     "shortcuts": "按键绑定",
     "shortcutsPath": "设置/按键绑定",
     "storage": "存储空间",
-    "storagePath": "设置/存储空间"
+    "storagePath": "设置/存储空间",
+    "skinLibrary": "皮肤库",
+    "skinLibraryPath": "本地皮肤库"
   }
 }

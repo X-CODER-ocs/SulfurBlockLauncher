@@ -27,8 +27,6 @@ public static class MinecraftAccountMenu
                 () => _ = SaveSkinAsync(owner, account)),
             CreateItem(SettingsLanguageManager.Instance.account_previewSkin.CurrentValue(), "\ue63e",
                 () => _ = PreviewSkinAsync(owner, account)),
-            CreateItem(SettingsLanguageManager.Instance.account_skinLibrary.CurrentValue(), "\ue63f",
-                () => _ = SkinLibraryAsync(owner, account, changed)),
             CreateItem(SettingsLanguageManager.Instance.account_switchAvatar.CurrentValue(), "\ue621", () =>
             {
                 account.UseSimpleAvatar = !account.UseSimpleAvatar;
@@ -106,11 +104,6 @@ public static class MinecraftAccountMenu
     private static async Task PreviewSkinAsync(Control owner, MinecraftAccount account)
     {
         await ChangeSkinDialog.Preview(owner.TryGetHostId()!, account);
-    }
-
-    private static async Task SkinLibraryAsync(Control owner, MinecraftAccount account, Action? changed)
-    {
-        await SkinLibraryDialogLauncher.Show(owner, account, changed);
     }
 
     private static async Task RenameAsync(Control owner, MinecraftAccount account, Action? changed)

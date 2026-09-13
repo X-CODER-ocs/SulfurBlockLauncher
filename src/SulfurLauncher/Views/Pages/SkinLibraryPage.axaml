@@ -1,25 +1,44 @@
 <UserControl
-    d:DesignHeight="520"
-    d:DesignWidth="760"
+    d:DesignHeight="560"
+    d:DesignWidth="860"
     mc:Ignorable="d"
-    x:Class="SulfurLauncher.Views.Components.Operations.Account.SkinLibraryDialog"
-    x:DataType="account:SkinLibraryDialogViewModel"
+    x:Class="SulfurLauncher.Views.Pages.SkinLibraryPage"
+    x:DataType="pages:SkinLibraryPageViewModel"
     xmlns="https://github.com/avaloniaui"
-    xmlns:account="clr-namespace:SulfurLauncher.Views.Components.Operations.Account"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:lsv="clr-namespace:LiteSkinViewer3D.Avalonia.Controls;assembly=LiteSkinViewer.3D"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pages="clr-namespace:SulfurLauncher.Views.Pages"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid
         Margin="24"
-        RowDefinitions="Auto,*,Auto"
-        Width="720">
-        <TextBlock
-            Margin="0,0,0,12"
-            FontSize="16"
-            FontWeight="600"
+        RowDefinitions="Auto,*,Auto">
+        <DockPanel
             Grid.Row="0"
-            Text="{Binding Title}" />
+            Margin="0,0,0,16">
+            <StackPanel
+                DockPanel.Dock="Left"
+                Spacing="6">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="600"
+                    Text="{Binding Title}" />
+                <TextBlock
+                    FontSize="12"
+                    Foreground="{DynamicResource SukiMuteText}"
+                    Text="{Binding SelectAccountHint}" />
+            </StackPanel>
+            <StackPanel
+                DockPanel.Dock="Right"
+                VerticalAlignment="Center">
+                <ComboBox
+                    HorizontalAlignment="Right"
+                    ItemsSource="{Binding Accounts}"
+                    MinWidth="260"
+                    PlaceholderText="{Binding SelectAccountPlaceholder}"
+                    SelectedItem="{Binding SelectedAccount}" />
+            </StackPanel>
+        </DockPanel>
 
         <Grid
             ColumnDefinitions="260,16,*"
@@ -42,7 +61,7 @@
                             ItemsSource="{Binding Skins}"
                             SelectedItem="{Binding Selected}">
                             <ListBox.ItemTemplate>
-                                <DataTemplate x:DataType="account:SkinItemViewModel">
+                                <DataTemplate x:DataType="pages:SkinItemViewModel">
                                     <StackPanel
                                         Margin="4,2"
                                         Orientation="Horizontal"
@@ -110,7 +129,7 @@
 
         <DockPanel
             Grid.Row="2"
-            Margin="0,12,0,0">
+            Margin="0,16,0,0">
             <Button
                 Command="{Binding DeleteCommand}"
                 Content="{Binding DeleteText}"
@@ -120,9 +139,6 @@
                 HorizontalAlignment="Right"
                 Orientation="Horizontal"
                 Spacing="8">
-                <Button
-                    Command="{Binding CloseCommand}"
-                    Content="{Binding CloseText}" />
                 <Button
                     Command="{Binding ApplyCommand}"
                     Content="{Binding ApplyText}" />

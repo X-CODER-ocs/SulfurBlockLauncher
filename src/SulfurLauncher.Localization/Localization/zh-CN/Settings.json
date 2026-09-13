@@ -102,7 +102,10 @@
     "skinLibraryImported": "已导入皮肤库",
     "skinLibraryDeleted": "已从皮肤库删除",
     "skinLibraryApplied": "已应用到账户“{0}”",
-    "skinLibrarySelectHint": "点击左侧皮肤进行预览"
+    "skinLibrarySelectHint": "点击左侧皮肤进行预览",
+    "skinLibrarySelectAccountHint": "选择一个账户以应用皮肤",
+    "skinLibrarySelectAccountPlaceholder": "选择账户",
+    "skinLibraryApplyAccount": "应用到所选账户"
   },
   "advanced": {
     "title": "高级选项",
