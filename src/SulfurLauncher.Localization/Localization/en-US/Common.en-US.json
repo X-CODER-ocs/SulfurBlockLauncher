@@ -553,6 +553,18 @@
     "noShareLink": "The server did not return a share link",
     "aiNoResult": "AI analysis returned no result"
   },
+  "littleskin": {
+    "errorClientId": "LittleSkin client_id is not configured, so the skin library cannot be synced. Set the LITTLESKIN_CLIENT_ID environment variable.",
+    "requestingCode": "Requesting authorization code...",
+    "waitingAuth": "Waiting for you to finish authorizing on the authorization page...",
+    "authFailed": "LittleSkin authorization failed.",
+    "fetchingSkins": "Fetching your LittleSkin closet...",
+    "importedFormat": "Imported {0} skins from LittleSkin into the skin library.",
+    "downloadingFormat": "Downloading skin {0}/{1}...",
+    "cancelled": "Sync cancelled.",
+    "error": "Sync failed: ",
+    "openBrowserFailed": "Could not open the browser automatically. Please open the authorization page manually: "
+  },
   "mesaLoader": {
     "platformUnsupported": "Mesa software rendering is not supported on this platform.",
     "downloadFailed": "mesa-loader download failed.",

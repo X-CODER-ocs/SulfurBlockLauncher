@@ -109,6 +109,14 @@
     "serverNameLabel": "Server Name",
     "serverUrlLabel": "Server Address"
   },
+  "littleskinsync": {
+    "title": "Sync LittleSkin Skin Library",
+    "steps": "Open the authorization page in your browser and enter the code below to finish authorizing:",
+    "codeLabel": "Authorization Code",
+    "openBrowser": "Open Authorization Page",
+    "cancel": "Cancel",
+    "done": "Done"
+  },
   "microsoft": {
     "title": "Verify Microsoft Account",
     "errorMessage": "Something went wrong! Please check your network connection.",

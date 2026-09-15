@@ -1,5 +1,6 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using SulfurLauncher.Core.Minecraft.Classes;
+using SulfurLauncher.Core.Module.LittleSkin;
 using TioUi.Common;
 using TioUi.Controls;
 using Minecraft = SulfurLauncher.Core.Minecraft;
@@ -125,6 +126,14 @@ public class AddAccount
             account.AccountNote = host;
             account.CreateAt = DateTime.Now;
             account.LastRefreshTime = DateTime.Now;
+        }
+
+        // 若登录的是 LittleSkin 验证服务器，且已配置 OAuth client_id，
+        // 则自动引导用户通过设备代码流授权，把其 LittleSkin 衣柜同步进皮肤库。
+        if (result.Any(account => LittleSkinSettings.IsLittleSkinUrl(account.YggdrasilServerUrl)) &&
+            !string.IsNullOrWhiteSpace(LittleSkinSettings.ClientId))
+        {
+            await LittleSkinSync.ShowAndSync(hostId);
         }
 
         return result;

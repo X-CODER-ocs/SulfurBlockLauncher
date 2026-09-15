@@ -553,6 +553,18 @@
     "noShareLink": "服务器未返回分享链接",
     "aiNoResult": "AI 分析未返回结果"
   },
+  "littleskin": {
+    "errorClientId": "尚未配置 LittleSkin client_id，无法同步皮肤库。请在环境变量 LITTLESKIN_CLIENT_ID 中设置。",
+    "requestingCode": "正在申请授权码…",
+    "waitingAuth": "等待你在授权页面中完成授权…",
+    "authFailed": "LittleSkin 授权失败。",
+    "fetchingSkins": "正在拉取你的 LittleSkin 衣柜…",
+    "importedFormat": "已从 LittleSkin 导入 {0} 个皮肤到皮肤库。",
+    "downloadingFormat": "正在下载皮肤 {0}/{1}…",
+    "cancelled": "同步已取消。",
+    "error": "同步失败：",
+    "openBrowserFailed": "无法自动打开浏览器，请手动访问授权页面："
+  },
   "mesaLoader": {
     "platformUnsupported": "当前平台不支持 Mesa 软件渲染。",
     "downloadFailed": "mesa-loader 下载失败。",

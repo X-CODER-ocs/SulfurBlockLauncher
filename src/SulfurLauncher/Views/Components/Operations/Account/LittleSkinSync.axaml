@@ -1,0 +1,79 @@
+<UserControl
+    d:DesignHeight="480"
+    d:DesignWidth="520"
+    mc:Ignorable="d"
+    x:Class="SulfurLauncher.Views.Components.Operations.Account.LittleSkinSync"
+    x:DataType="account:LittleSkinSyncViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:account="clr-namespace:SulfurLauncher.Views.Components.Operations.Account"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tio="https://github.com/tiouoo/TioUi.Avalonia"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:loc="using:SulfurLauncher.Localization">
+    <Grid Margin="24" RowDefinitions="Auto, Auto, Auto, *, Auto" Width="500">
+        <TextBlock
+            Grid.Row="0"
+            FontSize="16"
+            FontWeight="600"
+            Text="{Translate {x:Static loc:ComponentsLanguageManager+Keys.littleskinsync_title}}" />
+
+        <StackPanel Grid.Row="1" Margin="0,12,0,0" Spacing="6">
+            <TextBlock
+                FontSize="13"
+                Opacity="0.85"
+                Text="{Translate {x:Static loc:ComponentsLanguageManager+Keys.littleskinsync_steps}}" />
+            <Border
+                Padding="16"
+                Background="{DynamicResource TioUi.Brush.Surface2}"
+                CornerRadius="10">
+                <StackPanel Spacing="8">
+                    <TextBlock
+                        Foreground="{DynamicResource TioUi.Brush.Accent}"
+                        FontSize="13"
+                        Text="{Translate {x:Static loc:ComponentsLanguageManager+Keys.littleskinsync_codeLabel}}" />
+                    <TextBlock
+                        FontSize="30"
+                        FontWeight="700"
+                        HorizontalAlignment="Center"
+                        Text="{Binding UserCode}" />
+                    <TextBlock
+                        FontSize="12"
+                        LineHeight="17"
+                        Opacity="0.75"
+                        Text="{Binding StatusText}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <DockPanel Grid.Row="2" Margin="0,12,0,0">
+            <Button
+                Command="{Binding OpenBrowserCommand}"
+                Content="{Translate {x:Static loc:ComponentsLanguageManager+Keys.littleskinsync_openBrowser}}"
+                IsEnabled="{Binding CanOpenBrowser}" />
+        </DockPanel>
+
+        <TextBlock
+            Grid.Row="3"
+            Margin="0,10,0,0"
+            FontSize="13"
+            Opacity="0.9"
+            Text="{Binding ProgressText}"
+            TextWrapping="Wrap" />
+
+        <DockPanel Grid.Row="4" Margin="0,0,0,0">
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8">
+                <Button
+                    Command="{Binding CancelCommand}"
+                    Content="{Translate {x:Static loc:ComponentsLanguageManager+Keys.littleskinsync_cancel}}"
+                    IsEnabled="{Binding CanCancel}"
+                    Visibility="{Binding CancelVisibility}" />
+                <Button
+                    Command="{Binding DoneCommand}"
+                    Content="{Translate {x:Static loc:ComponentsLanguageManager+Keys.littleskinsync_done}}"
+                    IsEnabled="{Binding CanDone}"
+                    Visibility="{Binding DoneVisibility}" />
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</UserControl>

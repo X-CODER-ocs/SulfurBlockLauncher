@@ -109,6 +109,14 @@
     "serverNameLabel": "服务器名称",
     "serverUrlLabel": "服务器地址"
   },
+  "littleskinsync": {
+    "title": "同步 LittleSkin 皮肤库",
+    "steps": "请在你的浏览器中打开授权页面，并输入下面的授权码来完成授权：",
+    "codeLabel": "授权码",
+    "openBrowser": "打开授权页面",
+    "cancel": "取消",
+    "done": "完成"
+  },
   "microsoft": {
     "title": "验证微软账户",
     "errorMessage": "出现错误! 请检查网络连接。",

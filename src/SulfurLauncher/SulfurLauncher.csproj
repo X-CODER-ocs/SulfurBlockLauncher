@@ -72,6 +72,10 @@
         <DependentUpon>SkinLibraryPage.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Components\Operations\Account\LittleSkinSync.axaml.cs">
+        <DependentUpon>LittleSkinSync.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     
 </Project>
