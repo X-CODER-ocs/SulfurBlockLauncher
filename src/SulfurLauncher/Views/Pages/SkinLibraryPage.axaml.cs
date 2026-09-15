@@ -18,7 +18,9 @@ using SulfurLauncher.Core.Module.AggregatedSearch;
 using SulfurLauncher.Core.Module.Initialize;
 using SulfurLauncher.Core.Module.SkinLibrary;
 using SulfurLauncher.Localization;
+using SulfurLauncher.Module;
 using Tio.Avalonia.Standard.Tab.Entries;
+using Tio.Avalonia.Standard.Tab.Gateway;
 using Tio.Avalonia.Standard.Tab.Interface;
 using TioUi.Common;
 using TioUi.Common.Extensions;
@@ -113,7 +115,6 @@ public partial class SkinLibraryPage : UserControl, ITioTabPage
 public partial class SkinLibraryPageViewModel : ObservableObject, IDisposable
 {
     private TopLevel? _topLevel;
-    private bool _isLoaded;
 
     public ObservableCollection<AccountItemViewModel> Accounts { get; } = [];
 
@@ -176,7 +177,6 @@ public partial class SkinLibraryPageViewModel : ObservableObject, IDisposable
         // Ensure each attach subscribes exactly once.
         Notify -= HandleNotify;
         if (topLevel is not null) Notify += HandleNotify;
-        _isLoaded = true;
     }
 
     private void HandleNotify((NotificationType Type, string Message) tuple) =>
@@ -184,7 +184,6 @@ public partial class SkinLibraryPageViewModel : ObservableObject, IDisposable
 
     public void DetachTopLevel()
     {
-        _isLoaded = false;
         _topLevel = null;
     }
 
