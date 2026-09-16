@@ -27,6 +27,14 @@ public sealed class SkinLibraryService
     public SkinLibraryItem? ImportFile(string filePath, SkinModel skinModel) =>
         _cache.ImportFile(filePath, skinModel);
 
+    /// <summary>从 PNG 字节导入皮肤库（用于 LittleSkin 下载的贴图等场景）。</summary>
+    public SkinLibraryItem? Import(byte[] pngBytes, SkinModel skinModel)
+    {
+        if (pngBytes is not { Length: > 0 })
+            return null;
+        return _cache.Import(pngBytes, skinModel);
+    }
+
     /// <summary>把当前账户的皮肤（base64）保存进皮肤库。</summary>
     public SkinLibraryItem? ImportFromAccount(MinecraftAccount account)
     {
