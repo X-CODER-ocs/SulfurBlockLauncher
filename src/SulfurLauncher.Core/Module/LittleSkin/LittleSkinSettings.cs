@@ -6,8 +6,8 @@ namespace SulfurLauncher.Core.Module.LittleSkin;
 /// LittleSkin OAuth2 集成配置。
 /// <para>
 /// client_id 需站长在 <c>https://littleskin.cn/user/oauth/manage</c> 注册 OAuth 应用后取得，
-/// 并把回调地址设置为 <c>https://open.littleskin.cn/oauth/callback</c>；同时设备代码流还需要
-/// 发邮件向 LittleSkin 申请白名单后才能真正使用。
+/// 并在该应用中注册本地回调地址 <c>http://127.0.0.1:{RedirectPort}/callback</c>
+/// （LittleSkin 要求固定端口）。授权采用标准授权码 + PKCE 流程，无需白名单。
 /// </para>
 /// </summary>
 public static class LittleSkinSettings
@@ -17,8 +17,21 @@ public static class LittleSkinSettings
     public const string TextureBase = "https://littleskin.cn/textures";
     public const string YggdrasilUrl = "https://littleskin.cn/api/yggdrasil";
 
-    /// <summary>设备代码流与衣柜 API 所需申请的 OAuth 作用域。</summary>
+    /// <summary>衣柜 API 所需申请的 OAuth 作用域。</summary>
     public static readonly string[] Scopes = ["Closet.Read", "User.Read"];
+
+    /// <summary>
+    /// 本地回调固定端口。LittleSkin 要求回调地址为固定端口，此端口必须与 OAuth 应用中注册的一致。
+    /// 默认 <c>50123</c>，可用环境变量 <c>LITTLESKIN_REDIRECT_PORT</c> 覆盖。
+    /// </summary>
+    public static int RedirectPort
+    {
+        get
+        {
+            var raw = Environment.GetEnvironmentVariable("LITTLESKIN_REDIRECT_PORT");
+            return int.TryParse(raw, out var port) && port is > 0 and < 65536 ? port : 50123;
+        }
+    }
 
     /// <summary>
     /// LittleSkin OAuth 客户端 ID。留空则 LittleSkin 登录时跳过衣柜皮肤同步。

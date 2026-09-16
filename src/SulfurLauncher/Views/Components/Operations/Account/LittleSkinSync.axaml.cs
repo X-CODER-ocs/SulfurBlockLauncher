@@ -100,7 +100,8 @@ public partial class LittleSkinSyncViewModel : ObservableObject, IDialogContext
 
         if (auth is null)
         {
-            ProgressText = CommonLanguageManager.Instance.littleskin_errorClientId.CurrentValue();
+            ProgressText = startError ??
+                           CommonLanguageManager.Instance.littleskin_errorClientId.CurrentValue();
             IsBusy = false;
             return;
         }

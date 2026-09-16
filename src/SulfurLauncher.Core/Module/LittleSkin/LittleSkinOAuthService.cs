@@ -213,9 +213,19 @@ public sealed class LittleSkinOAuthService
 
         error = null;
 
-        var listener = new TcpListener(IPAddress.Loopback, 0);
-        listener.Start();
-        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        var port = LittleSkinSettings.RedirectPort;
+        TcpListener listener;
+        try
+        {
+            listener = new TcpListener(IPAddress.Loopback, port);
+            listener.Start();
+        }
+        catch (SocketException)
+        {
+            error = $"本地回调端口 {port} 被占用，请关闭占用该端口的程序，或设置 LITTLESKIN_REDIRECT_PORT 改用其它端口。";
+            return null!;
+        }
+
         var redirectUri = $"http://127.0.0.1:{port}/callback";
 
         var codeVerifier = CreateCodeVerifier();
