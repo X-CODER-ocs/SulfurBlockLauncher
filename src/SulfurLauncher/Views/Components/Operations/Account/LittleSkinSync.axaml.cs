@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Windows.Input;
+using Avalonia;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -77,11 +78,11 @@ public partial class LittleSkinSyncViewModel : ObservableObject, IDialogContext
 
     public bool CanOpenBrowser => !string.IsNullOrWhiteSpace(AuthorizationUri) && IsBusy;
     public bool CanCancel => IsBusy;
-    public Avalonia.Controls.Visibility CancelVisibility =>
-        IsBusy ? Avalonia.Controls.Visibility.Visible : Avalonia.Controls.Visibility.Collapsed;
+    public Visibility CancelVisibility =>
+        IsBusy ? Visibility.Visible : Visibility.Collapsed;
     public bool CanDone => IsComplete;
-    public Avalonia.Controls.Visibility DoneVisibility =>
-        IsComplete ? Avalonia.Controls.Visibility.Visible : Avalonia.Controls.Visibility.Collapsed;
+    public Visibility DoneVisibility =>
+        IsComplete ? Visibility.Visible : Visibility.Collapsed;
 
     /// <summary>在保存的导入发生前被覆盖；对话框结果返回导入的皮肤数量。</summary>
     public int ImportedCount { get; private set; }
