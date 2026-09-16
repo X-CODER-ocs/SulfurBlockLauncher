@@ -111,8 +111,7 @@
   },
   "littleskinsync": {
     "title": "Sync LittleSkin Skin Library",
-    "steps": "Open the authorization page in your browser and enter the code below to finish authorizing:",
-    "codeLabel": "Authorization Code",
+    "steps": "Sign in to LittleSkin in your browser and authorize. The list will be imported automatically once done.",
     "openBrowser": "Open Authorization Page",
     "cancel": "Cancel",
     "done": "Done"

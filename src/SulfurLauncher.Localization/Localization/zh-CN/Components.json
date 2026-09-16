@@ -111,8 +111,7 @@
   },
   "littleskinsync": {
     "title": "同步 LittleSkin 皮肤库",
-    "steps": "请在你的浏览器中打开授权页面，并输入下面的授权码来完成授权：",
-    "codeLabel": "授权码",
+    "steps": "请在浏览器中登录 LittleSkin 并完成授权，授权完成后将自动导入该皮肤库。",
     "openBrowser": "打开授权页面",
     "cancel": "取消",
     "done": "完成"

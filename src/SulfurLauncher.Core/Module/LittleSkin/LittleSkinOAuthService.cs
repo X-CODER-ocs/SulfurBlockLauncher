@@ -1,4 +1,7 @@
+using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Tio.Avalonia.Standard.Modules.DiskIO;
@@ -6,221 +9,173 @@ using Tio.Avalonia.Standard.Modules.DiskIO;
 namespace SulfurLauncher.Core.Module.LittleSkin;
 
 /// <summary>
-/// 设备代码对（RFC 8628）。用户代码需要展示给用户，设备代码用于应用轮询授权结果。
+/// 本地授权会话：应用在环回地址临时监听一个端口，引导用户在浏览器中完成授权后，
+/// LittleSkin 会把 <c>code</c> 回调到该端口，应用再用 PKCE 校验码换取访问令牌。
+/// 整个过程遵循标准 OAuth2 授权码 + PKCE，无需设备代码流白名单。
 /// </summary>
-public sealed record LittleSkinDeviceCode(
-    string UserCode,
-    string DeviceCode,
-    string VerificationUri,
-    string VerificationUriComplete,
-    int ExpiresIn,
-    int Interval);
-
-/// <summary>可通过调用获得，用于轮询授权结果期间主动取消。</summary>
-public enum LittleSkinPollError
+public sealed class LittleSkinLocalAuthSession : IDisposable
 {
-    /// <summary>用户尚未完成授权，继续轮询。</summary>
-    Pending,
+    private readonly string _codeVerifier;
+    private readonly string _state;
+    private readonly TcpListener _listener;
 
-    /// <summary>轮询过快，需按间隔稍后再试。</summary>
-    SlowDown,
-
-    /// <summary>设备代码/授权已过期。</summary>
-    Expired,
-
-    /// <summary>用户拒绝了授权。</summary>
-    Denied,
-
-    /// <summary>客户端 ID 无效（通常为未加入设备代码流白名单）。</summary>
-    InvalidClient,
-
-    /// <summary>其它错误。</summary>
-    Unknown
-}
-
-/// <summary>
-/// LittleSkin OAuth2 设备代码流服务端。负责请求设备代码对，并在用户授权后轮询换取访问令牌。
-/// 相关协议见 <c>https://manual.littleskin.cn/advanced/oauth2/device-authorization-grant</c>。
-/// </summary>
-public sealed class LittleSkinOAuthService
-{
-    private const string DeviceCodeGrantType = "urn:ietf:params:oauth:grant-type:device_code";
-    private const string RefreshTokenGrantType = "refresh_token";
-
-    private static readonly HttpClient Client = new() { Timeout = TimeSpan.FromSeconds(30) };
-
-    private LittleSkinOAuthService()
+    internal LittleSkinLocalAuthSession(
+        string authorizationUri, string redirectUri,
+        string codeVerifier, string state, TcpListener listener)
     {
+        AuthorizationUri = authorizationUri;
+        RedirectUri = redirectUri;
+        _codeVerifier = codeVerifier;
+        _state = state;
+        _listener = listener;
     }
 
-    public static LittleSkinOAuthService Instance { get; } = new();
+    /// <summary>需要引导用户浏览器打开的授权地址。</summary>
+    public string AuthorizationUri { get; }
+
+    /// <summary>回调地址（形如 http://127.0.0.1:端口/callback）。</summary>
+    public string RedirectUri { get; }
 
     /// <summary>
-    /// 请求一个设备代码对。需要 <see cref="LittleSkinSettings.ClientId"/> 已配置，
-    /// 且该应用已在 LittleSkin 申请设备代码流白名单。
+    /// 等待用户在浏览器中完成授权，通过 PKCE 换取访问令牌。
+    /// 浏览器关闭或本地监听被取消时返回 null。
     /// </summary>
-    public async Task<LittleSkinDeviceCode> RequestDeviceCodeAsync(string[] scopes,
-        CancellationToken cancellationToken)
+    public async Task<string?> WaitForTokenAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var client = await _listener.AcceptTcpClientAsync(cancellationToken);
+            var downstream = client.GetStream();
+            var (path, query) = await ReadRequestAsync(downstream, cancellationToken);
+
+            var code = QueryValue(query, "code");
+            var state = QueryValue(query, "state");
+
+            // 无论成败都给浏览器一个收尾页面，避免用户停在空白页。
+            var ok = state == _state && !string.IsNullOrWhiteSpace(code);
+            await WriteResponseAsync(downstream, ok
+                ? "授权成功，现在可以回到启动器了。"
+                : "授权失败或已取消，请回到启动器重试。", cancellationToken);
+
+            if (state != _state)
+                return null;
+            if (string.IsNullOrWhiteSpace(code))
+                return null;
+
+            return await ExchangeCodeForTokenAsync(code, _codeVerifier, RedirectUri, cancellationToken);
+        }
+        catch (ObjectDisposedException)
+        {
+            return null;
+        }
+        catch (SocketException)
+        {
+            return null;
+        }
+        catch (OperationCanceledException)
+        {
+            return null;
+        }
+    }
+
+    public void Dispose()
+    {
+        try
+        {
+            _listener.Stop();
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            // 关闭监听失败可以忽略
+        }
+    }
+
+    private static async Task<(string Path, string Query)> ReadRequestAsync(
+        NetworkStream stream, CancellationToken cancellationToken)
+    {
+        var buffer = new byte[8 * 1024];
+        var sb = new StringBuilder();
+        while (sb.Length < buffer.Length && !CheckHeaderEnd(sb))
+        {
+            var read = await stream.ReadAsync(buffer, cancellationToken);
+            if (read <= 0)
+                break;
+            sb.Append(Encoding.UTF8.GetString(buffer, 0, read));
+        }
+
+        var header = sb.ToString();
+        var requestLine = header.Split('\n')[0];
+        var parts = requestLine.Split(' ');
+        var path = parts.Length > 1 ? parts[1] : "/";
+        var query = string.Empty;
+        var qIndex = path.IndexOf('?');
+        if (qIndex >= 0)
+        {
+            query = path[(qIndex + 1)..];
+            path = path[..qIndex];
+        }
+
+        _ = path; // 仅需 query 中的参数
+        return (path, query);
+    }
+
+    private static bool CheckHeaderEnd(StringBuilder sb) =>
+        sb.ToString().Contains("\r\n\r\n", StringComparison.Ordinal) ||
+        sb.ToString().Contains("\n\n", StringComparison.Ordinal);
+
+    private static string? QueryValue(string query, string key)
+    {
+        foreach (var pair in query.Split('&'))
+        {
+            if (string.IsNullOrEmpty(pair)) continue;
+            var eq = pair.IndexOf('=');
+            var name = eq < 0 ? pair : pair[..eq];
+            var value = eq < 0 ? "" : System.Net.WebUtility.UrlDecode(pair[(eq + 1)..]);
+            if (string.Equals(name, key, StringComparison.OrdinalIgnoreCase))
+                return value;
+        }
+
+        return null;
+    }
+
+    private static async Task WriteResponseAsync(
+        NetworkStream stream, string message, CancellationToken cancellationToken)
+    {
+        var body = Encoding.UTF8.GetBytes(message);
+        var header = $"HTTP/1.1 200 OK\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Length: {body.Length}\r\nConnection: close\r\n\r\n";
+        await stream.WriteAsync(Encoding.UTF8.GetBytes(header), cancellationToken);
+        await stream.WriteAsync(body, cancellationToken);
+        await stream.FlushAsync(cancellationToken);
+    }
+
+    private static async Task<string?> ExchangeCodeForTokenAsync(
+        string code, string codeVerifier, string redirectUri, CancellationToken cancellationToken)
     {
         var clientId = LittleSkinSettings.ClientId;
-        if (string.IsNullOrWhiteSpace(clientId))
-            throw new InvalidOperationException("LittleSkin client_id 未配置，请先设置 LITTLESKIN_CLIENT_ID。");
-
-        var scope = scopes.Length > 0 ? string.Join(" ", scopes) : "User.Read";
-        var body = $"client_id={Uri.EscapeDataString(clientId)}&scope={Uri.EscapeDataString(scope)}";
+        var body =
+            $"grant_type=authorization_code" +
+            $"&client_id={Uri.EscapeDataString(clientId)}" +
+            $"&code={Uri.EscapeDataString(code)}" +
+            $"&redirect_uri={Uri.EscapeDataString(redirectUri)}" +
+            $"&code_verifier={Uri.EscapeDataString(codeVerifier)}";
 
         using var request = new HttpRequestMessage(HttpMethod.Post,
-            $"{LittleSkinSettings.OAuthBase}/oauth/device_code")
+            $"{LittleSkinSettings.OAuthBase}/oauth/token")
         {
             Content = new StringContent(body, Encoding.UTF8, "application/x-www-form-urlencoded")
         };
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        using var response = await Client.SendAsync(request, cancellationToken);
+        using var response = await LittleSkinOAuthService.SendAsync(request, cancellationToken);
         var json = await response.Content.ReadAsStringAsync(cancellationToken);
-
         if (!response.IsSuccessStatusCode)
         {
-            var error = TryReadOAuthError(json);
-            Logger.Warning(
-                $"[LittleSkin] 请求设备代码对失败 (HTTP {(int)response.StatusCode}), error={error?.Error}");
-            throw new InvalidOperationException(
-                error is not null && error.Error == "invalid_client"
-                    ? "LittleSkin 应用未加入设备代码流白名单，或客户端 ID 无效。"
-                    : $"LittleSkin 请求设备代码对失败：HTTP {(int)response.StatusCode}。");
-        }
-
-        using var doc = JsonDocument.Parse(json);
-        var root = doc.RootElement;
-        return new LittleSkinDeviceCode(
-            GetString(root, "user_code") ?? string.Empty,
-            GetString(root, "device_code") ?? string.Empty,
-            GetString(root, "verification_uri") ?? $"{LittleSkinSettings.OAuthBase}/oauth/link",
-            GetString(root, "verification_uri_complete") ?? string.Empty,
-            GetInt(root, "expires_in", 300),
-            GetInt(root, "interval", 5));
-    }
-
-    /// <summary>
-    /// 以 interval 为间隔轮询授权结果，直到用户在授权页面完成授权或失败/过期。
-    /// </summary>
-    /// <returns>轮询得到的状态。若 <see cref="LittleSkinPollResult.Succeeded"/> 为 true，
-    /// 则 <see cref="LittleSkinPollResult.AccessToken"/> 可用。</returns>
-    public async Task<LittleSkinPollResult> PollForTokenAsync(LittleSkinDeviceCode code,
-        CancellationToken cancellationToken)
-    {
-        var clientId = LittleSkinSettings.ClientId;
-        var interval = Math.Max(5, code.Interval);
-        while (!cancellationToken.IsCancellationRequested)
-        {
-            var body =
-                $"grant_type={Uri.EscapeDataString(DeviceCodeGrantType)}&client_id={Uri.EscapeDataString(clientId)}&device_code={Uri.EscapeDataString(code.DeviceCode)}";
-
-            using var request = new HttpRequestMessage(HttpMethod.Post,
-                $"{LittleSkinSettings.OAuthBase}/oauth/token")
-            {
-                Content = new StringContent(body, Encoding.UTF8, "application/x-www-form-urlencoded")
-            };
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            using var response = await Client.SendAsync(request, cancellationToken);
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-
-            if (response.IsSuccessStatusCode)
-            {
-                using var doc = JsonDocument.Parse(json);
-                var root = doc.RootElement;
-                var accessToken = GetString(root, "access_token");
-                if (!string.IsNullOrWhiteSpace(accessToken))
-                {
-                    return new LittleSkinPollResult(
-                        true, accessToken,
-                        GetString(root, "refresh_token"),
-                        GetString(root, "id_token"));
-                }
-            }
-
-            var error = TryReadOAuthError(json);
-            if (error is not null)
-            {
-                switch (error.Error)
-                {
-                    case "authorization_pending":
-                        break;
-                    case "slow_down":
-                        interval += 5;
-                        break;
-                    case "access_denied":
-                        return new LittleSkinPollResult(false, null, null, null, LittleSkinPollError.Denied,
-                            "用户拒绝了授权。");
-                    case "expired_token":
-                        return new LittleSkinPollResult(false, null, null, null, LittleSkinPollError.Expired,
-                            "设备代码已过期，请重新开始授权。");
-                    case "invalid_client":
-                        return new LittleSkinPollResult(false, null, null, null, LittleSkinPollError.InvalidClient,
-                            "客户端 ID 无效或应用未加入白名单。");
-                    default:
-                        return new LittleSkinPollResult(false, null, null, null, LittleSkinPollError.Unknown,
-                            $"授权失败：{error.Error}");
-                }
-            }
-            else
-            {
-                return new LittleSkinPollResult(false, null, null, null, LittleSkinPollError.Unknown,
-                    $"授权失败：HTTP {(int)response.StatusCode}");
-            }
-
-            try
-            {
-                await Task.Delay(TimeSpan.FromSeconds(interval), cancellationToken);
-            }
-            catch (OperationCanceledException)
-            {
-                break;
-            }
-        }
-
-        return new LittleSkinPollResult(false, null, null, null, LittleSkinPollError.Unknown, "授权已取消。");
-    }
-
-    /// <summary>使用刷新令牌换取新的访问令牌。</summary>
-    public async Task<string?> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
-    {
-        var clientId = LittleSkinSettings.ClientId;
-        using var request = new HttpRequestMessage(HttpMethod.Post,
-            $"{LittleSkinSettings.OAuthBase}/oauth/token")
-        {
-            Content = new StringContent(
-                $"grant_type={Uri.EscapeDataString(RefreshTokenGrantType)}&refresh_token={Uri.EscapeDataString(refreshToken)}&client_id={Uri.EscapeDataString(clientId)}",
-                Encoding.UTF8, "application/x-www-form-urlencoded")
-        };
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-        using var response = await Client.SendAsync(request, cancellationToken);
-        if (!response.IsSuccessStatusCode)
+            Logger.Warning($"[LittleSkin] 换取访问令牌失败 (HTTP {(int)response.StatusCode})");
             return null;
+        }
 
-        var json = await response.Content.ReadAsStringAsync(cancellationToken);
         using var doc = JsonDocument.Parse(json);
         return GetString(doc.RootElement, "access_token");
-    }
-
-    private sealed record OAuthError(string Error, string? Description);
-
-    private static OAuthError? TryReadOAuthError(string json)
-    {
-        try
-        {
-            using var doc = JsonDocument.Parse(json);
-            var root = doc.RootElement;
-            var error = GetString(root, "error");
-            if (error is null) return null;
-            return new OAuthError(error, GetString(root, "error_description") ?? GetString(root, "message"));
-        }
-        catch
-        {
-            return null;
-        }
     }
 
     private static string? GetString(JsonElement element, string property)
@@ -230,25 +185,93 @@ public sealed class LittleSkinOAuthService
             ? value.GetString()
             : null;
     }
-
-    private static int GetInt(JsonElement element, string property, int defaultValue)
-    {
-        if (element.ValueKind != JsonValueKind.Object || !element.TryGetProperty(property, out var value))
-            return defaultValue;
-        return value.ValueKind switch
-        {
-            JsonValueKind.Number when value.TryGetInt32(out var i) => i,
-            JsonValueKind.String when int.TryParse(value.GetString(), out var i) => i,
-            _ => defaultValue
-        };
-    }
 }
 
-/// <summary>轮询授权结果后的返回数据。</summary>
-public sealed record LittleSkinPollResult(
-    bool Succeeded,
-    string? AccessToken,
-    string? RefreshToken,
-    string? IdToken,
-    LittleSkinPollError Error = LittleSkinPollError.Unknown,
-    string? ErrorMessage = null);
+/// <summary>
+/// 授权码 + PKCE 的 OAuth2 服务端。替代设备代码流，可通过本地环回端口完成授权，无需白名单。
+/// </summary>
+public sealed class LittleSkinOAuthService
+{
+    private LittleSkinOAuthService()
+    {
+    }
+
+    public static LittleSkinOAuthService Instance { get; } = new();
+
+    /// <summary>
+    /// 启动一次本地授权：分配临时端口、生成 PKCE 校验码，返回授权会话。
+    /// <see cref="LittleSkinLocalAuthSession.AuthorizationUri"/> 用于浏览器跳转。
+    /// </summary>
+    public LittleSkinLocalAuthSession StartAuthorization(string[] scopes, out string? error)
+    {
+        var clientId = LittleSkinSettings.ClientId;
+        if (string.IsNullOrWhiteSpace(clientId))
+        {
+            error = "尚未配置 LittleSkin client_id。";
+            return null!;
+        }
+
+        error = null;
+
+        var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        var redirectUri = $"http://127.0.0.1:{port}/callback";
+
+        var codeVerifier = CreateCodeVerifier();
+        var codeChallenge = CreateCodeChallenge(codeVerifier);
+        var state = CreateState();
+
+        var scope = scopes.Length > 0 ? string.Join(" ", scopes) : "User.Read";
+        var authorizationUri =
+            $"{LittleSkinSettings.OAuthBase}/oauth/authorize" +
+            $"?client_id={Uri.EscapeDataString(clientId)}" +
+            $"&redirect_uri={Uri.EscapeDataString(redirectUri)}" +
+            $"&response_type=code" +
+            $"&scope={Uri.EscapeDataString(scope)}" +
+            $"&state={Uri.EscapeDataString(state)}" +
+            $"&code_challenge={Uri.EscapeDataString(codeChallenge)}" +
+            $"&code_challenge_method=S256";
+
+        return new LittleSkinLocalAuthSession(authorizationUri, redirectUri,
+            codeVerifier, state, listener);
+    }
+
+    internal static Task<HttpResponseMessage> SendAsync(
+        HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        // LittleSkinLocalAuthSession 复用同一个 HttpClient，避免重复创建连接。
+        return LittleSkinOAuthServiceShared.SendAsync(request, cancellationToken);
+    }
+
+    private static string CreateCodeVerifier()
+    {
+        var bytes = RandomNumberGenerator.GetBytes(32);
+        return Convert.ToBase64String(bytes)
+            .TrimEnd('=')
+            .Replace('+', '-')
+            .Replace('/', '_');
+    }
+
+    private static string CreateCodeChallenge(string verifier)
+    {
+        var hash = SHA256.HashData(Encoding.ASCII.GetBytes(verifier));
+        return Convert.ToBase64String(hash)
+            .TrimEnd('=')
+            .Replace('+', '-')
+            .Replace('/', '_');
+    }
+
+    private static string CreateState() =>
+        Guid.NewGuid().ToString("N");
+}
+
+/// <summary>共享的 HTTP 客户端主机，供 OAuth 服务与本地授权会话复用拆线化管理。</summary>
+internal static class LittleSkinOAuthServiceShared
+{
+    private static readonly HttpClient Client = new() { Timeout = TimeSpan.FromSeconds(30) };
+
+    internal static Task<HttpResponseMessage> SendAsync(
+        HttpRequestMessage request, CancellationToken cancellationToken) =>
+        Client.SendAsync(request, cancellationToken);
+}

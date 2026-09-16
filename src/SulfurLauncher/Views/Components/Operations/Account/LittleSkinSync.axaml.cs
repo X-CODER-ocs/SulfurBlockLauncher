@@ -19,7 +19,7 @@ public partial class LittleSkinSync : UserControl
         InitializeComponent();
     }
 
-    /// <summary>弹出 LittleSkin OAuth 同步对话框，完成后返回导入的皮肤数量（取消返回 null）。</summary>
+    /// <summary>弹出 LittleSkin 授权同步对话框，完成后返回导入的皮肤数量（取消/失败返回 null）。</summary>
     public static async Task<int?> ShowAndSync(string? hostId)
     {
         var options = new OverlayDialogOptions
@@ -41,7 +41,6 @@ public partial class LittleSkinSync : UserControl
 public partial class LittleSkinSyncViewModel : ObservableObject, IDialogContext
 {
     private readonly CancellationTokenSource _cts = new();
-    private string _verificationUrl = string.Empty;
 
     public LittleSkinSyncViewModel()
     {
@@ -54,13 +53,12 @@ public partial class LittleSkinSyncViewModel : ObservableObject, IDialogContext
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanOpenBrowser))]
-    public partial string UserCode { get; set; } = string.Empty;
+    public partial string AuthorizationUri { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial string StatusText { get; set; } = string.Empty;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(ProgressText))]
     [NotifyPropertyChangedFor(nameof(CanCancel))]
     [NotifyPropertyChangedFor(nameof(CancelVisibility))]
     public partial bool IsBusy { get; set; } = true;
@@ -77,7 +75,7 @@ public partial class LittleSkinSyncViewModel : ObservableObject, IDialogContext
     public ICommand CancelCommand { get; }
     public ICommand DoneCommand { get; }
 
-    public bool CanOpenBrowser => !string.IsNullOrWhiteSpace(UserCode) && IsBusy;
+    public bool CanOpenBrowser => !string.IsNullOrWhiteSpace(AuthorizationUri) && IsBusy;
     public bool CanCancel => IsBusy;
     public Avalonia.Controls.Visibility CancelVisibility =>
         IsBusy ? Avalonia.Controls.Visibility.Visible : Avalonia.Controls.Visibility.Collapsed;
@@ -85,7 +83,7 @@ public partial class LittleSkinSyncViewModel : ObservableObject, IDialogContext
     public Avalonia.Controls.Visibility DoneVisibility =>
         IsComplete ? Avalonia.Controls.Visibility.Visible : Avalonia.Controls.Visibility.Collapsed;
 
-    /// <summary>在保存的导入发生前被覆盖；对话框结果显示导入的皮肤数量。</summary>
+    /// <summary>在保存的导入发生前被覆盖；对话框结果返回导入的皮肤数量。</summary>
     public int ImportedCount { get; private set; }
 
     public void Close()
@@ -97,46 +95,33 @@ public partial class LittleSkinSyncViewModel : ObservableObject, IDialogContext
 
     private async Task RunAsync()
     {
+        using var auth = LittleSkinOAuthService.Instance.StartAuthorization(
+            LittleSkinSettings.Scopes, out var startError);
+
+        if (auth is null)
+        {
+            ProgressText = CommonLanguageManager.Instance.littleskin_errorClientId.CurrentValue();
+            IsBusy = false;
+            return;
+        }
+
+        AuthorizationUri = auth.AuthorizationUri;
+        StatusText = CommonLanguageManager.Instance.littleskin_waitingAuth.CurrentValue();
+        ProgressText = string.Empty;
+        OpenBrowser();
+
         try
         {
-            var clientId = LittleSkinSettings.ClientId;
-            if (string.IsNullOrWhiteSpace(clientId))
+            var token = await auth.WaitForTokenAsync(_cts.Token);
+            if (string.IsNullOrWhiteSpace(token))
             {
-                ProgressText = CommonLanguageManager.Instance.littleskin_errorClientId.CurrentValue();
-                IsBusy = false;
-                return;
-            }
-
-            StatusText = CommonLanguageManager.Instance.littleskin_requestingCode.CurrentValue();
-            ProgressText = string.Empty;
-
-            var code = await LittleSkinOAuthService.Instance.RequestDeviceCodeAsync(
-                LittleSkinSettings.Scopes, _cts.Token);
-
-            UserCode = code.UserCode;
-            _verificationUrl = !string.IsNullOrWhiteSpace(code.VerificationUriComplete)
-                ? code.VerificationUriComplete
-                : code.VerificationUri;
-            StatusText = CommonLanguageManager.Instance.littleskin_waitingAuth.CurrentValue();
-            OpenBrowser();
-
-            var poll = await LittleSkinOAuthService.Instance.PollForTokenAsync(code, _cts.Token);
-            if (!poll.Succeeded)
-            {
-                ProgressText = poll.ErrorMessage ?? CommonLanguageManager.Instance.littleskin_authFailed.CurrentValue();
-                IsBusy = false;
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(poll.AccessToken))
-            {
-                ProgressText = CommonLanguageManager.Instance.littleskin_authFailed.CurrentValue();
+                ProgressText = CommonLanguageManager.Instance.littleskin_cancelled.CurrentValue();
                 IsBusy = false;
                 return;
             }
 
             StatusText = CommonLanguageManager.Instance.littleskin_fetchingSkins.CurrentValue();
-            var closet = await LittleSkinClosetService.Instance.ListClosetAsync(poll.AccessToken, _cts.Token);
+            var closet = await LittleSkinClosetService.Instance.ListClosetAsync(token, _cts.Token);
             ImportedCount = await ImportSkinsAsync(closet);
             ProgressText = string.Format(
                 CommonLanguageManager.Instance.littleskin_importedFormat.CurrentValue(), ImportedCount);
@@ -181,11 +166,11 @@ public partial class LittleSkinSyncViewModel : ObservableObject, IDialogContext
 
     private void OpenBrowser()
     {
-        if (string.IsNullOrWhiteSpace(_verificationUrl))
+        if (string.IsNullOrWhiteSpace(AuthorizationUri))
             return;
         try
         {
-            Process.Start(new ProcessStartInfo(_verificationUrl) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(AuthorizationUri) { UseShellExecute = true });
         }
         catch (Exception ex)
         {
