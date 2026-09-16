@@ -41,12 +41,12 @@
                     Command="{Binding CancelCommand}"
                     Content="{Translate {x:Static loc:ComponentsLanguageManager+Keys.littleskinsync_cancel}}"
                     IsEnabled="{Binding CanCancel}"
-                    Visibility="{Binding CancelVisibility}" />
+                    IsVisible="{Binding IsBusy}" />
                 <Button
                     Command="{Binding DoneCommand}"
                     Content="{Translate {x:Static loc:ComponentsLanguageManager+Keys.littleskinsync_done}}"
                     IsEnabled="{Binding CanDone}"
-                    Visibility="{Binding DoneVisibility}" />
+                    IsVisible="{Binding IsComplete}" />
             </StackPanel>
         </DockPanel>
     </Grid>
