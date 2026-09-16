@@ -104,10 +104,10 @@ public sealed class LittleSkinClosetService
             lastPage = ReadLastPage(root) ?? ReadLastPage(data.Value) ?? 1;
 
             var array = data.Value.ValueKind == JsonValueKind.Array ? data.Value : FindArrayElement(data.Value);
-            if (array is null)
+            if (array is null || array.Value.ValueKind != JsonValueKind.Array)
                 return (items, lastPage);
 
-            foreach (var entry in array.EnumerateArray())
+            foreach (var entry in array.Value.EnumerateArray())
             {
                 var item = TryParseClosetItem(entry);
                 if (item != null)
