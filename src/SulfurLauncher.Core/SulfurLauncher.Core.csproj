@@ -11,6 +11,7 @@
         
         <TelemetryApiKey>$([System.Environment]::GetEnvironmentVariable('PORTAL_TELEMETRY_API_KEY'))</TelemetryApiKey>
         <TelemetryUrl>$([System.Environment]::GetEnvironmentVariable('PORTAL_TELEMETRY_URL'))</TelemetryUrl>
+        <LittleSkinClientId>$([System.Environment]::GetEnvironmentVariable('LITTLESKIN_CLIENT_ID'))</LittleSkinClientId>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(CurseForgeApiKey)' != ''">
@@ -31,6 +32,10 @@
 
     <ItemGroup Condition="'$(TelemetryUrl)' != ''">
         <AssemblyMetadata Include="SulfurLauncher.TelemetryUrl" Value="$(TelemetryUrl)"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(LittleSkinClientId)' != ''">
+        <AssemblyMetadata Include="SulfurLauncher.LittleSkinClientId" Value="$(LittleSkinClientId)"/>
     </ItemGroup>
 
     <ItemGroup>

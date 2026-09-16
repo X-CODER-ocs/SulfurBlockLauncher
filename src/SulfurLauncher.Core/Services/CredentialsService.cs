@@ -18,6 +18,9 @@ public static class CredentialsService
     public const string TelemetryUrlEnvironmentVariable = "PORTAL_TELEMETRY_URL";
     private const string TelemetryUrlMetadataKey = "SulfurLauncher.TelemetryUrl";
 
+    private const string LittleSkinClientIdEnvironmentVariable = "LITTLESKIN_CLIENT_ID";
+    private const string LittleSkinClientIdMetadataKey = "SulfurLauncher.LittleSkinClientId";
+
     public static string? CurseForgeApiKey =>
         GetValue(CurseForgeApiKeyMetadataKey, CurseForgeApiKeyEnvironmentVariable);
 
@@ -30,6 +33,9 @@ public static class CredentialsService
     public static string? TelemetryApiKey => GetValue(TelemetryApiKeyMetadataKey, TelemetryApiKeyEnvironmentVariable);
 
     public static string? TelemetryUrl => GetValue(TelemetryUrlMetadataKey, TelemetryUrlEnvironmentVariable);
+
+    public static string? LittleSkinClientId =>
+        GetValue(LittleSkinClientIdMetadataKey, LittleSkinClientIdEnvironmentVariable);
 
     private static string? GetValue(string metadataKey, string environmentVariable)
     {
